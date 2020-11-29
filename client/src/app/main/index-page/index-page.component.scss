@@ -1,0 +1,22 @@
+#wrapper {
+    display: grid;
+    grid-template-areas: "topnav topnav"
+                         "sidenav main";
+    grid-template-rows: max-content auto;
+    grid-template-columns: 350px auto;
+}
+
+.mat-sidenav {
+    width: 350px;
+    position: fixed;
+    top: 62px;
+}
+
+#sidenav {
+    grid-area: sidenav;
+}
+
+#main {
+    grid-area: main;
+    min-height: calc(100vh - 62px);
+}

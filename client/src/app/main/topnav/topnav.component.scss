@@ -1,0 +1,21 @@
+::ng-deep topnav {
+    position: sticky;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 10;
+    grid-area: topnav;
+}
+
+.mat-toolbar-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.mat-button {
+    transition-duration: 300ms;;
+}
+
+.mat-button:hover {
+    background-color:#7f7fce;
+}
