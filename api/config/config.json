@@ -1,0 +1,12 @@
+{
+    "mysql": {
+        "host": "localhost",
+        "user": "newuser",
+        "password": "",
+        "database": "test"
+    },
+    "mail": {
+        "user": "havender91@gmail.com",
+        "pass": ""
+    }
+}

@@ -5,7 +5,7 @@ const logger = require('morgan');
 
 const app = express();
 
-const mainRouter = require('./api/routes/mainRouting');
+const mainRouter = require('./api/routes/mainRoutes');
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'));
 
