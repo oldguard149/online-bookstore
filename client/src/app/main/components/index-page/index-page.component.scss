@@ -3,7 +3,7 @@
     grid-template-areas: "topnav topnav topnav"
                          "sidenav main side_ad";
     grid-template-rows: max-content auto;
-    grid-template-columns: 300px 1032px auto; // 1032px is hardcode
+    grid-template-columns: 300px 950px auto; // 1032px is hardcode
 }
 
 .mat-sidenav {
