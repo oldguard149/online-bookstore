@@ -7,15 +7,13 @@ const { body, validationResult } = require('express-validator');
 
 exports.publisherList = async (req, res) => {
     try {
-        const publisherPerPage = 10;
-        const currentPage = parseInt(req.query.page) || 1
+        const publisherPerPage = parseInt(req.query.pagesize) || 10;
+        const currentPage = parseInt(req.query.page) || 0;
         const offset = calculateOffsetForPagination(publisherPerPage, currentPage);
         const count = await countData(Q.publisher.publisherCount);
         const publishers = await query(Q.publisher.publisherList, [offset, publisherPerPage]);
-        const totalPage = Math.ceil(count / publisherPerPage);
-
-        const data = { publishers, totalPage };
-        res.status(200).send(data);
+        const data = { publishers, totalItem: count };
+        res.status(200).json(data);
     } catch (err) {
         handleError(req, 500, res)
     }
@@ -24,8 +22,8 @@ exports.publisherList = async (req, res) => {
 exports.publisherDetail = async (req, res) => {
     try {
         let booklist = [];
-        const bookPerPage = 10;
-        const currentPage = parseInt(req.query.page) || 1;
+        const bookPerPage = parseInt(req.query.pagesize) || 30;
+        const currentPage = parseInt(req.query.page) || 0;
         const currentPublisherId = parseInt(req.params.id);
         const offset = calculateOffsetForPagination(bookPerPage, currentPage);
 
@@ -38,7 +36,7 @@ exports.publisherDetail = async (req, res) => {
         const totalPage = Math.ceil(count / bookPerPage);
 
 
-        const data = { publisher, booklist, totalPage };
+        const data = { publisher, booklist, totalItems: count };
         res.status(200).json(data);
     } catch (err) {
         handleError(res, 500, err);

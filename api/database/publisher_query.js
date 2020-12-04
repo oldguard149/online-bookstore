@@ -13,7 +13,7 @@ exports.bookCountForPublisherDetail =
 exports.publisherList =
     `SELECT p.name, p.publisher_id, (SELECT COUNT(*) FROM books b WHERE b.publisher_id = p.publisher_id) AS bookcount
 FROM publishers p
-ORDER BY name ASC
+ORDER BY publisher_id ASC
 LIMIT ?, ?;`;
 
 exports.publisherCount = `SELECT COUNT(*) AS count FROM publishers`;

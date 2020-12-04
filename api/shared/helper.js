@@ -40,8 +40,12 @@ function pagination(current, totalPage) {
     return list;
 }
 
+// function calculateOffsetForPagination(bookPerPage, currentPage) {
+//     return (bookPerPage * currentPage - bookPerPage)
+// }
+
 function calculateOffsetForPagination(bookPerPage, currentPage) {
-    return (bookPerPage * currentPage - bookPerPage)
+    return bookPerPage * currentPage;
 }
 
 function isResultEmpty(rows) {

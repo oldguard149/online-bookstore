@@ -9,16 +9,16 @@ const Q = require('../database/query');
 
 exports.authorList = async (req, res) => {
     try {
-        const currentPage = parseInt(req.query.page) || 1;
-        const authorPerPage = 20;
+        const currentPage = parseInt(req.query.page) || 0;
+        const authorPerPage = parseInt(req.query.pagesize) || 10;
         const offset = calculateOffsetForPagination(authorPerPage, currentPage);
         const count = await countData(Q.author.authorCount);
         const authors = await query(Q.author.authorList, [offset, authorPerPage]);
-        const totalPage = Math.ceil(count / authorPerPage);
+        // const totalPage = Math.ceil(count / authorPerPage);
         const data = {
-            authors, totalPage
+            authors, totalItem: count
         }
-        res.status(200).send(data);
+        res.status(200).json(data);
     } catch (err) {
         handleError(res, 500, err);
     }
@@ -27,28 +27,30 @@ exports.authorList = async (req, res) => {
 exports.authorDetail = async (req, res) => {
     try {
         let booklist = [];
-        const currentPage = parseInt(req.query.page) || 1;
+        const currentPage = parseInt(req.query.page) || 0;
+        const bookPerPage = parseInt(req.query.pagesize) || 30;
         const currentAuthorId = parseInt(req.params.id);
         if (isNaN(currentAuthorId)) {
             return handleError(res, 404, null, 'Page not found!');
         }
-        const bookPerPage = 10;
         const offset = calculateOffsetForPagination(bookPerPage, currentPage);
 
         const author = await findOne(Q.author.authorById, [currentAuthorId]);
         if (isResultEmpty(author)) {
-            return handleError(res, 400, null, 'Page not found!');
+            return handleError(res, 404, null, 'Page not found!');
         }
         const count = await countData(Q.author.bookCountForAuthorDetail, [currentAuthorId]);
         if (count > 0) {
             booklist = preprocessBookList(await query(Q.author.bookListForAuthorDetail,
                 [currentAuthorId, offset, bookPerPage]));
         }
+        // convert authors from array to string
+        for (let i = 0; i < booklist.length; i++) {
+            booklist[i].Authors = booklist[i].Authors.map(author => author.fullname).join(', ');
+        }
 
-        const totalPage = Math.ceil(count / bookPerPage);
-        const data = { author, booklist, totalPage };
-
-        res.status(200).send(data);
+        const data = { author, booklist, totalItems: count };
+        res.status(200).json(data);
     } catch (error) {
         handleError(res, 500, error);
     }

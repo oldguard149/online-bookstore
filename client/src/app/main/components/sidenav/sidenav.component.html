@@ -1,6 +1,6 @@
 <mat-nav-list>
     <mat-nav-list>
-        <a mat-list-item [routerLink]="'/genre'">Thể Loại Sách</a>
+        <a mat-list-item [routerLink]="'/genre'" routerLinkActive="active-color">Thể Loại Sách</a>
         <div class="sublist" *ngIf="genres">
             <a mat-list-item *ngFor="let genre of genres;" 
                 [routerLink]="['/genre', genre.genre_id]">{{genre.name}}</a>

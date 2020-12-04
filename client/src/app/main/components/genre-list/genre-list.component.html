@@ -1,0 +1,31 @@
+<div class="mat-elevation-z8">
+  <mat-table [dataSource]="dataSource"> 
+      <!-- Id Column -->
+      <ng-container matColumnDef="genre_id">
+        <mat-header-cell [ngClass]="'small-width'" *matHeaderCellDef> No. </mat-header-cell>
+        <mat-cell [ngClass]="'small-width'" *matCellDef="let element"> {{element.genre_id}} </mat-cell>
+      </ng-container>
+    
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+        <mat-cell class="link" *matCellDef="let element" 
+          [routerLink]="['/genre', element.genre_id]"> {{element.name}} </mat-cell>
+      </ng-container>
+    
+      <!-- Bookcount Column -->
+      <ng-container matColumnDef="bookcount">
+        <mat-header-cell class="medium-width align-center" *matHeaderCellDef> Number of books </mat-header-cell>
+        <mat-cell class="medium-width align-center" *matCellDef="let element"> {{element.bookcount}} </mat-cell>
+      </ng-container>
+    
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+  <main-paginator
+    [totalItems]="totalItems"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[10, 20, 30]"
+    [pageIndex]="currentPage"
+  ></main-paginator>
+</div>

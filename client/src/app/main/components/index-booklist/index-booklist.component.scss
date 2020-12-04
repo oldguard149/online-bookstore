@@ -1,0 +1,19 @@
+::ng-deep index-booklist {
+    grid-area: main;
+    display: flex;
+    justify-content: center;
+}
+
+#outside-container {
+    margin-top: 2rem;
+    padding: 1rem;
+    display: grid;
+    grid-template-areas: "bookcard bookcard bookcard";
+    grid-gap: 2rem;
+}
+
+.pagination {
+    grid-column: span 3;
+    display: flex;
+    justify-content: flex-end;
+}

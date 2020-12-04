@@ -11,6 +11,8 @@ import { MatToolbarModule } from '@angular/material/toolbar'
 import { MatCardModule } from '@angular/material/card';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
 
 const materialComponents = [
   MatButtonModule,
@@ -23,11 +25,13 @@ const materialComponents = [
   MatToolbarModule,
   MatCardModule,
   MatTooltipModule,
-  MatExpansionModule
+  MatExpansionModule,
+  MatPaginatorModule,
+  MatTableModule
 ];
 
 @NgModule({
-  imports: [ materialComponents ],
-  exports: [ materialComponents ]
+  imports: [materialComponents],
+  exports: [materialComponents]
 })
 export class MaterialModule { }

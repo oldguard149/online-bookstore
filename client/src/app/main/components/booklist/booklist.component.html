@@ -1,0 +1,14 @@
+<div id="booklist-container">
+    <bookcard *ngFor="let book of booklist;" 
+        [isbn]="book.isbn" [name]="book.name" 
+        [image_url]="book.image_url"
+        [author]="book.Authors" 
+        [price]="book.price">
+    </bookcard>
+    <main-paginator
+        [totalItems]="totalItems"
+        [pageSize]="pageSize"
+        [pageIndex]="pageIndex"
+        [pageSizeOptions]="[15, 30, 45, 60]"
+    ></main-paginator>
+</div>

@@ -1,0 +1,17 @@
+<div id="outside-container">
+    <bookcard *ngFor="let book of booklist;" 
+        [isbn]="book.isbn" [name]="book.name" 
+        [image_url]="book.image_url"
+        [author]="book.Authors" 
+        [price]="book.price">
+    </bookcard>
+    <div class="pagination" *ngIf="totalItem">
+        <mat-paginator 
+            [length]="totalItem" 
+            [pageSize]="pageSize" 
+            [pageSizeOptions]="[15, 30, 45, 60]" 
+            [pageIndex]="currentPage"
+            (page)="changeBooklist($event)">
+        </mat-paginator>
+    </div>
+</div>

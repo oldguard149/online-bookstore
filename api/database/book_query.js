@@ -36,23 +36,50 @@ ON b.isbn = w.isbn
 LEFT OUTER JOIN publishers p
 ON b.publisher_id = p.publisher_id;`;
 
-exports.bookList = `
-WITH books AS (SELECT b.* FROM books b LIMIT ?, ?)
-SELECT book.*, p.name as publisher_name, a.fullname as author_name, a.author_id as author_id
-FROM books as book
-LEFT OUTER JOIN (writtens w JOIN authors a ON w.author_id = a.author_id)
-ON book.isbn = w.isbn
-LEFT OUTER JOIN publishers p
-ON book.publisher_id = p.publisher_id;`;
+// exports.bookList = `
+// WITH books AS (SELECT b.* FROM books b LIMIT ?, ?)
+// SELECT book.*, p.name as publisher_name, a.fullname as author_name, a.author_id as author_id
+// FROM books as book
+// LEFT OUTER JOIN (writtens w JOIN authors a ON w.author_id = a.author_id)
+// ON book.isbn = w.isbn
+// LEFT OUTER JOIN publishers p
+// ON book.publisher_id = p.publisher_id;`;
 
 exports.indexBookList = `
-WITH books AS (SELECT b.name, b.isbn, b.price, b.publisher_id FROM books b LIMIT ?, ?)
-SELECT book.*, p.name as publisher_name, a.fullname as author_name, a.author_id as author_id
-FROM books as book
-LEFT OUTER JOIN (writtens w JOIN authors a ON w.author_id = a.author_id)
-ON book.isbn = w.isbn
-LEFT OUTER JOIN publishers p
-ON book.publisher_id = p.publisher_id;`;
+WITH books AS (
+    SELECT
+        b.name,
+        b.isbn,
+        b.price,
+        b.image_url,
+        b.publisher_id
+    FROM
+        books b
+    LIMIT
+        ?, ?
+)
+SELECT
+    books.*,
+    p.name as publisher_name,
+    a.fullname as author_name,
+    a.author_id as author_id
+FROM
+    books
+    LEFT OUTER JOIN (
+        writtens w
+        JOIN authors a ON w.author_id = a.author_id
+    ) ON books.isbn = w.isbn
+    LEFT OUTER JOIN publishers p ON books.publisher_id = p.publisher_id;`;
+
+exports.sideAdBooklist = `
+SELECT 
+    isbn,
+    name,
+    image_url
+FROM 
+    books
+LIMIT
+    ?, ?;`;
 
 exports.bookCount = `SELECT COUNT(*) AS count FROM books;`;
 

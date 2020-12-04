@@ -3,7 +3,7 @@
         "host": "localhost",
         "user": "newuser",
         "password": "",
-        "database": "test"
+        "database": "testinsert"
     },
     "mail": {
         "user": "havender91@gmail.com",

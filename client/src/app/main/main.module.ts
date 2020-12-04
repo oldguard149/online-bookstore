@@ -2,18 +2,52 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MainRoutingModule } from './main-routing.module';
-import { IndexPageComponent } from './index-page/index-page.component';
-import { TopnavComponent } from './topnav/topnav.component';
-import { SidenavComponent } from './sidenav/sidenav.component';
+import { IndexPageComponent } from './components/index-page/index-page.component';
+import { TopnavComponent } from './components/topnav/topnav.component';
+import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { MaterialModule } from '../material.module';
+import { BookcardComponent } from './components/bookcard/bookcard.component';
+import { IndexBooklistComponent } from './components/index-booklist/index-booklist.component';
+import { DataService } from './services/data.service';
+import { GenreListComponent } from './components/genre-list/genre-list.component';
+import { SideAdComponent } from './components/side-ad/side-ad.component';
+import { SideAdBookcardComponent } from './components/side-ad-bookcard/side-ad-bookcard.component';
+import { AuthorListComponent } from './components/author-list/author-list.component';
+import { PublisherListComponent } from './components/publisher-list/publisher-list.component';
+import { TitleTooltipDirective } from './directives/title-tooltip.directive';
+import { GenreDetailComponent } from './components/genre-detail/genre-detail.component';
+import { PublisherDetailComponent } from './components/publisher-detail/publisher-detail.component';
+import { AuthorDetailComponent } from './components/author-detail/author-detail.component';
+import { PaginatorComponent } from './components/paginator/paginator.component';
+import { BooklistComponent } from './components/booklist/booklist.component';
 
 
 @NgModule({
-  declarations: [IndexPageComponent, TopnavComponent, SidenavComponent],
+  declarations: [
+    IndexPageComponent, 
+    TopnavComponent, 
+    SidenavComponent,
+    BookcardComponent, 
+    IndexBooklistComponent, 
+    GenreListComponent, 
+    SideAdComponent, 
+    SideAdBookcardComponent, 
+    AuthorListComponent, 
+    PublisherListComponent,
+    TitleTooltipDirective,
+    GenreDetailComponent,
+    PublisherDetailComponent,
+    AuthorDetailComponent,
+    PaginatorComponent,
+    BooklistComponent,
+  ],
   imports: [
     CommonModule,
     MainRoutingModule,
     MaterialModule
+  ],
+  providers: [
+    DataService
   ]
 })
 export class MainModule { }

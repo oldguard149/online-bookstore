@@ -30,10 +30,6 @@ FROM authors a
 ORDER BY bookcount DESC
 LIMIT 5;`
 
-//------------------------------------------ RECOVER PASSWORD ------------------------------------------
-
-
-
 
 module.exports = {
     startTransaction,

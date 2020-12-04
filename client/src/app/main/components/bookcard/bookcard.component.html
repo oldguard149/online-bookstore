@@ -1,0 +1,8 @@
+<mat-card class="bookcard" [routerLink]="['/book', isbn]">
+    <img mat-card-image [src]="image_url" loading="lazy">
+    <mat-card-content>
+        <mat-card-title matTooltip [titleTooltip]="name">{{name}}</mat-card-title> 
+        <p class="author" matTooltip [titleTooltip]="author">{{author}}</p>
+        <p>{{price | currency}}</p>
+    </mat-card-content>
+</mat-card>

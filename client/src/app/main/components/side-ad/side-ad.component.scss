@@ -1,0 +1,25 @@
+::ng-deep side-ad {
+    grid-area: side_ad;
+}
+
+.outside-container {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    border-left: 1px solid rgb(230, 239, 241);
+    align-items: center;
+}
+
+.booklist-container {
+    display: flex;
+    flex-direction: column;
+
+}
+
+// div {
+//     display: flex;
+//     flex-direction: column;
+//     padding: 1rem;
+//     border-left: 1px solid rgb(230, 239, 241);
+// }
+

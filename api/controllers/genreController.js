@@ -8,15 +8,13 @@ const Q = require('../database/query');
 
 exports.genreList = async (req, res) => {
     try {
-        const genrePerPage = 10;
-        const currentPage = parseInt(req.query.page) || 1
+        const genrePerPage = parseInt(req.query.pagesize) || 10;
+        const currentPage = parseInt(req.query.page) || 0;
         const offset = calculateOffsetForPagination(genrePerPage, currentPage);
         const count = await countData(Q.genre.genreCount);
         const genres = await query(Q.genre.genreList, [offset, genrePerPage]);
-        const totalPage = Math.ceil(count / genrePerPage);
-
-        const data = { genres, totalPage };
-        res.send(data);
+        const data = { genres, totalItem: count };
+        res.json(data);
     } catch (err) {
         handleError(res, 500, err)
     }
@@ -25,9 +23,9 @@ exports.genreList = async (req, res) => {
 exports.genreDetail = async (req, res) => {
     try {
         let books = [];
-        const currentPage = parseInt(req.query.page) || 1;
+        const currentPage = parseInt(req.query.page) || 0;
         const currentGenreId = parseInt(req.params.id);
-        const bookPerPage = 10;
+        const bookPerPage = parseInt(req.query.pagesize) || 30;
         const offset = calculateOffsetForPagination(bookPerPage, currentPage);
         const genre = await findOne(Q.genre.genreById, [currentGenreId]);
         if (isResultEmpty(genre)) {
@@ -38,9 +36,8 @@ exports.genreDetail = async (req, res) => {
             books = preprocessBookList(await query(Q.genre.bookListForGenreDetail,
                 [currentGenreId, offset, bookPerPage]));
         }
-        const totalPage = Math.ceil(count / bookPerPage);
         const data = {
-            genre, booklist: books, totalPage
+            genre, booklist: books, totalItems: count
         }
         res.send(data);
     } catch (error) {

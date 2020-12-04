@@ -1,8 +1,8 @@
 const { body, validationResult } = require('express-validator');
 
 const { findOne, query, countData, loadDataForSideNav, loadGenresAndPublishers } = require('../database/db_hepler');
-const { preprocessBookList, calculateOffsetForPagination, 
-    pagination, handleError, isResultEmpty, sendErrorResponseMessage, 
+const { preprocessBookList, calculateOffsetForPagination,
+    pagination, handleError, isResultEmpty, sendErrorResponseMessage,
     sendSuccessResponseMessage, getQueryParam, handleValidationError } = require('../shared/helper');
 const pool = require('../config/pool');
 const Q = require('../database/query');
@@ -20,24 +20,35 @@ exports.sidenav = async (req, res) => {
 exports.indexBookList = async (req, res) => {
     try {
         let books = [];
-        const bookPerPage = 10;
-        const currentPage = parseInt(req.query.page) || 1
+        const bookPerPage = parseInt(req.query.pagesize) || 30;
+        const currentPage = parseInt(req.query.page) || 0;
         const offset = calculateOffsetForPagination(bookPerPage, currentPage);
         const count = await countData(Q.book.bookCount);
         if (count > 0) {
             books = preprocessBookList(await query(Q.book.indexBookList, [offset, bookPerPage]));
         }
-        const totalPage = Math.ceil(count / bookPerPage);
-        const paginationList = pagination(currentPage, totalPage);
-        const data = {
-            "booklist": books, totalPage, paginationList
+        // convert authors from array to string
+        for (let i = 0; i < books.length; i++) {
+            books[i].Authors = books[i].Authors.map(author => author.fullname).join(', ');
         }
 
+        const data = {
+            "booklist": books, totalItem: count
+        }
         res.status(200).json(data);
     } catch (err) {
         handleError(res, 500, err);
     }
 }
+
+exports.sideAdBooklist = async (req, res) => {
+    try {
+        const booklist = await query(Q.book.sideAdBooklist, [0, 10]);
+        res.status(200).json({ booklist });
+    } catch (err) {
+        handleError(res, 500, err);
+    }
+};
 
 exports.bookDetail = async (req, res) => {
     try {
@@ -99,8 +110,8 @@ exports.book = async (req, res) => {
 
 exports.fetchGenresAndPublishers = async (req, res) => {
     try {
-        const {genres, publishers} = await Promise.resolve(loadGenresAndPublishers())
-        res.json({'success': true, genres, publishers});
+        const { genres, publishers } = await Promise.resolve(loadGenresAndPublishers())
+        res.json({ 'success': true, genres, publishers });
     } catch (error) {
         handleError(res, 500, error);
     }
@@ -167,7 +178,7 @@ exports.bookUpdate = [
 
     async (req, res) => {
         const formData = getInputDataOnCreateOrUpdate(req);
-        
+
         const connection = await pool.getConnection();
         const currentIsbn = req.params.isbn;
         const validationError = validationResult(req);

@@ -1,0 +1,10 @@
+<div class="outside-container">
+    <h2>You may want to see</h2>
+    <div class="booklist-container">
+        <side-ad-bookcard *ngFor="let book of sideAdBooklist"
+            [isbn]="book.isbn"
+            [name]="book.name"
+            [image_url]="book.image_url"
+        ></side-ad-bookcard>
+    </div>
+</div>

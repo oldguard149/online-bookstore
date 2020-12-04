@@ -1,0 +1,25 @@
+::ng-deep genre-list {
+    grid-area: main;
+    margin: 2rem;
+}
+
+.mat-table {
+    width: 100%;
+}
+
+.small-width {
+    max-width: 50px;
+}
+
+.medium-width {
+    max-width: 150px;
+}
+
+.align-center {
+    display: flex;
+    justify-content: center;
+}
+
+.link:hover {
+    cursor: pointer;
+}

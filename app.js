@@ -2,7 +2,7 @@ const createError = require('http-errors');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-
+require('dotenv').config();
 const app = express();
 
 const mainRouter = require('./api/routes/mainRoutes');
@@ -21,7 +21,6 @@ app.use('/', (req, res, next) => {
   next();
 });
 app.use('/api', mainRouter);
-
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
