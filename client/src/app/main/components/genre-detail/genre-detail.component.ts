@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SubSink } from 'subsink';
 import { DataService } from '../../services/data.service';
+import { scrollToTop } from '../../../shared/functions/scrollToTop';
 
 @Component({
   selector: 'app-genre-detail',
@@ -46,6 +47,7 @@ export class GenreDetailComponent implements OnInit {
             this.genre = data.genre;
             this.totalItems = data.totalItems;
           });
+        scrollToTop();
       });
     });
   }

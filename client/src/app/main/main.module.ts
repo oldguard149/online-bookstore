@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { MainRoutingModule } from './main-routing.module';
 import { IndexPageComponent } from './components/index-page/index-page.component';
-import { TopnavComponent } from './components/topnav/topnav.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { MaterialModule } from '../material.module';
 import { BookcardComponent } from './components/bookcard/bookcard.component';
@@ -20,12 +19,12 @@ import { PublisherDetailComponent } from './components/publisher-detail/publishe
 import { AuthorDetailComponent } from './components/author-detail/author-detail.component';
 import { PaginatorComponent } from './components/paginator/paginator.component';
 import { BooklistComponent } from './components/booklist/booklist.component';
+import { SharedComponentsModule } from '../shared-components/shared-components.module';
 
 
 @NgModule({
   declarations: [
     IndexPageComponent, 
-    TopnavComponent, 
     SidenavComponent,
     BookcardComponent, 
     IndexBooklistComponent, 
@@ -44,7 +43,8 @@ import { BooklistComponent } from './components/booklist/booklist.component';
   imports: [
     CommonModule,
     MainRoutingModule,
-    MaterialModule
+    MaterialModule,
+    SharedComponentsModule
   ],
   providers: [
     DataService

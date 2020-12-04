@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable} from 'rxjs';
 import { map } from 'rxjs/operators';
-import { apiurl } from '../api-url';
+import { apiurl } from '../../shared/api-url';
 
 interface TokenPayload {
   email: string;

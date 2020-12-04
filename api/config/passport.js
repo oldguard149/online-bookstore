@@ -11,8 +11,8 @@ passport.use(new LocalStrategy({
 },
   async function (username, password, done) {
     try {
-      const userIsEmployee = await findOne(Q.user.UserInEmployee, [username]);
-      const userIsCustomer = await findOne(Q.user.UserInCustomer, [username]);
+      const userIsEmployee = await findOne(Q.user.userInEmployee, [username]);
+      const userIsCustomer = await findOne(Q.user.userInCustomer, [username]);
 
       if (!isResultEmpty(userIsEmployee)) {
         const match = await bcrypt.compare(password, userIsEmployee.hash_password);

@@ -4,7 +4,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 require('dotenv').config();
 const app = express();
-
+require('./api/config/passport');
 const mainRouter = require('./api/routes/mainRoutes');
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'));

@@ -1,0 +1,19 @@
+.error-alert {  
+    background-color: rgb(245, 155, 155);
+    mat-list-item {
+        color: rgb(139, 33, 33);
+    }
+}
+
+.success-alert {
+    background-color: #c3e6cb;
+    
+    mat-list-item {
+        color: #155724;
+    }
+}
+
+mat-list {
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+}

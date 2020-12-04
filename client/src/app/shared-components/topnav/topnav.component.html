@@ -3,14 +3,11 @@
         <a mat-button routerLink="/">Trang chủ</a>
         <!-- <span class="menu-spacer"></span> -->
         <div>
-            <a mat-button routerLink="/bookcard">Giỏ hàng</a>
-            <a mat-button routerLink="/management" class="manager">Quản lý</a>
-            <a mat-button routerLink="/login">Đăng nhập</a>
-
-            <!-- <a mat-button *ngIf="isCustomer()"routerLink="/cart">Giỏ hàng</a>
+            <a mat-button *ngIf="isCustomer()" routerLink="/cart">Giỏ hàng</a>
             <a mat-button *ngIf="canDoManagement()" routerLink="/management" class="manager">Quản lý</a>
             <a mat-button *ngIf="!isLoggedIn()" routerLink="/login">Đăng nhập</a>
-            <a mat-button *ngIf="isLoggedIn()" (click)="logout()">Đăng xuất</a> -->
+            <a mat-button *ngIf="isLoggedIn()" >Đăng xuất</a> 
+            <!-- (click)="logout()" -->
         </div>
     </mat-toolbar-row>
 </mat-toolbar>

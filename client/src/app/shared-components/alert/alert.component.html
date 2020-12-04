@@ -1,0 +1,12 @@
+<mat-list class="error-alert" *ngIf="errorMsg && errorMsg.length !== 0">
+    <mat-list-item *ngFor="let msg of errorMsg; let i=index;" 
+        (click)="deleteErrorMessage(i)">
+        {{msg}}
+    </mat-list-item>
+</mat-list>
+<mat-list class="success-alert" *ngIf="successMsg && successMsg.length !== 0">
+    <mat-list-item *ngFor="let msg of successMsg; let i=index;"
+        (click)="deleteSuccessMessage(i)">
+        {{msg}}
+    </mat-list-item>
+</mat-list>
