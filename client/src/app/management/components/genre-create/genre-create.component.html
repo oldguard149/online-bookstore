@@ -1,1 +1,3 @@
-<p>genre-create works!</p>
+<h2>Thêm thể loại</h2>
+<alert [successMsg]="successMsg" [errorMsg]="errorMsg"></alert>
+<genre-form  [type]="'create'" (sendMessage)="getMessage($event)" ></genre-form>

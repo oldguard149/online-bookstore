@@ -78,18 +78,18 @@ exports.bookDelete = async (req, res) => {
 
 exports.bookSearch = async (req, res) => {
     try {
-        const searchText = req.query.text;
-        const bookPerPage = parseInt(getQueryParam(req, 'display', 15));
-        const currentPage = parseInt(getQueryParam(req, 'page', 1));
+        const rawSearchText = req.query.search;
+        const bookPerPage = parseInt(getQueryParam(req, 'pageSize', 10));
+        const currentPage = parseInt(getQueryParam(req, 'page', 0));
         const offset = calculateOffsetForPagination(bookPerPage, currentPage);
-        if (undefined === searchText) {
+        if (undefined === rawSearchText) {
             return sendErrorResponseMessage(res, ['Vui lòng điền vào từ khóa để tìm kiếm.']);
         }
 
+        const searchText = rawSearchText.replace(/\+/gi, ' ');
         const count = await countData(Q.book.bookSearchCount, [searchText, searchText]);
         const books = await query(Q.book.bookSearch, [searchText, searchText, offset, bookPerPage]);
-        const totalPage = Math.ceil(count / bookPerPage);
-        res.json({ success: true, books, totalPage });
+        res.json({ success: true, books, totalItems: count });
     } catch (err) {
         handleError(res, 500, err);
     }

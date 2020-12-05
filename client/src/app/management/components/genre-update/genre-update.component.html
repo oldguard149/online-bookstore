@@ -1,1 +1,3 @@
-<p>genre-update works!</p>
+<h2>Cập nhật thể loại</h2>
+<alert [errorMsg]="errorMsg"></alert>
+<genre-form *ngIf="genre" [type]="'update'" (sendMessage)="getMessage($event)" [genre]="genre"></genre-form>

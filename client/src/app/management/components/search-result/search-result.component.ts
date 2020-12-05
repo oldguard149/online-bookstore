@@ -7,10 +7,7 @@ import { scrollToTop } from 'src/app/shared/functions/scrollToTop';
 @Component({
   selector: 'search-result',
   templateUrl: './search-result.component.html',
-  styleUrls: ['./search-result.component.scss'],
-  host: {
-    class: 'management-main'
-  }
+  styleUrls: ['./search-result.component.scss']
 })
 export class SearchResultComponent implements OnInit {
   displayedColumns: string[] = ['index', 'name', 'option'];

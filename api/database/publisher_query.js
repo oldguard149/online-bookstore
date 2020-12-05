@@ -30,6 +30,6 @@ exports.updatePublisher = `UPDATE publishers SET name=?, email=?, address=? WHER
 
 exports.deletePublisher = `DELETE FROM publishers WHERE publisher_id = ?;`;
 
-exports.publisherSearch = `SELECT publisher_id, name FROM publishers WHERE name LIKE CONCAT('%', ?, '%');`;
+exports.publisherSearch = `SELECT publisher_id, name FROM publishers WHERE name LIKE CONCAT('%', ?, '%') LIMIT ?, ?;`;
 
 exports.publisherSearchCount = `SELECT COUNT(*) as count FROM publishers WHERE name LIKE CONCAT('%', ?, '%');`;

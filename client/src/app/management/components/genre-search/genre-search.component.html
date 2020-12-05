@@ -1,5 +1,11 @@
 <h2>Genre Search</h2>
-<management-search-form (sendSearchData)="getSearchData($event)"></management-search-form>
+<management-search
+    [idKey]="'genre_id'"
+    [nameKey]="'name'"
+    [objectType]="'genre'" 
+></management-search>
+
+<!-- <management-search-form (sendSearchData)="getSearchData($event)"></management-search-form>
 <search-result *ngIf="searchData" 
     [data]="searchData" 
     [idKey]="'genre_id'" 
@@ -8,4 +14,4 @@
     [totalItems]="totalItems"
     [pageIndex]="pageIndex"
     [pageSize]="pageSize"
-></search-result>
+></search-result> -->

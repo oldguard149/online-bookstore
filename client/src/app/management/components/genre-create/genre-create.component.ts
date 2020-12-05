@@ -6,10 +6,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./genre-create.component.scss']
 })
 export class GenreCreateComponent implements OnInit {
-
+  errorMsg: string[];
+  successMsg: string[];
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  getMessage(msgObject: any) {
+    const {type, message} = msgObject;
+    if (type === 'fail') {
+      this.errorMsg = message;
+    } else {
+      this.successMsg = message;
+    }
   }
 
 }

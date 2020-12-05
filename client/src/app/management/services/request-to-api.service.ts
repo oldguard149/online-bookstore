@@ -9,32 +9,33 @@ export class RequestToApiService {
 
   constructor(
     private http: HttpClient
-    
+
   ) { }
 
-  get(urlPath: string, options = {}): Observable<any> {
+  private get(urlPath: string, options = {}): Observable<any> {
     const url = `${apiurl}/management/${urlPath}`;
     return this.http.get(url, options);
   }
 
   /** Create new data */
-  post(urlPath: string, body): Observable<any>  {
+  private post(urlPath: string, body): Observable<any> {
     const url = `${apiurl}/management/${urlPath}`;
     return this.http.post(url, body);
   }
 
   /** Update. Ex: url='genre/4' */
-  put(urlPathContainId: string, body): Observable<any>  {
+  private put(urlPathContainId: string, body): Observable<any> {
     const url = `${apiurl}/management/${urlPathContainId}`;
     return this.http.put(url, body);
   }
 
-  delete(urlPathContainId: string): Observable<any>  {
+  private delete(urlPathContainId: string): Observable<any> {
     const url = `${apiurl}/management/${urlPathContainId}`;
     return this.http.delete(url);
   }
 
-  search(type: 'genre'|'author'|'publisher', search: string, page: string, pageSize: string): Observable<any> {
+  search(type: 'genre' | 'author' | 'publisher' | 'book',
+    search: string, page: string, pageSize: string): Observable<any> {
     const url = `search/${type}`;
     const options = {
       params: new HttpParams()
@@ -44,4 +45,6 @@ export class RequestToApiService {
     };
     return this.get(url, options);
   }
+
+  create
 }

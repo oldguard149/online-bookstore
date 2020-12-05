@@ -58,18 +58,18 @@ exports.authorDetail = async (req, res) => {
 
 exports.authorSearch = async (req, res) => {
     try {
-        const searchText = req.query.text;
-        const authorPerPage = parseInt(getQueryParam(req, 'display', 15));
-        const currentPage = parseInt(getQueryParam(req, 'page', 1));
+        const rawSearchText = req.query.search;
+        const authorPerPage = parseInt(getQueryParam(req, 'pageSize', 15));
+        const currentPage = parseInt(getQueryParam(req, 'page', 0));
         const offset = calculateOffsetForPagination(authorPerPage, currentPage);
-        if (undefined === searchText) {
+        if (undefined === rawSearchText) {
             return sendErrorResponseMessage(res, ['Vui lòng điền vào từ khóa để tìm kiếm.']);
         }
 
+        const searchText = rawSearchText.replace(/\+/gi, ' ');
         const count = await countData(Q.author.authorSearchCount, [searchText]);
         const authors = await query(Q.author.authorSearch, [searchText, offset, authorPerPage]);
-        const totalPage = Math.ceil(count / authorPerPage);
-        res.json({ success: true, authors, totalPage });
+        res.json({ success: true, authors, totalItems: count });
     } catch (err) {
         handleError(res, 500, err);
     }

@@ -1,5 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MaterialModule } from '../material.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedComponentsModule } from '../shared-components/shared-components.module';
+
+import { RequestToApiService } from './services/request-to-api.service';
 
 import { ManagementRoutingModule } from './management-routing.module';
 import { ManagementIndexComponent } from './components/management-index/management-index.component';
@@ -11,10 +16,16 @@ import { GenreCreateComponent } from './components/genre-create/genre-create.com
 import { GenreUpdateComponent } from './components/genre-update/genre-update.component';
 import { GenreDeleteComponent } from './components/genre-delete/genre-delete.component';
 import { GenreSearchComponent } from './components/genre-search/genre-search.component';
-import { RequestToApiService } from './services/request-to-api.service';
-import { MaterialModule } from '../material.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SharedComponentsModule } from '../shared-components/shared-components.module';
+import { BookCreateComponent } from './components/book-create/book-create.component';
+import { BookUpdateComponent } from './components/book-update/book-update.component';
+import { BookDeleteComponent } from './components/book-delete/book-delete.component';
+import { BookFormComponent } from './components/book-form/book-form.component';
+import { BookSearchComponent } from './components/book-search/book-search.component';
+import { SearchComponent } from './components/search/search.component';
+import { ManagementService } from './services/management.service';
+import { PublisherSearchComponent } from './components/publisher-search/publisher-search.component';
+import { AuthorSearchComponent } from './components/author-search/author-search.component';
+
 
 
 @NgModule({
@@ -27,7 +38,15 @@ import { SharedComponentsModule } from '../shared-components/shared-components.m
     GenreCreateComponent,
     GenreUpdateComponent,
     GenreDeleteComponent,
-    GenreSearchComponent
+    GenreSearchComponent,
+    BookCreateComponent,
+    BookUpdateComponent,
+    BookDeleteComponent,
+    BookFormComponent,
+    BookSearchComponent,
+    SearchComponent,
+    PublisherSearchComponent,
+    AuthorSearchComponent,
   ],
   imports: [
     CommonModule,
@@ -38,7 +57,8 @@ import { SharedComponentsModule } from '../shared-components/shared-components.m
     SharedComponentsModule
   ],
   providers: [
-    RequestToApiService
+    RequestToApiService,
+    ManagementService
   ]
 })
 export class ManagementModule { }

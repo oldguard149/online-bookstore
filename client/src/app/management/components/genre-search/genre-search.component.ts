@@ -9,22 +9,8 @@ import { Component, OnInit } from '@angular/core';
   }
 })
 export class GenreSearchComponent implements OnInit {
-  searchData: any;
-  totalItems: number;
-  pageIndex: number;
-  pageSize: number;
   constructor() { }
 
   ngOnInit(): void {
   }
-
-  getSearchData(data: any) {
-    console.log('here');
-
-    this.searchData = data['data'];
-    this.totalItems = data['totalItems'];
-    this.pageIndex = data['pageIndex'];
-    this.pageSize = data['pageSize']
-  }
-
 }

@@ -1,1 +1,8 @@
-<p>genre-form works!</p>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-card>
+        <mat-form-field>
+            <input matInput placeholder="Genre name" fromControlName="name">
+        </mat-form-field>
+        <button mat-raised-button type="submit">{{displayButton}}</button>
+    </mat-card>
+</form>

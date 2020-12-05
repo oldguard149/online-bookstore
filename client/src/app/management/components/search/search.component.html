@@ -1,0 +1,10 @@
+<management-search-form [objectType]="objectType" (sendSearchData)="getSearchData($event)"></management-search-form>
+<search-result *ngIf="searchData" 
+    [data]="searchData" 
+    [idKey]="idKey" 
+    [nameKey]="nameKey"
+    [urlPath]="urlPath"
+    [totalItems]="totalItems"
+    [pageIndex]="pageIndex"
+    [pageSize]="pageSize"
+></search-result>

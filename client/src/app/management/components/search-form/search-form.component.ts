@@ -17,7 +17,8 @@ export class SearchFormComponent implements OnInit {
   totalItems: number;
   currentPage: number;
   pageSize: number;
-  @Input() searchObject: 'genre' | 'publisher' | 'author';
+  dataKey: string;
+  @Input() objectType: 'genre' | 'publisher' | 'author' | 'book';
   @Output() sendSearchData: EventEmitter<any> = new EventEmitter();
 
   constructor(
@@ -28,6 +29,7 @@ export class SearchFormComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.dataKey = `${this.objectType}s`;
     this.form = this.fb.group({
       searchText: ['', Validators.required],
       pageSize: [10, Validators.required]
@@ -42,7 +44,7 @@ export class SearchFormComponent implements OnInit {
   onSubmit() {
     this.router.navigate([], {
       queryParams: {
-        'search': this.formSearchText.value,
+        'search': this.formSearchText.value.replace(/ /gi, '+'),
         'pageSize': this.formPageSize.value,
         'page': 0
       },
@@ -51,7 +53,7 @@ export class SearchFormComponent implements OnInit {
   }
 
   fetchSearchResult() {
-    this.subs.sink = this.route.queryParams.subscribe(params => {
+    this.subs.sink = this.route.queryParams.subscribe(params => {      
       const rawSearchText = params['search'];
       const currentPage = params['page'];
       const pageSize = params['pageSize']
@@ -60,14 +62,15 @@ export class SearchFormComponent implements OnInit {
         !isNaN(currentPage) ? this.currentPage = parseInt(currentPage) : this.currentPage = 0;
 
         if (this.form !== undefined) {
-          this.formSearchText.setValue(rawSearchText);
+          this.formSearchText.setValue(rawSearchText.replace(/\+/gi, ' '));
           this.formPageSize.setValue(this.pageSize);
         }
         const searchText = rawSearchText.replace(/ /gi, '+');
-        this.subs.sink = this.requestToApi.search('genre', searchText, currentPage, pageSize)
+
+        this.subs.sink = this.requestToApi.search(this.objectType, searchText, currentPage, pageSize)
           .subscribe(data => {
             if (data.success) {
-              this.triggerSendData(data.genres, this.currentPage, data.totalItems, this.pageSize);
+              this.triggerSendData(data[this.dataKey], this.currentPage, data.totalItems, this.pageSize);
             } else {
               this.errorMsg = data.message;
             }
