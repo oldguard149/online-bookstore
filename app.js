@@ -5,9 +5,9 @@ const logger = require('morgan');
 require('dotenv').config();
 const app = express();
 require('./api/config/passport');
+
 const mainRouter = require('./api/routes/mainRoutes');
-// view engine setup
-// app.set('views', path.join(__dirname, 'views'));
+const managementRouter = require('./api/routes/managementRoutes');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -21,6 +21,7 @@ app.use('/', (req, res, next) => {
   next();
 });
 app.use('/api', mainRouter);
+app.use('/api/management', managementRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

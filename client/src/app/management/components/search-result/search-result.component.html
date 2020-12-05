@@ -1,1 +1,36 @@
-<p>search-result works!</p>
+<div>
+    <mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="index">
+            <mat-header-cell class="small-width" *matHeaderCellDef> No. </mat-header-cell>
+            <mat-cell class="small-width" *matCellDef="let element; let i=index">
+                {{i + 1}} </mat-cell>
+        </ng-container>
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+            <mat-cell class="link" *matCellDef="let element">
+                {{element[nameKey]}} </mat-cell>
+        </ng-container>
+
+        <!-- Option Column  -->
+        <ng-container matColumnDef="option">
+            <mat-header-cell class="medium-width align-center" *matHeaderCellDef> Option </mat-header-cell>
+            <mat-cell class="medium-width align-button" *matCellDef="let element">
+                <a [routerLink]="['/', urlPath, 'update', element[idKey]]" mat-flat-button color="primary">Update</a>
+                <a [routerLink]="['/', urlPath, 'delete', element[idKey]]" mat-flat-button color="warn">Delete</a>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+</div>
+<div class="pagination">
+    <mat-paginator
+        [length]="totalItems" 
+        [pageSize]="pageSize" 
+        [pageSizeOptions]="[10,20,30,50]" 
+        [pageIndex]="pageIndex"
+        (page)="handlePageChange($event)"
+    ></mat-paginator>
+</div>

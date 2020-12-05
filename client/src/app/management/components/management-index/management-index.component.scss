@@ -1,0 +1,32 @@
+#management-wrapper {
+    display: grid;
+    grid-template-areas:
+        "topnav topnav"
+        "sidenav main";
+    grid-template-rows: max-content auto;
+    grid-template-columns: 300px auto;
+}
+
+::ng-deep .management-main {
+    grid-area: main;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    margin-bottom: 2rem;
+}
+
+.mat-sidenav {
+    width: 300px;
+    position: fixed;
+    top: 62px;
+}
+
+#sidenav {
+    grid-area: sidenav;
+}
+
+#main {
+    grid-area: main;
+    min-height: calc(100vh - 62px);
+}

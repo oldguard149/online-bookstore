@@ -11,13 +11,34 @@ import { GenreCreateComponent } from './components/genre-create/genre-create.com
 import { GenreUpdateComponent } from './components/genre-update/genre-update.component';
 import { GenreDeleteComponent } from './components/genre-delete/genre-delete.component';
 import { GenreSearchComponent } from './components/genre-search/genre-search.component';
+import { RequestToApiService } from './services/request-to-api.service';
+import { MaterialModule } from '../material.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedComponentsModule } from '../shared-components/shared-components.module';
 
 
 @NgModule({
-  declarations: [ManagementIndexComponent, ManagementSidenavComponent, SearchResultComponent, SearchFormComponent, GenreFormComponent, GenreCreateComponent, GenreUpdateComponent, GenreDeleteComponent, GenreSearchComponent],
+  declarations: [
+    ManagementIndexComponent,
+    ManagementSidenavComponent,
+    SearchResultComponent,
+    SearchFormComponent,
+    GenreFormComponent,
+    GenreCreateComponent,
+    GenreUpdateComponent,
+    GenreDeleteComponent,
+    GenreSearchComponent
+  ],
   imports: [
     CommonModule,
-    ManagementRoutingModule
+    ManagementRoutingModule,
+    MaterialModule,
+    ReactiveFormsModule,
+    FormsModule,
+    SharedComponentsModule
+  ],
+  providers: [
+    RequestToApiService
   ]
 })
 export class ManagementModule { }

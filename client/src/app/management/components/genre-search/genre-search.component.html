@@ -1,1 +1,11 @@
-<p>genre-search works!</p>
+<h2>Genre Search</h2>
+<management-search-form (sendSearchData)="getSearchData($event)"></management-search-form>
+<search-result *ngIf="searchData" 
+    [data]="searchData" 
+    [idKey]="'genre_id'" 
+    [nameKey]="'name'"
+    [urlPath]="'genre'"
+    [totalItems]="totalItems"
+    [pageIndex]="pageIndex"
+    [pageSize]="pageSize"
+></search-result>

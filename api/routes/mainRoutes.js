@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const genre = require('../controllers/genreController');
-const publisher = require('../controllers/publisherControllers');
+const publisher = require('../controllers/publisherController');
 const author = require('../controllers/authorController');
 const book = require('../controllers/bookController');
 const auth = require('../controllers/authenticationController');

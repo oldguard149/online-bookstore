@@ -1,1 +1,17 @@
-<p>search-form works!</p>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-card>
+        <mat-form-field id="input-text">
+            <mat-label>Search Text:</mat-label>
+            <input matInput type="text" formControlName="searchText">
+            <mat-error *ngIf="formSearchText.errors?.required">Please fill in search text to continue</mat-error>
+        </mat-form-field>
+        <div class="option">
+            <span>Number of results to display:</span>
+            <mat-select formControlName="pageSize" appearance="fill">
+                <mat-option *ngFor="let number of [10,20,30,50];" [value]="number">{{number}}</mat-option>
+            </mat-select>
+        </div>
+        <button [disabled]="!form.valid" mat-raised-button type="submit">Search</button>
+    </mat-card>
+</form>
+

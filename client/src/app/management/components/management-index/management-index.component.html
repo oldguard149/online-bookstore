@@ -1,1 +1,12 @@
-<p>management-index works!</p>
+<div id="management-wrapper">
+    <topnav id="management-topnav"></topnav>
+    <mat-sidenav-container [hasBackdrop]="false">
+        <mat-sidenav #sidenav [opened]="true" [disableClose]="true">
+            <management-sidenav></management-sidenav>
+        </mat-sidenav>
+        <mat-sidenav-content>
+            
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+    <router-outlet></router-outlet>
+</div>

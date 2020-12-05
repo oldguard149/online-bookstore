@@ -1,1 +1,48 @@
-<p>management-sidenav works!</p>
+<mat-expansion-panel class="sidenav_item">
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            Genre
+        </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-nav-list>
+        <a mat-list-item [routerLink]="['/management/create/genre']">Create Genre</a>
+        <a mat-list-item [routerLink]="['/management/search/genre']">create</a>
+    </mat-nav-list>
+</mat-expansion-panel>
+
+<mat-expansion-panel class="sidenav_item">
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            Publisher
+        </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-divider></mat-divider>
+    <mat-nav-list>
+        <a mat-list-item [routerLink]="['/management/create/publisher']">create</a>
+        <a mat-list-item [routerLink]="['/management/search/publisher']">create</a>
+    </mat-nav-list>
+</mat-expansion-panel>
+
+<mat-expansion-panel class="sidenav_item">
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            Book
+        </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-divider></mat-divider>
+    <mat-nav-list>
+        <a mat-list-item [routerLink]="['/management/create/book']">create</a>
+        <a mat-list-item [routerLink]="['/management/search/book']">create</a>
+    </mat-nav-list>
+</mat-expansion-panel>
+
+<mat-expansion-panel class="sidenav_item">
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            Author
+        </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-nav-list>
+        <a mat-list-item [routerLink]="['/management/search/author']">create</a>
+    </mat-nav-list>
+</mat-expansion-panel>

@@ -10,7 +10,7 @@
         <ng-container matColumnDef="fullname">
           <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
           <mat-cell class="link" *matCellDef="let element" 
-            [routerLink]="['/genre', element.genre_id]"> {{element.fullname}} </mat-cell>
+            [routerLink]="['/author', element.author_id]"> {{element.fullname}} </mat-cell>
         </ng-container>
       
         <!-- Bookcount Column -->

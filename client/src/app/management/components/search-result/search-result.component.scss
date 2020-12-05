@@ -1,0 +1,24 @@
+.medium-width {
+    max-width: 200px;
+}
+
+.small-width {
+    max-width: 50px;
+}
+
+.align-center {
+    display: flex;
+    justify-content: center;
+}
+
+.align-button {
+    display: flex;
+    justify-content: space-around;
+}
+
+.pagination {
+    display: flex;
+    justify-content: flex-end;
+    width: 90%;
+    margin: auto;
+}

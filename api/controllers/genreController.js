@@ -77,18 +77,17 @@ exports.genreCreate = [
 
 exports.genreSearch = async (req, res) => {
     try {
-        const genrePerPage = parseInt(getQueryParam(req, 'display', 15)); // number of result per page
-        const searchText = req.query.text;
-        const currentPage = parseInt(getQueryParam(req, 'page', 1));
+        const genrePerPage = parseInt(getQueryParam(req, 'pageSize', 15)); // number of result per page
+        const rawSearchText = req.query.search;
+        const currentPage = parseInt(getQueryParam(req, 'page', 0));
         const offset = calculateOffsetForPagination(genrePerPage, currentPage);
-        if (undefined === searchText) {
+        if (undefined === rawSearchText) {
             return sendErrorResponseMessage(res, ['Vui lòng điền vào từ khóa để tìm kiếm.']);
         }
-
+        const searchText = String(rawSearchText).replace(/\+/gi, ' ');
         const count = await countData(Q.genre.genreSearchCount, [searchText]);
         const genres = await query(Q.genre.genreSearch, [searchText, offset, genrePerPage]);
-        const totalPage = Math.ceil(count / genrePerPage);
-        res.json({success: true, totalPage, genres});
+        res.json({success: true, totalItems: count, genres});
     } catch (err) {
         handleError(res, 500, err);
     }
