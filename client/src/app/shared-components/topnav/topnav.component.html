@@ -6,6 +6,7 @@
             <a mat-button *ngIf="isCustomer()" routerLink="/cart">Giỏ hàng</a>
             <a mat-button *ngIf="canDoManagement()" routerLink="/management" class="manager">Quản lý</a>
             <a mat-button *ngIf="!isLoggedIn()" routerLink="/login">Đăng nhập</a>
+            <a mat-button routerLink="/sign-up">Sign up</a>
             <a mat-button *ngIf="isLoggedIn()" >Đăng xuất</a> 
             <!-- (click)="logout()" -->
         </div>

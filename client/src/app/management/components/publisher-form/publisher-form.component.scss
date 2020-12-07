@@ -1,0 +1,13 @@
+::ng-deep .m-form {
+    width: 60%;
+}
+
+mat-card {
+    display: flex;
+    flex-direction: column;
+
+    & > * {
+        margin-bottom: 1rem;
+        padding: 0 1rem;
+    }
+}

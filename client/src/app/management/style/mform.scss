@@ -1,0 +1,19 @@
+::ng-deep .m-form {
+    width: 60%;
+}
+
+mat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    & > * {
+        width: 90%;
+        margin-bottom: 1rem;
+        // padding: 0 1rem;
+    }
+
+    & > button {
+        width: fit-content;
+    }
+}

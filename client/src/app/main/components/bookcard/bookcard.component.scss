@@ -1,38 +1,3 @@
-// .bookcard {
-//     width: 280px;
-//     padding: 0.5rem;
-// }
-
-// .bookcard:hover {
-//     box-shadow: 5px 5px 40px 10px rgba(13, 12, 12, 0.22);
-//     cursor: pointer;
-// }
-// .mat-card-image {
-//     width: 200px;
-//     height: 350px;
-//     margin: auto !important;
-//     display: flex;
-//     padding-bottom: 1rem;
-// }
-
-// .mat-card-title {
-//     display: -webkit-box;
-//     height: 40px;
-//     text-overflow: ellipsis;
-//     overflow: hidden;
-//     -webkit-line-clamp: 2;
-//     -webkit-box-orient: vertical;
-// }
-
-// .author {
-//     display: -webkit-box;
-//     height: 20px;
-//     text-overflow: ellipsis;
-//     overflow: hidden;
-//     -webkit-line-clamp: 1;
-//     -webkit-box-orient: vertical;
-// }
-
 .bookcard {
     width: 250px;
     padding: 0.5rem;
@@ -48,6 +13,7 @@
     margin: auto !important;
     display: flex;
     padding-bottom: 1rem;
+    border-radius: 0;
 }
 
 .mat-card-title {

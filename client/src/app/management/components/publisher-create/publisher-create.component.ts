@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-genre-create',
-  templateUrl: './genre-create.component.html',
-  styleUrls: ['../../style/createupdate.scss'],
+  selector: 'app-publisher-create',
+  templateUrl: './publisher-create.component.html',
+  styleUrls: ['../../style/createupdate.scss'], //'./publisher-create.component.scss',
   host: {
     class: 'management-main'
   }
 })
-export class GenreCreateComponent implements OnInit {
+export class PublisherCreateComponent implements OnInit {
   errorMsg: string[];
   successMsg: string[];
   constructor() { }

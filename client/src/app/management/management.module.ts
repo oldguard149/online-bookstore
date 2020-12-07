@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedComponentsModule } from '../shared-components/shared-components.module';
 
 import { RequestToApiService } from './services/request-to-api.service';
+import { ManagementService } from './services/management.service';
 
 import { ManagementRoutingModule } from './management-routing.module';
 import { ManagementIndexComponent } from './components/management-index/management-index.component';
@@ -22,9 +23,14 @@ import { BookDeleteComponent } from './components/book-delete/book-delete.compon
 import { BookFormComponent } from './components/book-form/book-form.component';
 import { BookSearchComponent } from './components/book-search/book-search.component';
 import { SearchComponent } from './components/search/search.component';
-import { ManagementService } from './services/management.service';
 import { PublisherSearchComponent } from './components/publisher-search/publisher-search.component';
 import { AuthorSearchComponent } from './components/author-search/author-search.component';
+import { AuthorUpdateComponent } from './components/author-update/author-update.component';
+import { AuthorDeleteComponent } from './components/author-delete/author-delete.component';
+import { PublisherFormComponent } from './components/publisher-form/publisher-form.component';
+import { PublisherCreateComponent } from './components/publisher-create/publisher-create.component';
+import { PublisherUpdateComponent } from './components/publisher-update/publisher-update.component';
+import { PublisherDeleteComponent } from './components/publisher-delete/publisher-delete.component';
 
 
 
@@ -47,6 +53,12 @@ import { AuthorSearchComponent } from './components/author-search/author-search.
     SearchComponent,
     PublisherSearchComponent,
     AuthorSearchComponent,
+    AuthorUpdateComponent,
+    AuthorDeleteComponent,
+    PublisherFormComponent,
+    PublisherCreateComponent,
+    PublisherUpdateComponent,
+    PublisherDeleteComponent,
   ],
   imports: [
     CommonModule,

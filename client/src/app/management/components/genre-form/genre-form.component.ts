@@ -9,7 +9,10 @@ import { SubSink } from 'subsink';
 @Component({
   selector: 'genre-form',
   templateUrl: './genre-form.component.html',
-  styleUrls: ['./genre-form.component.scss']
+  styleUrls: [ '../../style/mform.scss'],
+  host: {
+    class: 'm-form'
+  }
 })
 export class GenreFormComponent implements OnInit {
   @Input() type: 'update' | 'create';
@@ -89,6 +92,10 @@ export class GenreFormComponent implements OnInit {
 
   triggerSendMessageEvent(type: 'success' | 'fail', message: string[]) {
     this.sendMessage.emit({ type: type, message: message });
+  }
+
+  get name() {
+    return this.form.get('name');
   }
 
 }

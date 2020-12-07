@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { scrollToTop } from 'src/app/shared/functions/scrollToTop';
 
 @Component({
   selector: 'bookcard',
@@ -15,6 +16,10 @@ export class BookcardComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  scrollTop() {
+    scrollToTop();
   }
 
 }

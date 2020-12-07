@@ -1,8 +1,8 @@
-<h2>{{author.fullname}}</h2>
+<h2>{{author?.fullname}}</h2>
 <div class="detail-info">
     <p>Thông tin: {{author.info}}</p>
 </div>
-<h2 *ngIf="booklist.length === 0" class="no-book">
+<h2 *ngIf="booklist?.length === 0" class="no-book">
     Hiện chưa có sách thuộc tác giả này
 </h2>
 <booklist

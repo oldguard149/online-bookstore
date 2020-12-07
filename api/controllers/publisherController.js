@@ -24,17 +24,21 @@ exports.publisherDetail = async (req, res) => {
         let booklist = [];
         const bookPerPage = parseInt(req.query.pagesize) || 30;
         const currentPage = parseInt(req.query.page) || 0;
-        const currentPublisherId = parseInt(req.params.id);
+        const publisherId = parseInt(req.params.id);
         const offset = calculateOffsetForPagination(bookPerPage, currentPage);
-
-        const publisher = await findOne(Q.publisher.publisherById, [currentPublisherId]);
-        const count = await countData(Q.publisher.bookCountForPublisherDetail, [currentPublisherId]);
+        if (Number.isNaN(publisherId)) {
+            return handleError(res, 400, 'Publisher id is invalid', 'Bad request');
+            // return sendErrorResponseMessage(res, ['Publisher id is invalid'])
+        }
+        const publisher = await findOne(Q.publisher.publisherById, [publisherId]);
+        if (isResultEmpty(publisher)) {
+            return sendErrorResponseMessage(res, ['Publisher not found']);
+        }
+        const count = await countData(Q.publisher.bookCountForPublisherDetail, [publisherId]);
         if (count > 0) {
             booklist = preprocessBookList(await query(Q.publisher.bookListForPublisherDetail,
-                [currentPublisherId, offset, bookPerPage]));
+                [publisherId, offset, bookPerPage]));
         }
-        const totalPage = Math.ceil(count / bookPerPage);
-
 
         const data = { publisher, booklist, totalItems: count };
         res.status(200).json(data);
@@ -67,7 +71,7 @@ exports.publisherCreate = [
             }
 
             await query(Q.publisher.createPublisher, [publisher.name, publisher.email, publisher.address]);
-            sendSuccessResponseMessage(res, ['Thêm nhà xuất bản mới thành công.']);
+            sendSuccessResponseMessage(res, [`Thêm nhà xuất bản mới thành công.`]);
         } catch (err) {
             handleError(res, 500, err);
         }
@@ -96,6 +100,10 @@ exports.publisherSearch = async (req, res) => {
 exports.publisher = async (req, res) => {
     try {
         const publisherId = parseInt(req.params.id);
+        if (Number.isNaN(publisherId)) {
+            return handleError(res, 400, 'Publisher id is invalid', 'Bad request');
+            // return sendErrorResponseMessage(res, ['Publisher id is invalid'])
+        }
         const publisher = await findOne(Q.publisher.publisherById, [publisherId]);
         if (isResultEmpty(publisher)) {
             sendErrorResponseMessage(res, [`Nhà xuất bản với ${publisherId} không tồn tại trong hệ thống.`]);
@@ -118,14 +126,18 @@ exports.publisherUpdate = [
             email: req.body.email || null,
             address: req.body.address || null
         };
-        const currentPublisherId = parseInt(req.params.id);
+        const publisherId = parseInt(req.params.id);
         const validationError = validationResult(req);
+        if (Number.isNaN(publisherId)) {
+            return handleError(res, 400, 'Publisher id is invalid', 'Bad request');
+            // return sendErrorResponseMessage(res, ['Publisher id is invalid'])
+        }
         if (!validationError.isEmpty()) {
             return handleValidationError(res, validationError);
         }
 
         try {
-            const oldPub = await findOne(Q.publisher.publisherById, [currentPublisherId]);
+            const oldPub = await findOne(Q.publisher.publisherById, [publisherId]);
             const checkPublisherName = await findOne(Q.publisher.publisherByName, [formData.name]);
             const checkPublisherEmail = await findOne(Q.publisher.publisherByEmail, [formData.email]);
             // if publisher name has changed, check wether it exist in database or not, similiarly for email            
@@ -139,7 +151,7 @@ exports.publisherUpdate = [
                 return sendErrorResponseMessage(res, error);
             }
 
-            await query(Q.publisher.updatePublisher, [formData.name, formData.email, formData.address, currentPublisherId]);
+            await query(Q.publisher.updatePublisher, [formData.name, formData.email, formData.address, publisherId]);
             sendSuccessResponseMessage(res, ['Cập nhật thông tin nhà xuất bản thành công.']);
         } catch (err) {
             const errorMsg = ['Đã xảy ra lỗi ở server. Vui lòng thực hiện lại hoặc liên hệ admin để được trợ giúp.'];
@@ -150,7 +162,12 @@ exports.publisherUpdate = [
 
 exports.publisherDelete = async (req, res) => {
     try {
-        await query(Q.publisher.deletePublisher, [parseInt(req.params.id)]);
+        const publisherId = parseInt(req.params.id);
+        if (Number.isNaN(publisherId)) {
+            return handleError(res, 400, 'Publisher id is invalid', 'Bad request');
+            // return sendErrorResponseMessage(res, ['Publisher id is invalid'])
+        }
+        await query(Q.publisher.deletePublisher, [publisherId]);
         sendSuccessResponseMessage(res, ['Đã xóa nhà xuất bản.']);
     } catch (err) {
         handleError(res, 500, err);

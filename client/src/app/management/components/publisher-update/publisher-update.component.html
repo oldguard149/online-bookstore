@@ -1,0 +1,7 @@
+<h2>Cập nhật thể loại</h2>
+<alert [errorMsg]="errorMsg"></alert>
+<publisher-form *ngIf="publisher" 
+    (sendMessage)="getMessage($event)" 
+    [type]="'update'" 
+    [publisher]="publisher"
+></publisher-form>

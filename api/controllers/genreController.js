@@ -27,6 +27,9 @@ exports.genreDetail = async (req, res) => {
         const currentGenreId = parseInt(req.params.id);
         const bookPerPage = parseInt(req.query.pagesize) || 30;
         const offset = calculateOffsetForPagination(bookPerPage, currentPage);
+        if (isNaN(currentGenreId)) {
+            return handleError(res, 404, `${req.params.id} is an invalid id.`, 'Page not found!');
+        }
         const genre = await findOne(Q.genre.genreById, [currentGenreId]);
         if (isResultEmpty(genre)) {
             return handleError(res, 404, null, 'Page not found!');
@@ -96,6 +99,10 @@ exports.genreSearch = async (req, res) => {
 exports.genre = async (req, res) => {
     try {
         const genreId = parseInt(req.params.id);
+        if (Number.isNaN(genreId)) {
+            return handleError(res, 400, 'Genre id invalid');
+            // return sendErrorResponseMessage(res, ['Genre id is not valid']);
+        }
         const genre = await findOne(Q.genre.genreById, [genreId]);
         if (isResultEmpty(genre)) {
             return sendErrorResponseMessage(res, [`Thể loại sách với id ${genreId} không tồn tại trong hệ thống.`]);
@@ -114,6 +121,10 @@ exports.genreUpdate = [
             const genreId = parseInt(req.params.id);
             const validationError = validationResult(req);
             const newGenreName = req.body.name;
+            if (Number.isNaN(genreId)) {
+                return handleError(res, 400, 'Genre id invalid');
+                // return sendErrorResponseMessage(res, ['Genre id is not valid']);
+            }
             if (!validationError.isEmpty()) {
                return handleValidationError(res, validationError);
             }
@@ -136,7 +147,12 @@ exports.genreUpdate = [
 
 exports.genreDelete = async (req, res) => {
     try {
-        await query(Q.genre.deleteGerne, [parseInt(req.params.id)]);
+        const genreId = parseInt(req.params.id);
+        if (Number.isNaN(genreId)) {
+            return handleError(res, 400, 'Genre id invalid');
+            // return sendErrorResponseMessage(res, ['Genre id is not valid']);
+        }
+        await query(Q.genre.deleteGerne, [genreId]);
         sendSuccessResponseMessage(res, ['Đã xóa thể loại.']);
     } catch (err) {
         handleError(res, 500, err, 'Server Error');

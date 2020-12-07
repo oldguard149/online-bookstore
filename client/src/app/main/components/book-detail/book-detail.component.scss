@@ -1,0 +1,115 @@
+::ng-deep .book-detail {
+    grid-area: main;
+    margin: 1rem 0.5rem;
+}
+.content {
+    display: grid;
+    grid-template-areas: "image info";
+    grid-template-columns: 1fr 2fr;
+    width: 80%;
+    margin: auto;
+}
+
+.image {
+    grid-area: image;
+    justify-self: center;
+    align-self: start;
+}
+
+.image>img {
+    height: 300px;//calc(15rem - 10px);
+    width: auto;
+    padding: 5px;
+}
+
+.info {
+    grid-area: info;
+}
+
+.info h2, .info ul, .info p {
+    padding: 0.25rem
+}
+
+.info h2, .summary p {
+    text-align: justify;
+}
+
+.info ul {
+    list-style: none;
+}
+
+.info ul>li {
+    display: inline-block;
+}
+
+.info a:link {
+    text-decoration: none;
+    color: black;
+}
+
+.info a:visited {
+    color: purple;
+}
+
+.info a:hover {
+    color: blue;
+    text-decoration: underline;
+}
+
+.form-book-detail {
+    width: 100%;
+}
+
+.form-book-detail select { /*input[type='number'] {*/
+    width: 100px;
+}
+
+.form-book-detail select, .form-book-detail input[type='submit'] {
+    padding: 5px;
+    border-radius: 0.25rem;
+    border: 1px solid black;
+}
+
+.form-book-detail input[type='submit'] {
+    width: max-content;
+    margin-left: 1rem;
+}
+
+.form-book-detail input[type='number']:focus {
+    border: 1px solid #2a9df4;
+    box-shadow: 5px 5px 10px rgba(13, 12, 12, 0.22);
+    outline: none;
+}
+
+.form-book-detail input[type='submit']:hover {
+    border: 1px solid #2a9df4;
+    background-color: #2a9df4;
+    color: white;
+    cursor: pointer;
+    transition-duration: 300ms;
+}
+
+.form-book-detail {
+    margin-top: 0.5rem;
+    padding: 0.25rem;
+    display: inline-flex;
+}
+
+.form-book-detail form {
+    margin: 0 2rem 0 auto;
+}
+
+.form-book-detail span{
+    font-size: 1.15rem;
+    font-weight: bold;
+}
+
+.summary {
+    width: 70%;
+    margin: 2rem auto;
+}
+
+.summary hr {
+    margin: 1rem 0;
+    color: blue;
+}

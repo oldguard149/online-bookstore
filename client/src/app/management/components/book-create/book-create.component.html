@@ -1,1 +1,5 @@
-<p>book-create works!</p>
+<div class="create-update-container">
+    <h2>Thêm sach</h2>
+    <alert [successMsg]="successMsg" [errorMsg]="errorMsg"></alert>
+    <book-form  [type]="'create'" (sendMessage)="getMessage($event)"></book-form>
+</div>

@@ -8,7 +8,9 @@ import { GenreCreateComponent } from './components/genre-create/genre-create.com
 import { GenreSearchComponent } from './components/genre-search/genre-search.component';
 import { GenreUpdateComponent } from './components/genre-update/genre-update.component';
 import { ManagementIndexComponent } from './components/management-index/management-index.component';
+import { PublisherCreateComponent } from './components/publisher-create/publisher-create.component';
 import { PublisherSearchComponent } from './components/publisher-search/publisher-search.component';
+import { PublisherUpdateComponent } from './components/publisher-update/publisher-update.component';
 
 const routes: Routes = [
   {
@@ -21,9 +23,11 @@ const routes: Routes = [
 
       { path: 'create/genre', component: GenreCreateComponent },
       { path: 'create/book', component: BookCreateComponent },
+      { path: 'create/publisher', component: PublisherCreateComponent },
 
       { path: 'update/genre/:id', component: GenreUpdateComponent },
-      { path: 'update/book/:isbn', component: BookUpdateComponent }
+      { path: 'update/book/:isbn', component: BookUpdateComponent },
+      { path: 'update/publisher/:isbn', component: PublisherUpdateComponent }
     ]
   }
 ];

@@ -29,20 +29,20 @@ exports.authorDetail = async (req, res) => {
         let booklist = [];
         const currentPage = parseInt(req.query.page) || 0;
         const bookPerPage = parseInt(req.query.pagesize) || 30;
-        const currentAuthorId = parseInt(req.params.id);
-        if (isNaN(currentAuthorId)) {
+        const authorId = parseInt(req.params.id);
+        if (isNaN(authorId)) {
             return handleError(res, 404, null, 'Page not found!');
         }
         const offset = calculateOffsetForPagination(bookPerPage, currentPage);
 
-        const author = await findOne(Q.author.authorById, [currentAuthorId]);
+        const author = await findOne(Q.author.authorById, [authorId]);
         if (isResultEmpty(author)) {
             return handleError(res, 404, null, 'Page not found!');
         }
-        const count = await countData(Q.author.bookCountForAuthorDetail, [currentAuthorId]);
+        const count = await countData(Q.author.bookCountForAuthorDetail, [authorId]);
         if (count > 0) {
             booklist = preprocessBookList(await query(Q.author.bookListForAuthorDetail,
-                [currentAuthorId, offset, bookPerPage]));
+                [authorId, offset, bookPerPage]));
         }
         // convert authors from array to string
         for (let i = 0; i < booklist.length; i++) {
@@ -78,6 +78,9 @@ exports.authorSearch = async (req, res) => {
 exports.author = async (req, res) => {
     try {
         const authorId = parseInt(req.params.id);
+        if (isNaN(authorId)) {
+            return handleError(res, 404, null, 'Page not found!');
+        }
         const author = await findOne(Q.author.authorInfoForManagement, [authorId]);
         if (isResultEmpty(author)) {
             return sendErrorResponseMessage(res, [`Tác giả với id ${authorId} không tồn tại trong hệ thống.`]);
@@ -90,12 +93,15 @@ exports.author = async (req, res) => {
 
 exports.authorDeleteData = async (req, res) => {
     try {
-        const currentAuthorId = parseInt(req.params.id);
-        const author = await findOne(Q.author.authorInfoForManagement, [currentAuthorId]);
+        const authorId = parseInt(req.params.id);
+        if (isNaN(authorId)) {
+            return handleError(res, 404, null, 'Page not found!');
+        }
+        const author = await findOne(Q.author.authorInfoForManagement, [authorId]);
         if (isResultEmpty(author)) {
             return sendErrorResponseMessage(res, [`Tác giả với id ${authorId} không tồn tại trong hệ thống.`]);
         }
-        const booksByAuthor = await query(Q.auhor.bookListForAuthorDelete, [currentAuthorId]);
+        const booksByAuthor = await query(Q.auhor.bookListForAuthorDelete, [authorId]);
         res.json({ success: true, author, books: booksByAuthor });
     } catch (error) {
         handleError(res, 500, error);
@@ -108,14 +114,17 @@ exports.authorUpdate = [
 
     async (req, res) => {
         const formData = { fullname: req.body.fullname, info: req.body.info || null };
-        const currentAuthorId = parseInt(req.params.id);
+        const authorId = parseInt(req.params.id);
+        if (isNaN(authorId)) {
+            return handleError(res, 404, null, 'Page not found!');
+        }
         const validationError = validationResult(req);
         if (!validationError.isEmpty()) {
             return handleValidationError(res, validationError);
         }
 
         try {
-            const oldAuthor = await findOne(Q.author.authorById, [currentAuthorId]);
+            const oldAuthor = await findOne(Q.author.authorById, [authorId]);
             const newAuthor = await findOne(Q.author.authorByFullname, [formData.fullname]);
             // author fullname changed and new fullname already exist
             if (!isResultEmpty(newAuthor) && newAuthor.fullname !== oldAuthor.fullname) {
@@ -123,7 +132,7 @@ exports.authorUpdate = [
                 return sendErrorResponseMessage(res, error);
             }
 
-            await query(Q.author.updateAuthor, [formData.fullname, formData.info, currentAuthorId]);
+            await query(Q.author.updateAuthor, [formData.fullname, formData.info, authorId]);
             sendSuccessResponseMessage(res, [`Cập nhật thông tin tác giả thành công.`])
         } catch (err) {
             handleError(res, 500, err);
@@ -133,7 +142,11 @@ exports.authorUpdate = [
 
 exports.authorDelete = async (req, res) => {
     try {
-        await query(Q.author.deleteAuthor, [parseInt(req.params.id)]);
+        const authorId = parseInt(req.params.id);
+        if (isNaN(authorId)) {
+            return handleError(res, 404, null, 'Page not found!');
+        }
+        await query(Q.author.deleteAuthor, [authorId]);
         sendSuccessResponseMessage(res, [`Đã xóa thành công tác giả.`])
     } catch (err) {
         handleError(res, 500, err);

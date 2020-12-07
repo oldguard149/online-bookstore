@@ -5,6 +5,7 @@ export interface IGenre {
 
 export interface IPublisher {
     publisher_id: number;
+    name: string;
     email?: string;
     address?: string;
 }

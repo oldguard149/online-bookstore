@@ -52,16 +52,16 @@ exports.sideAdBooklist = async (req, res) => {
 
 exports.bookDetail = async (req, res) => {
     try {
-        const isbn = req.params.isbn;
+        const isbn = processIsbn(req.params.isbn);
         const numberOfRecommendBook = 5;
         const book = preprocessBookList(await query(Q.book.bookDetail, [isbn]))[0];
         if (isResultEmpty(book)) {
-            return res.status(404).json({ message: 'Page not found' });
+            // return res.status(404).json({ message: 'Page not found' });
+            return sendErrorResponseMessage(res, ['Page not found']);
         }
         const recommendBook = preprocessBookList(await query(Q.book.recommendBook,
             [book.Publisher.publisher_id, book.Genre.genre_id, isbn, numberOfRecommendBook]));
-        const data = { book, recommendBook };
-        res.status(200).json(data);
+        res.status(200).json({ success: true, book, recommendBook });
     } catch (error) {
         handleError(res, 500, error);
     }
@@ -69,8 +69,13 @@ exports.bookDetail = async (req, res) => {
 
 exports.bookDelete = async (req, res) => {
     try {
-        await query(Q.book.deleteBook, [req.params.isbn]);
-        sendSuccessResponseMessage(res, ['Sách đã được xóa.']);
+        const result = await query(Q.book.deleteBook, [processIsbn(req.params.isbn)]);
+        console.log(result);
+        if (result.affectedRows !== 0) {
+            sendSuccessResponseMessage(res, ['Sách đã được xóa.']);
+        } else {
+            sendErrorResponseMessage(res, ['Some server errors happen. Please try again later'])
+        }
     } catch (err) {
         handleError(res, 500, err);
     }
@@ -97,7 +102,7 @@ exports.bookSearch = async (req, res) => {
 
 exports.book = async (req, res) => {
     try {
-        const isbn = req.params.isbn;
+        const isbn = processIsbn(req.params.isbn);
         const book = preprocessBookList(await query(Q.book.bookDetail, [isbn]))[0];
         if (isResultEmpty(book)) {
             return sendErrorResponseMessage(res, [`Sách với isbn ${isbn} không tồn tại trong hệ thống.`]);
@@ -127,7 +132,7 @@ exports.bookCreate = [
     body('publisher_id').isInt().withMessage('Mã nhà xuất bản không hợp lệ.'),
 
     async (req, res) => {
-        let connection;
+        const connection = await pool.getConnection();
         try {
             const formData = getInputDataOnCreateOrUpdate(req);
             const validationError = validationResult(req);
@@ -140,7 +145,6 @@ exports.bookCreate = [
                     sendErrorResponseMessage(res, err);
                 } else {
                     const authorArray = convertAuthorsFromStringToArray(formData.author);
-                    connection = await pool.getConnection();
                     await connection.query(Q.startTransaction);
 
                     await connection.query(Q.book.createBook, [
@@ -162,7 +166,7 @@ exports.bookCreate = [
             const errorMsg = ['Đã xảy ra lỗi ở server. Vui lòng thêm sách lại.'];
             sendErrorResponseMessage(res, errorMsg);
         } finally {
-            await connection.release();
+            connection.release();
         }
     } // end of async function
 ];
@@ -180,7 +184,7 @@ exports.bookUpdate = [
         const formData = getInputDataOnCreateOrUpdate(req);
 
         const connection = await pool.getConnection();
-        const currentIsbn = req.params.isbn;
+        const currentIsbn = processIsbn(req.params.isbn);
         const validationError = validationResult(req);
         if (!validationError.isEmpty()) {
             return handleValidationError(res, validationError);
@@ -262,7 +266,7 @@ function convertAuthorsListToString(authorsList) {
 
 function getInputDataOnCreateOrUpdate(req) {
     return {
-        isbn: req.body.isbn,
+        isbn: processIsbn(req.body.isbn),
         name: req.body.name,
         image_url: req.body.image_url || `/images/no_image.png`,
         summary: req.body.summary || null,
@@ -270,4 +274,8 @@ function getInputDataOnCreateOrUpdate(req) {
         publisher_id: parseInt(req.body.publisher_id),
         author: req.body.author
     };
+}
+
+function processIsbn(isbn) {
+    return isbn.replace(/ |-/gi, '');
 }

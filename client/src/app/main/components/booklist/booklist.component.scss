@@ -2,6 +2,7 @@
     margin-top: 2rem;
     padding: 1rem;
     display: grid;
-    grid-template-areas: "bookcard bookcard bookcard";
+    // grid-template-areas: "bookcard bookcard bookcard";
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     grid-gap: 2rem;
 }

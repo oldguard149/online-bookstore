@@ -7,9 +7,12 @@ import { ManagementService } from '../../services/management.service';
 import { SubSink } from 'subsink';
 
 @Component({
-  selector: 'app-book-form',
+  selector: 'book-form',
   templateUrl: './book-form.component.html',
-  styleUrls: ['./book-form.component.scss']
+  styleUrls: [ '../../style/mform.scss'],
+  host: {
+    class: 'm-form'
+  }
 })
 export class BookFormComponent implements OnInit {
   form: FormGroup;
@@ -19,7 +22,7 @@ export class BookFormComponent implements OnInit {
   publishers: IPublisher;
   @Output() sendMessage: EventEmitter<any> = new EventEmitter<any>();
   @Input() type: 'update' | 'create';
-  @Input() bookInforForUpdate: IBook;
+  @Input('book') bookInforForUpdate: IBook;
   private subs = new SubSink();
   constructor(
     private fb: FormBuilder,
@@ -78,16 +81,18 @@ export class BookFormComponent implements OnInit {
 
   createBook() {
     if (this.form.valid) {
-      const book = this.form.value;
-      this.subs.sink = this.management.create('book', book)
-        .subscribe(data => {
-          if (data.success) {
-            this.triggerSendMessageEvent('success', data.message);
-            this.form.reset();
-          } else {
-            this.triggerSendMessageEvent('fail', data.message);
-          }
-        });
+      // const book = this.form.value;
+      // this.subs.sink = this.management.create('book', book)
+      //   .subscribe(data => {
+      //     if (data.success) {
+      //       this.triggerSendMessageEvent('success', data.message);
+      //       this.form.reset();
+      //     } else {
+      //       this.triggerSendMessageEvent('fail', data.message);
+      //     }
+      //   });
+      console.log(this.form.value);
+      
     }
   } // end of createBook
 

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthorDetailComponent } from './components/author-detail/author-detail.component';
 import { AuthorListComponent } from './components/author-list/author-list.component';
+import { BookDetailComponent } from './components/book-detail/book-detail.component';
 import { GenreDetailComponent } from './components/genre-detail/genre-detail.component';
 import { GenreListComponent } from './components/genre-list/genre-list.component';
 import { IndexBooklistComponent } from './components/index-booklist/index-booklist.component';
@@ -20,7 +21,8 @@ const routes: Routes = [
       { path: 'publisher', component: PublisherListComponent },
       { path: 'genre/:id', component: GenreDetailComponent },
       { path: 'publisher/:id', component: PublisherDetailComponent },
-      { path: 'author/:id', component: AuthorDetailComponent }
+      { path: 'author/:id', component: AuthorDetailComponent },
+      { path: 'book/:isbn', component: BookDetailComponent}
     ]
   },
 ];

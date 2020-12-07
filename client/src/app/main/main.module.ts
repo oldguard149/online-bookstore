@@ -20,6 +20,9 @@ import { AuthorDetailComponent } from './components/author-detail/author-detail.
 import { PaginatorComponent } from './components/paginator/paginator.component';
 import { BooklistComponent } from './components/booklist/booklist.component';
 import { SharedComponentsModule } from '../shared-components/shared-components.module';
+import { BookDetailComponent } from './components/book-detail/book-detail.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CartComponent } from './components/cart/cart.component';
 
 
 @NgModule({
@@ -39,12 +42,16 @@ import { SharedComponentsModule } from '../shared-components/shared-components.m
     AuthorDetailComponent,
     PaginatorComponent,
     BooklistComponent,
+    BookDetailComponent,
+    CartComponent,
   ],
   imports: [
     CommonModule,
     MainRoutingModule,
     MaterialModule,
-    SharedComponentsModule
+    SharedComponentsModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     DataService

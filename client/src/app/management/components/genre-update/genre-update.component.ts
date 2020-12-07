@@ -7,7 +7,10 @@ import { SubSink } from 'subsink';
 @Component({
   selector: 'app-genre-update',
   templateUrl: './genre-update.component.html',
-  styleUrls: ['./genre-update.component.scss']
+  styleUrls: ['./genre-update.component.scss'],
+  host: {
+    class: 'management-main'
+  }
 })
 export class GenreUpdateComponent implements OnInit {
   errorMsg: string[];

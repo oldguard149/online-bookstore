@@ -2,9 +2,9 @@
     <h2>Sign Up</h2>
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="form">
         <mat-form-field>
-            <mat-label></mat-label>
+            <mat-label>Name</mat-label>
             <input matInput formControlName="name" type="text">
-            <mat-error *ngIf="name.errors.required">Name is required</mat-error>
+            <mat-error *ngIf="name.hasError('required')">Name is required</mat-error>
         </mat-form-field>
         <mat-form-field appearance="fill">
             <mat-label>Email</mat-label>
@@ -20,8 +20,8 @@
         <mat-form-field appearance="fill">
             <mat-label>Confirm Password</mat-label>
             <input matInput type="password" formControlName="confirmPassword">
-            <mat-error *ngIf="password.hasError('required')">Password is required</mat-error>
-            <mat-error *ngIf="confirmPassword.errors.mustMatch">Password does not match</mat-error>
+            <mat-error *ngIf="confirmPassword.hasError('required')">Please fill in this field to confirm password</mat-error>
+            <mat-error *ngIf="confirmPassword.hasError('mustMatch')">Password does not match</mat-error>
         </mat-form-field>
         <mat-form-field appearance="fill">
             <mat-label>Password</mat-label>
