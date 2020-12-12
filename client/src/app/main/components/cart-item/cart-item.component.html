@@ -1,0 +1,23 @@
+<div class="cart-item">
+    <div class="image">
+        <img [src]="item.image_url">
+    </div>
+    <div class="info">
+        <h3>{{item.book_name}}</h3>
+        <p>Author: <i>{{item.authors}}</i></p>
+        <p>Publisher: <i>{{item.publisher_name}}</i></p>
+        <ng-container [formGroupName]="i">
+            <input type="hidden" formControlName="isbn">
+            <input type="hidden" formControlName="price">
+            <label for="qty">Quantity:</label>
+            <select formControlName="quantity" id="qty">
+                <option *ngFor="let value of item.available_qty" [value]="value">{{value}}</option>
+            </select>
+        </ng-container>
+        <span>|</span>
+        <a class="delete-cart-item" (click)="deleteCartItem(i)">Xóa khỏi giỏ hàng</a>
+    </div>
+    <div class="price">
+        <h3>{{item.price}}</h3>
+    </div>
+</div>

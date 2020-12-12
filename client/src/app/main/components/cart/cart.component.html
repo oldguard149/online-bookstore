@@ -1,1 +1,16 @@
-<p>cart works!</p>
+<div>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="header-title">
+            <h2 id="left">Giỏ hàng</h2>
+            <span id="right">Giá</span>
+        </div>
+        <cart-item *ngFor="let item of cartItems; let i=index;"
+            [cartItem]="item"
+            [index]="i"
+            (onDeleteItem)="handleDeleteCartItem($event)"
+        ></cart-item>
+        <div id="total-price">
+            <h3>Tổng tiền: {{totalPrice}}</h3>
+        </div>
+    </form>
+</div>

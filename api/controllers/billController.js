@@ -22,7 +22,7 @@ exports.createBill = async (req, res) => {
             const bookQuantity = await findOne(Q.bill.bookQuantity, [cartItem.isbn]);
             if (cartItem.quantity <= bookQuantity) {
                 const newBookStockQuantity = bookQuantity - cartItem.quantity;
-                await queryUsingTransaction(connection, Q.bill.createBillDetails,
+                await queryUsingTransaction(connection, Q.bill.createBillItem,
                     [bill_id, cartItem.isbn, cartItem.quantity, cartItem.price]);
 
                 await queryUsingTransaction(connection, Q.UpdateBookStockQuantity,

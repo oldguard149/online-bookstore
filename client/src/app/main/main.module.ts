@@ -23,6 +23,7 @@ import { SharedComponentsModule } from '../shared-components/shared-components.m
 import { BookDetailComponent } from './components/book-detail/book-detail.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CartComponent } from './components/cart/cart.component';
+import { CartItemComponent } from './components/cart-item/cart-item.component';
 
 
 @NgModule({
@@ -44,6 +45,7 @@ import { CartComponent } from './components/cart/cart.component';
     BooklistComponent,
     BookDetailComponent,
     CartComponent,
+    CartItemComponent,
   ],
   imports: [
     CommonModule,

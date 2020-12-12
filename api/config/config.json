@@ -2,8 +2,8 @@
     "mysql": {
         "host": "localhost",
         "user": "newuser",
-        "password": "",
-        "database": "testinsert"
+        "password": "asdf1234*&",
+        "database": "book_store"
     },
     "mail": {
         "user": "havender91@gmail.com",

@@ -6,6 +6,8 @@ const book = require('../controllers/bookController');
 const auth = require('../controllers/authenticationController');
 const cart = require('../controllers/cartController');
 const bill = require('../controllers/billController');
+const recommendBook = require('../controllers/recommendBookController');
+
 
 const { authMiddleware } = require('../shared/helper');
 const { isCustomer } = require('../shared/permissions');
@@ -34,4 +36,6 @@ router.post('/update-cart-items', authMiddleware, isCustomer, cart.updateCartIte
 
 router.get('/create-bill', authMiddleware, isCustomer, bill.createBill);
 
+
+router.get('/recommend/:isbn', recommendBook.recommendBookList);
 module.exports = router;

@@ -31,9 +31,9 @@ INSERT INTO
 VALUES
     (?, ?, ?, ?, ?);`;
 
-exports.createBillDetails = `
+exports.createBillItem = `
 INSERT INTO
-    billsdetails (bill_id, isbn, quantity, price)
+    billdetails (bill_id, isbn, quantity, price)
 VALUES
     (?, ?, ?, ?);`;
 

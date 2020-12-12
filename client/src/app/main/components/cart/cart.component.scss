@@ -1,0 +1,47 @@
+#total-price {
+    width: 80%;
+    margin: auto;
+    display: grid;
+    grid-template-areas: "left right";
+    grid-template-columns: 5fr 1fr;
+    padding: 1rem;
+}
+
+#total-price h3 {
+    text-align: center;
+    grid-area: right;
+}
+
+.header-title {
+    width: 80%;
+    margin: auto;
+    display: grid;
+    grid-template-areas: "left right";
+    grid-template-columns: 5fr 1fr;
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 1rem;
+}
+
+#right {
+    text-align: center;
+    display: flex;
+    margin: auto;
+}
+
+#left {
+    padding-left: 2rem;
+}
+
+button {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin: auto;
+    display: flex;
+}
+
+button:hover {
+    background-color: #2a9df4;
+    color: white;
+    cursor: pointer;
+    box-shadow: 5px 5px 10px rgba(13, 12, 12, 0.22);
+}
