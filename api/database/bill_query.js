@@ -15,7 +15,7 @@ FROM
 WHERE
     bill_id = ?;`;
 
-exports.billDetailByBillId = `SELECT * FROM billdetails WHERE bill_id=?;`;
+exports.billItemsByBillId = `SELECT bill_id, isbn, quantity, price FROM billdetails WHERE bill_id=?;`;
 
 exports.billList = `SELECT * FROM bills LIMIT ?, ?;`;
 
@@ -37,13 +37,14 @@ INSERT INTO
 VALUES
     (?, ?, ?, ?);`;
 
-exports.updateBookStockQuantity = `
-UPDATE books
-SET quantity = ?
-WHERE isbn = ?;`;
-
 exports.bookQuantity = `SELECT quantity FROM books WHERE isbn = ?;`;
 
 exports.updateBillTotalPrice = `UPDATE bills SET total_price = ? WHERE bill_id = ?;`;
 
-exports.confirmBill = `UPDATE bills SET bill_status = 'CONFIRMED' WHERE bill_id = ?;`;
+exports.confirmBill = `UPDATE bills SET bill_status='CONFIRMED', emp_id=? WHERE bill_id = ?;`;
+
+exports.cancelBill = `UPDATE bills SET bill_status='CANCELLED', emp_id=? WHERE bill_id=?;`;
+
+exports.deleteBillWitthBillId = `DELETE FROM bills WHERE bill_id = ?;`;
+
+exports.deleteBillItemsWithBillId = `DELETE FROM billdetails WHERE bill_id = ?;`;

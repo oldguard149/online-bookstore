@@ -84,7 +84,7 @@ exports.bookDelete = async (req, res) => {
 exports.bookSearch = async (req, res) => {
     try {
         const rawSearchText = req.query.search;
-        const bookPerPage = parseInt(getQueryParam(req, 'pageSize', 10));
+        const bookPerPage = parseInt(getQueryParam(req, 'pagesize', 10));
         const currentPage = parseInt(getQueryParam(req, 'page', 0));
         const offset = calculateOffsetForPagination(bookPerPage, currentPage);
         if (undefined === rawSearchText) {
@@ -122,15 +122,20 @@ exports.fetchGenresAndPublishers = async (req, res) => {
     }
 }
 
-exports.bookCreate = [
-    body('isbn', 'ISBN is invalid').trim().not().isEmpty().withMessage('Vui lòng điền isbn.').isISBN().withMessage('isbn không hợp lệ.'),
-    body('name').trim().not().isEmpty().withMessage('Vui lòng điền tên sách.').escape(),
-    body('image_url').trim().optional({ checkFalsy: true }),
-    body('summary').trim().optional({ checkFalsy: true }).escape(),
-    body('author').trim().escape(),
-    body('genre_id').isInt().withMessage('Mã thể loại không hợp lệ.'),
-    body('publisher_id').isInt().withMessage('Mã nhà xuất bản không hợp lệ.'),
+function validateOnBookForm() {
+    return [
+        body('isbn', 'ISBN is invalid').trim().not().isEmpty().withMessage('Vui lòng điền isbn.').isISBN().withMessage('isbn không hợp lệ.'),
+        body('name').trim().not().isEmpty().withMessage('Vui lòng điền tên sách.').escape(),
+        body('image_url').trim().optional({ checkFalsy: true }),
+        body('summary').trim().optional({ checkFalsy: true }).escape(),
+        body('author').trim().escape(),
+        body('genre_id').isInt().withMessage('Mã thể loại không hợp lệ.'),
+        body('publisher_id').isInt().withMessage('Mã nhà xuất bản không hợp lệ.')
+    ]
+}
 
+exports.bookCreate = [
+    ...validateOnBookForm(),
     async (req, res) => {
         const connection = await pool.getConnection();
         try {
@@ -172,14 +177,7 @@ exports.bookCreate = [
 ];
 
 exports.bookUpdate = [
-    body('isbn', 'ISBN is invalid').trim().not().isEmpty().withMessage('Vui lòng điền isbn.').isISBN().withMessage('isbn không hợp lệ.'),
-    body('name').trim().not().isEmpty().withMessage('Vui lòng điền tên sách.').escape(),
-    body('image_url').trim().optional({ checkFalsy: true }),
-    body('summary').trim().optional({ checkFalsy: true }).escape(),
-    body('author').trim().escape(),
-    body('genre_id').isInt().withMessage('Mã thể loại không hợp lệ.'),
-    body('publisher_id').isInt().withMessage('Mã nhà xuất bản không hợp lệ.'),
-
+    ...validateOnBookForm(),
     async (req, res) => {
         const formData = getInputDataOnCreateOrUpdate(req);
 

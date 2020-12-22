@@ -12,6 +12,16 @@ exports.customerById = `SELECT * FROM customers WHERE customer_id = ?;`;
 
 exports.updatePasswordForCustomer = `UPDATE customers SET hash_password = ? WHERE customer_id = ?;`;
 
+exports.employeeList = `
+SELECT
+    emp_id,
+    fullname,
+    email,
+    identity_number,
+    phone_number,
+    salary,
+    role
+FROM employees;`
 
 exports.employeeByEmail = `SELECT emp_id FROM employees WHERE email = ?;`;
 
@@ -19,14 +29,14 @@ exports.employeeById = `SELECT * FROM employees WHERE emp_id = ?;`;
 
 exports.employeeByPhoneNumber = `SELECT emp_id FROM employees WHERE phone_number = ?;`;
 
-exports.employeeByCmnd = `SELECT emp_id FROM employees WHERE cmnd = ?;`;
+exports.employeeByIdCard = `SELECT emp_id FROM employees WHERE identity_number = ?;`;
 
 exports.createEmployee = `
-INSERT INTO employee (fullname, email, cmnd, phone_number, salary, hash_password, role)
+INSERT INTO employees (fullname, email, identity_number, phone_number, salary, hash_password, role)
 VALUES (?, ?, ?, ?, ?, ?, ?);`;
 
 exports.updateEmployee = `
-UPDATE employees SET fullname=?, email=?, cmnd=?, phone_number=?, salary=?, hash_password=?, role=?
+UPDATE employees SET fullname=?, email=?, identity_number=?, phone_number=?, salary=?, role=?
 WHERE emp_id = ?;`;
 
 exports.deleteEmployee = `DELETE FROM employees WHERE emp_id = ?;`;

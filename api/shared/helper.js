@@ -94,31 +94,32 @@ function preprocessBookList(arr) {
 }
 
 function preprocessCartItem(data) {
-    const r = []
-    let index = 0, lastindex = 0;
     if (isResultEmpty(data)) {
-        return { cartItem: [], totalItem: 0 };
+        return { cartItems: [], totalItems: 0 };
+    } else {
+        const r = [];
+        let index = 0, lastindex = 0;
+        do {
+            const currentElement = data[index];
+            if (r.length > 0 && currentElement.isbn === r[lastindex].isbn) {
+                r[lastindex].authors.push(currentElement.author_name);
+            } else {
+                r.push({
+                    isbn: currentElement.isbn,
+                    order_qty: currentElement.quantity,
+                    price: currentElement.price,
+                    book_name: currentElement.book_name,
+                    available_qty: currentElement.available_qty,
+                    image_url: currentElement.image_url,
+                    publisher_name: currentElement.publisher_name,
+                    authors: [currentElement.author_name]
+                });
+                lastindex = r.length - 1;
+            }
+            index++;
+        } while (index < data.length);
+        return { cartItems: r, totalItems: r.length };
     }
-    do {
-        const currentElement = data[index];
-        if (r.length > 0 && currentElement.isbn === r[lastindex].isbn) {
-            r[lastindex].authors.push(currentElement.author_name);
-        } else {
-            r.push({
-                isbn: currentElement.isbn,
-                order_qty: currentElement.quantity,
-                price: currentElement.price,
-                book_name: currentElement.book_name,
-                available_qty: currentElement.available_qty,
-                image_url: currentElement.image_url,
-                publisher_name: currentElement.publisher_name,
-                authors: [currentElement.author_name]
-            });
-            lastindex = r.length - 1;
-        }
-        index++;
-    } while (index < data.length);
-    return { cartItems: r, totalItems: r.length };
 }
 
 function isDataNotValidForUpdate(checkObjOfNewField, oldField, newField) {

@@ -4,9 +4,9 @@ exports.createCart = `INSERT INTO carts(customer_id, total_price) VALUES (?, ?);
 
 exports.cartDetailByCartIdAndIsbn = `SELECT cart_id, isbn, quantity, price FROM cartdetails WHERE cart_id = ? AND isbn = ?;`;
 
-exports.createCartDetail = `INSERT INTO cartdetails(cart_id, isbn, quantity, price) VALUES (?, ?, ?, ?);`;
+exports.createCartItem = `INSERT INTO cartdetails(cart_id, isbn, quantity, price) VALUES (?, ?, ?, ?);`;
 
-exports.updateCartDetail = `UPDATE cartdetails SET quantity=?, price=? WHERE cart_id = ? AND isbn = ?;`;
+exports.updateCartItem = `UPDATE cartdetails SET quantity=?, price=? WHERE cart_id = ? AND isbn = ?;`;
 
 exports.updateCartTotalPrice = `UPDATE carts SET total_price = ? WHERE cart_id = ?;`;
 
@@ -29,10 +29,9 @@ WITH cart_items AS (
         cd.price
     FROM
         cartdetails cd
-        INNER JOIN (
+        RIGHT JOIN
             carts c
-            INNER JOIN customers ctm ON c.customer_id = ctm.customer_id
-        ) ON c.cart_id = cd.cart_id
+            ON c.cart_id = cd.cart_id
     WHERE
         c.customer_id = ?
 )

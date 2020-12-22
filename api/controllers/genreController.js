@@ -66,8 +66,7 @@ exports.genreCreate = [
             } else {
                 const result = await query(Q.genre.createGenre, [genreName]); // result is object {insertId, effectedRow}
                 if (result.effectedRow !== 0) {
-                    const msg = [`Thêm thành công thể loại ${genreName}`];
-                    sendSuccessResponseMessage(res, msg);
+                    sendSuccessResponseMessage(res, [`Thêm thành công thể loại ${genreName}`]);
                 } else {
                     throw new Error;
                 }
@@ -80,7 +79,7 @@ exports.genreCreate = [
 
 exports.genreSearch = async (req, res) => {
     try {
-        const genrePerPage = parseInt(getQueryParam(req, 'pageSize', 15)); // number of result per page
+        const genrePerPage = parseInt(getQueryParam(req, 'pagesize', 15)); // number of result per page
         const rawSearchText = req.query.search;
         const currentPage = parseInt(getQueryParam(req, 'page', 0));
         const offset = calculateOffsetForPagination(genrePerPage, currentPage);

@@ -59,7 +59,7 @@ exports.authorDetail = async (req, res) => {
 exports.authorSearch = async (req, res) => {
     try {
         const rawSearchText = req.query.search;
-        const authorPerPage = parseInt(getQueryParam(req, 'pageSize', 15));
+        const authorPerPage = parseInt(getQueryParam(req, 'pagesize', 15));
         const currentPage = parseInt(getQueryParam(req, 'page', 0));
         const offset = calculateOffsetForPagination(authorPerPage, currentPage);
         if (undefined === rawSearchText) {

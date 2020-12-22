@@ -106,6 +106,10 @@ exports.written = `INSERT INTO writtens(isbn, author_id) VALUES (?, ?);`;
 
 exports.deleteAuthorFromWrittens = `DELETE FROM writtens WHERE isbn = ?;`;
 
+exports.updateBookStockQuantity = `
+UPDATE books
+SET quantity = ?
+WHERE isbn = ?;`;
 
 //------------------------------------------ IMPORT STOCK FORM ------------------------------------------
 exports.createImportStockForm = `

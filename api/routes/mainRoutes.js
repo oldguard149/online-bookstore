@@ -5,9 +5,8 @@ const author = require('../controllers/authorController');
 const book = require('../controllers/bookController');
 const auth = require('../controllers/authenticationController');
 const cart = require('../controllers/cartController');
-const bill = require('../controllers/billController');
 const recommendBook = require('../controllers/recommendBookController');
-
+const bill = require('../controllers/billController');
 
 const { authMiddleware } = require('../shared/helper');
 const { isCustomer } = require('../shared/permissions');
@@ -35,7 +34,7 @@ router.get('/delete-cart-item/:isbn', authMiddleware, isCustomer, cart.deleteCar
 router.post('/update-cart-items', authMiddleware, isCustomer, cart.updateCartItemOrderQuantity);
 
 router.get('/create-bill', authMiddleware, isCustomer, bill.createBill);
-
+router.get('/bill/:id', bill.billDetail);
 
 router.get('/recommend/:isbn', recommendBook.recommendBookList);
 module.exports = router;

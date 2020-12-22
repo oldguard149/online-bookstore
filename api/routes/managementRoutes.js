@@ -5,6 +5,7 @@ const genre = require('../controllers/genreController');
 const author = require('../controllers/authorController');
 const publisher = require('../controllers/publisherController');
 const bill = require('../controllers/billController');
+const emp = require('../controllers/employeeController');
 
 router.get('/search/genre', genre.genreSearch);
 router.get('/genre/:id', genre.genre);
@@ -33,5 +34,15 @@ router.delete('/book/:isbn', book.bookDelete);
 router.get('/genres-and-publishers', book.fetchGenresAndPublishers);
 
 router.get('/confirm-bill/:id', bill.confirmBill);
+router.get('/cancel-bill/:id', bill.cancelBillOrder);
+router.get('/bill', bill.billList);
+router.delete('/bill/:id', bill.billDelete);
+
+router.get('/search/employee', emp.empSearch);
+router.get('/employee', emp.empList);
+router.get('/employee/:id', emp.employee);
+router.post('/employee', emp.empCreate);
+router.put('/employee/:id', emp.empUpdate);
+router.delete('/employee/:id', emp.empDelete);
 
 module.exports = router;

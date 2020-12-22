@@ -45,7 +45,7 @@ export class SearchFormComponent implements OnInit {
     this.router.navigate([], {
       queryParams: {
         'search': this.formSearchText.value.replace(/ /gi, '+'),
-        'pageSize': this.formPageSize.value,
+        'pagesize': this.formPageSize.value,
         'page': 0
       },
       queryParamsHandling: 'merge'
@@ -56,7 +56,7 @@ export class SearchFormComponent implements OnInit {
     this.subs.sink = this.route.queryParams.subscribe(params => {      
       const rawSearchText = params['search'];
       const currentPage = params['page'];
-      const pageSize = params['pageSize']
+      const pageSize = params['pagesize']
       if (rawSearchText !== undefined) {
         !isNaN(pageSize) ? this.pageSize = parseInt(pageSize) : this.pageSize = 10;
         !isNaN(currentPage) ? this.currentPage = parseInt(currentPage) : this.currentPage = 0;

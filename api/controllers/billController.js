@@ -8,37 +8,43 @@ const { handleError, isResultEmpty, sendErrorResponseMessage, sendSuccessRespons
 exports.createBill = async (req, res) => {
     const connection = await pool.getConnection();
     try {
-        const totalPrice = 0;
+        let totalPrice = 0;
         const customerId = parseInt(req.payload.id);
         const cart = await findOne(Q.cart.cartByCustomerId, [customerId]);
         const cart_id = parseInt(cart.cart_id);
-        const bill_id = uuidv4(); // generate from uuid
+        const billId = uuidv4();
         const cartItems = await query(Q.cart.allItemsInCart, [cart_id]);
-        
-        await queryUsingTransaction(connection, Q.startTransaction);
-        await queryUsingTransaction(connection, Q.bill.createBill, 
-            [bill_id, customerId, null, 0, new Date()]);
-        for (const cartItem of cartItems) {
-            const bookQuantity = await findOne(Q.bill.bookQuantity, [cartItem.isbn]);
-            if (cartItem.quantity <= bookQuantity) {
-                const newBookStockQuantity = bookQuantity - cartItem.quantity;
-                await queryUsingTransaction(connection, Q.bill.createBillItem,
-                    [bill_id, cartItem.isbn, cartItem.quantity, cartItem.price]);
+        if (isResultEmpty(cartItems)) { // make sure there are at least one book in cart before create bill
+            sendErrorResponseMessage(res, ['Your cart is empty']);
+        } else {
+            await queryUsingTransaction(connection, Q.startTransaction);
+            await queryUsingTransaction(connection, Q.bill.createBill,
+                [billId, customerId, null, 0, new Date()]);
+            for (const cartItem of cartItems) {
+                const book = await findOne(Q.bill.bookQuantity, [cartItem.isbn]);
+                const bookQuantity = parseInt(book.quantity);
 
-                await queryUsingTransaction(connection, Q.UpdateBookStockQuantity,
-                    [newBookStockQuantity, cartItem.isbn]);
-                
-                await queryUsingTransaction(connection, Q.cart.deleteCartItem, 
-                    [cartItem.isbn, cart_id]);
-                
-                totalPrice += parseInt(cartItem.quantity) * parseFloat(cartItem.price);
-            } else {
-                throw Error(`Order quantity of ${cartItem.isbn} is not valid.`);
+                if (cartItem.quantity <= bookQuantity) {
+                    const newBookStockQuantity = bookQuantity - cartItem.quantity;
+                    await queryUsingTransaction(connection, Q.bill.createBillItem,
+                        [billId, cartItem.isbn, cartItem.quantity, cartItem.price]);
+
+                    await queryUsingTransaction(connection, Q.book.updateBookStockQuantity,
+                        [newBookStockQuantity, cartItem.isbn]);
+
+                    await queryUsingTransaction(connection, Q.cart.deleteCartItem,
+                        [cartItem.isbn, cart_id]);
+
+                    totalPrice += parseInt(cartItem.quantity) * parseFloat(cartItem.price);
+                } else {
+                    return sendErrorResponseMessage(res, [`Order quantity of ${cartItem.isbn} is not valid.`])
+                }
             }
+
+            await queryUsingTransaction(connection, Q.bill.updateBillTotalPrice, [totalPrice, billId]);
+            await queryUsingTransaction(connection, Q.commit);
+            sendSuccessResponseMessage(res, ['Bill has been created']);
         }
-        
-        await queryUsingTransaction(connection, Q.bill.updateBillTotalPrice, [totalPrice, bill_id]);
-        await queryUsingTransaction(connection, Q.commit);
     } catch (error) {
         await queryUsingTransaction(connection, Q.rollback);
         handleError(res, 500, error);
@@ -49,12 +55,13 @@ exports.createBill = async (req, res) => {
 
 exports.confirmBill = async (req, res) => {
     try {
-        const bill_id = req.params.id;
-        const bill = await query(Q.bill.billByBillId, [bill_id]);
+        const billId = req.params.id;
+        const emp_id = req.payload.id;
+        const bill = await query(Q.bill.billByBillId, [billId]);
         if (isResultEmpty(bill)) {
-            sendErrorResponseMessage(res, [`Bill with id ${bill_id} doesn't exist`]);
+            sendErrorResponseMessage(res, [`Bill with id ${billId} doesn't exist`]);
         } else {
-            await query(Q.bill.confirmBill, [bill_id]);
+            await query(Q.bill.confirmBill, [emp_id, billId]);
             sendSuccessResponseMessage(res, [`Bill confirmed successfully.`]);
         }
     } catch (err) {
@@ -63,9 +70,73 @@ exports.confirmBill = async (req, res) => {
 };
 
 exports.cancelBillOrder = async (req, res) => {
+    const connection = await pool.getConnection();
     try {
-        
+        const billId = req.params.id;
+        const emp_id = req.payload.id;
+        const bill = await query(Q.bill.billByBillId, [billId]);
+        if (isResultEmpty(bill)) {
+            sendErrorResponseMessage(res, [`Bill with id ${billId} doesn't exist`]);
+        } else {
+            const cart = await findOne(Q.cart.cartByCustomerId, [customerId]);
+            const cart_id = parseInt(cart.cart_id);
+            const billItems = await query(Q.bill.billItemsByBillId, [billId]);
+            await queryUsingTransaction(connection, Q.startTransaction)
+            for (const billItem of billItems) {
+                await queryUsingTransaction(connection, Q.cart.createCartItem,
+                    [cart_id, billItem.isbn, billItem.quantity, billItem.price]);
+            }
+            await queryUsingTransaction(connection, Q.bill.cancelBill, [emp_id, billId]);
+            await queryUsingTransaction(connection, Q.commit);
+            sendSuccessResponseMessage(res, ['Bill has been cancelled']);
+        }
     } catch (err) {
+        await queryUsingTransaction(Q.rollback);
         handleError(res, 500, err);
+    } finally {
+        connection.release();
+    }
+};
+
+exports.billList = async (req, res) => {
+    try {
+        const page = parseInt(req.params.page) || 0;
+        const pageSize = parseInt(req.params.size) || 10;
+        const bills = await query(Q.bill.billList, [page, pageSize]);
+        res.json(bills);
+    } catch (error) {
+        handleError(res, 500, error, 'Server error when loading bill list');
+    }
+}
+
+exports.billDetail = async (req, res) => {
+    try {
+        const billId = req.params.id;
+        const bill = await findOne(Q.bill.billByBillId, [billId]);
+        if (isResultEmpty(bill)) {
+            return sendErrorResponseMessage(res, [`Bill with id ${billId} does not exist`]);
+        }
+        const billItems = await query(Q.bill.billItemsByBillId, [billId]);
+        bill['items'] = billItems;
+        res.json({ success: true, bill: bill });
+    } catch (error) {
+        handleError(req, 500, error, `Can't find bill.`);
+    }
+}
+
+exports.billDelete = async (req, res) => {
+    const connection = await pool.getConnection();
+    try {
+        const billId = req.params.id;
+        await queryUsingTransaction(connection, Q.startTransaction);
+        await queryUsingTransaction(connection, Q.bill.deleteBillWitthBillId, [billId]);
+        await queryUsingTransaction(connection, Q.bill.deleteBillItemsWithBillId, [billId]);
+        await queryUsingTransaction(connection, Q.commit);
+        sendSuccessResponseMessage(res, ['Bill has been deleted']);
+    } catch (err) {
+        await queryUsingTransaction(Q.rollback);
+        handleError(res, 500, err);
+    } finally {
+        connection.release();
     }
 };
