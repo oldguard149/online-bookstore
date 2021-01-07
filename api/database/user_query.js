@@ -8,9 +8,29 @@ VALUES (?, ?, ?, ?, ?);`;
 
 exports.customerByEmail = `SELECT customer_id FROM customers WHERE email = ?;`;
 
-exports.customerById = `SELECT * FROM customers WHERE customer_id = ?;`;
+exports.customerById = `
+SELECT
+    customer_id,
+    fullname,
+    email,
+    phone_number,
+    address
+FROM 
+    customers 
+WHERE 
+    customer_id = ?;`;
 
 exports.updatePasswordForCustomer = `UPDATE customers SET hash_password = ? WHERE customer_id = ?;`;
+
+exports.updateCustomerInfo = `
+UPDATE
+    customers
+SET
+    fullname = ?,
+    phone_number = ?,
+    address = ?
+WHERE
+    customer_id = ?;`;
 
 exports.employeeList = `
 SELECT
@@ -48,6 +68,6 @@ exports.createRecoverPasswordLink = `INSERT INTO recoverpasswords(email, token, 
 
 exports.checkTokenWhenRecoverPassword = `SELECT FROM recoverpasswords WHERE token = ?;`;
 
-exports.updatePasswordForCustomer = `UPDATE customers SET hash_password=? WHERE email = ?;`;
+exports.updateCustomerPassword = `UPDATE customers SET hash_password=? WHERE customer_id = ?;`;
 
-exports.updatePasswordForEmployee = `UPDATE employees SET hash_password=? WHERE email = ?;`;
+exports.updateEmployeePassword = `UPDATE employees SET hash_password=? WHERE emp_id = ?;`;

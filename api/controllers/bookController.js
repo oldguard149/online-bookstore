@@ -55,6 +55,8 @@ exports.bookDetail = async (req, res) => {
         const isbn = processIsbn(req.params.isbn);
         const numberOfRecommendBook = 5;
         const book = preprocessBookList(await query(Q.book.bookDetail, [isbn]))[0];
+        // const book = await query(Q.book.bookDetail, [isbn]);
+        console.log(book);
         if (isResultEmpty(book)) {
             // return res.status(404).json({ message: 'Page not found' });
             return sendErrorResponseMessage(res, ['Page not found']);

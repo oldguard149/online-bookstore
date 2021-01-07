@@ -16,7 +16,7 @@ import { FlashMessageService } from 'src/app/shared/services/flash-message.servi
 export class LoginComponent implements OnInit {
   private subs = new SubSink();
   loginForm: FormGroup;
-  errorMsg: string[]  = ["this is first message", "you have been successfully register"];
+  errorMsg: string[];
   constructor(
     private fb: FormBuilder,
     private auth: AuthenticationService,

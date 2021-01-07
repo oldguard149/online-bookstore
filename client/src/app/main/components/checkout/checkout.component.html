@@ -1,0 +1,85 @@
+<topnav></topnav>
+<div class="checkout-main">
+    <mat-horizontal-stepper linear>
+        <mat-step [stepControl]="customerForm" label="Customer information">
+            <form [formGroup]="customerForm">
+                <mat-form-field>
+                    <mat-label>Full name</mat-label>
+                    <input type="text" matInput formControlName="name" required>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Phone number</mat-label>
+                    <input type="tel" matInput formControlName="phoneNumber" required>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Address</mat-label>
+                    <input type="text" matInput formControlName="address" required>
+                </mat-form-field>
+                <button mat-button matStepperNext (click)="updateCustomerInfo()">Next</button>
+            </form>
+        </mat-step>
+
+        <mat-step label="Check out method">
+            <form [formGroup]="checkoutForm">
+
+                <mat-label>Payment Method</mat-label>
+                <mat-radio-group formControlName="checkoutMethod">
+                    <mat-radio-button value="0">
+                        Cash On Delivery
+                    </mat-radio-button>
+                </mat-radio-group>
+
+                <mat-table [dataSource]="cartItems">
+                    <ng-container matColumnDef="item">
+                        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                        <mat-cell class="link" *matCellDef="let element">
+                            <div class="cart-item-container">
+                                <img [src]="element.image_url" alt="element.book_name">
+                                <div class="info">
+                                    <h3>{{element.book_name}}</h3>
+                                    <p>Authors: {{element.authors}}</p>
+                                    <p>Publisher: {{element.publishser_name}}</p>
+                                </div>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="quantity">
+                        <mat-header-cell *matHeaderCellDef>Order quantity</mat-header-cell>
+                        <ng-container formArrayName="cartItemsFormArray">
+                            <mat-cell *matCellDef="let element; let i = index;" [formGroupName]="i">
+                                <input type="hidden" formControlName="isbn">
+                                <input type="hidden" formControlName="price">
+                                <mat-form-field>
+                                    <mat-label>Quantity: </mat-label>
+                                    <mat-select formControlName="quantity">
+                                        <mat-option *ngFor="let value of element.available_qty" [value]="value">
+                                            {{value}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <!-- <label for="qty">Quantity:</label> -->
+                                <!-- <select formControlName="quantity" id="qty">
+                                    <option *ngFor="let value of element.available_qty" [value]="value">{{value}}
+                                    </option>
+                                </select> -->
+                            </mat-cell>
+                        </ng-container>
+                    </ng-container>
+
+                    <ng-container matColumnDef="delete-option">
+                        <mat-header-cell class="medium-width align-center" *matHeaderCellDef>Delete</mat-header-cell>
+                        <mat-cell class="medium-width align-button" *matCellDef="let element; let i = index;">
+                            <a mat-flat-button color="warn" (click)="deleteItem(i)">X</a>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                </mat-table>
+            </form>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext (click)="createBill()">Finish</button>
+        </mat-step>
+    </mat-horizontal-stepper>
+</div>

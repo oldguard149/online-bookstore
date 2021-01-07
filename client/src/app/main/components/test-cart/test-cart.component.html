@@ -1,0 +1,42 @@
+<mat-table [dataSource]="cartItems">
+    <!-- Name Column -->
+    <ng-container matColumnDef="item">
+        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+        <mat-cell class="link" *matCellDef="let element">
+            <div class="cart-item-container">
+                <img [src]="element.image_url" alt="element.book_name">
+                <div class="info">
+                    <h3>{{element.book_name}}</h3>
+                    <p>Authors: {{element.authors}}</p>
+                    <p>Publisher: {{element.publishser_name}}</p>
+                </div>
+            </div>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="quantity" [formGroup]="form">
+        <mat-header-cell *matHeaderCellDef>Order quantity</mat-header-cell>
+        <ng-container formArrayName="cartItemFormArray">
+            <mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
+                <input type="hidden" formControlName="isbn">
+                <input type="hidden" formControlName="price">
+                <label for="qty">Quantity:</label>
+                <select formControlName="quantity" id="qty">
+                    <option *ngFor="let value of element.available_qty" [value]="value">{{value}}</option>
+                </select>
+            </mat-cell>
+        </ng-container>
+    </ng-container>
+
+    <!-- Option Column  -->
+    <ng-container matColumnDef="delete-option">
+        <mat-header-cell class="medium-width align-center" *matHeaderCellDef> Delete</mat-header-cell>
+        <mat-cell class="medium-width align-button" *matCellDef="let element">
+            <a [routerLink]="['/', 'delete', element['isbn']]" mat-flat-button color="warn">X</a>
+        </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+<button mat-raised-button (click)="showFormValue()">Show value</button>

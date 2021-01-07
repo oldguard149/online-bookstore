@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { CartService } from '../../services/cart.service';
 import { SubSink } from 'subsink';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -16,7 +17,8 @@ export class CartComponent implements OnInit {
   private subs = new SubSink();
   constructor(
     private fb: FormBuilder,
-    private cart: CartService
+    private cart: CartService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -32,10 +34,11 @@ export class CartComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();
+    this.saveChanges();
   }
 
   fetchCartItems() {
-    this.cart.getCartItem().then(data => {
+    this.cart.getCartItems().then(data => {
       if (data.success) {
         this.cartItems = data.cartItems;
         this.totalItems = data.totalItems;
@@ -52,8 +55,7 @@ export class CartComponent implements OnInit {
     this.calculateTotalPrice();
   }
 
-
-  handleDeleteCartItem(i: number): void {
+  deleteCartItem(i: number) {
     this.cart.deleteCartItem(this.cartItems[i].isbn)
     .then(data => {
       if (data.success) {
@@ -73,12 +75,13 @@ export class CartComponent implements OnInit {
     const data = this.form.value;
     this.cart.updateCartItems(data).then(data => {
       if (data.success) {
+        console.log(data.message);
       }
     });
   }
 
   onSubmit(): void {
-
+    this.router.navigateByUrl('/checkout');
   }
 
   get cartItemFormArray() {
@@ -87,15 +90,8 @@ export class CartComponent implements OnInit {
 
   preprocessCartItems() {
     for (let i = 0; i < this.cartItems.length; i++) {
-      this.cartItems[i].available_qty = this.range(this.cartItems[i].available_qty);
+      this.cartItems[i].available_qty = this.cart.range(this.cartItems[i].available_qty);
       this.cartItems[i].authors = this.cartItems[i].authors.join(', ');
     }
   }
-
-  //** Return array number from [startValue, ..., n] */
-  private range(n: number, startValue = 1) {
-    !Number.isNaN(n) ? n = n : n = 1;
-    return [...Array(n).keys()].map(x => x+1);
-  }
-
 }

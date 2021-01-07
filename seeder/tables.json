@@ -12,6 +12,6 @@
     "importbookformdetails": "CREATE TABLE importbookformdetails (form_id integer references importbookforms(form_id) on delete cascade, isbn char(13) references books(isbn) on delete cascade on update cascade, quantity integer not null, price float not null, primary key(form_id, isbn));",
     "carts": "CREATE TABLE carts (cart_id integer auto_increment primary key, customer_id integer references customers(customer_id) on delete cascade, total_price float not null);",
     "cartdetails": "CREATE TABLE cartdetails (cart_id integer references carts(cart_id) on delete cascade, isbn char(13) references books(isbn) on delete cascade on update cascade, quantity integer not null, price float not null, primary key (cart_id, isbn));",
-    "notifications": "CREATE TABLE notifacations (customer_id integer references customers(customer_id) on delete cascade, msg varchar(500) not null);",
-    "recoverpassword": "CREATE TABLE recoverpasswords (email varchar(100) not null,url varchar(255) not null,create_date datetime not null,role varchar(20) default 'CUSTOMER');"
+    "notifications": "CREATE TABLE notifications (notification_id varchar(255) primary key, customer_id integer references customers(customer_id) on delete cascade, message varchar(500) not null, create_date datetime not null;",
+    "recoverpasswords": "CREATE TABLE recoverpasswords (email varchar(100) not null, url varchar(255) not null, create_date datetime not null, role varchar(20) default 'CUSTOMER');"
 }

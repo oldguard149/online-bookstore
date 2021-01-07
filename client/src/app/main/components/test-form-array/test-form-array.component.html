@@ -1,0 +1,12 @@
+<div [formGroup]="form">
+    <ng-container formArrayName="formArray">
+        <div *ngFor="let control of formArray.controls; let i = index;" [formGroupName]="i">
+            <input type="hidden" name="isbn" formControlName="isbn">
+            <input type="hidden" name="price" formControlName="price">
+            <input type="text" name="quantity" formControlName="quantity">
+            <button (click)="removeRow(i)">Remove Field</button>
+        </div>
+    </ng-container>
+    <button (click)="addField()">Add field</button>
+    <button (click)="showValue()">Show values</button>
+</div>

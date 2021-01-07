@@ -8,6 +8,7 @@ require('./api/config/passport');
 
 const mainRouter = require('./api/routes/mainRoutes');
 const managementRouter = require('./api/routes/managementRoutes');
+const { authMiddleware } = require('./api/shared/helper');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -21,7 +22,7 @@ app.use('/', (req, res, next) => {
   next();
 });
 app.use('/api', mainRouter);
-app.use('/api/management', managementRouter);
+app.use('/api/management', authMiddleware, managementRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

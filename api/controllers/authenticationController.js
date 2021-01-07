@@ -4,9 +4,9 @@ const { body, validationResult } = require('express-validator');
 
 const Q = require('../database/query');
 const pool = require('../config/pool');
-const { findOne, queryUsingTransaction } = require('../database/db_hepler');
+const { findOne, queryUsingTransaction, query } = require('../database/db_hepler');
 const { sendErrorResponseMessage, sendSuccessResponseMessage,
-    handleError, handleValidationError, isResultEmpty, getHashPassword } = require('../shared/helper')
+    handleError, handleValidationError, isResultEmpty, getHashPassword, role } = require('../shared/helper')
 
 function generateJwt(user) {
     const expirey = new Date();
@@ -90,6 +90,32 @@ exports.register = [ // todo: check unique for phone number
             handleError(res, 500, err, 'Đã xảy ra lỗi ở server. Xin vui lòng đăng ký lại.');
         } finally {
             connection.release();
+        }
+    }
+]
+
+exports.changePassword = [
+    body('new-password').isEmpty().withMessage('Please fill in password for changed'),
+    async (req, res) => {
+        try {
+            const rawPassword = req.body['new-password'];
+            const userId = parseInt(req.payload.id);
+            const userRole = req.payload.role;
+            const hashedPassword = await getHashPassword(rawPassword);
+            let result;
+            if (userRole === role.CUSTOMER) {
+                result = await query(Q.user.updateCustomerPassword, [hashedPassword, userId]);
+            } else { 
+                result = await query(Q.user.updateEmployeePassword, [hashedPassword, userId]);
+            }
+
+            if (result.affectedRow !== 0) {
+                sendSuccessResponseMessage(res, ['New passowrd has been updated.']);
+            } else {
+                sendErrorResponseMessage(res, ['There are some issues occured. Please try again later.']);
+            }
+        } catch (err) {
+            handleError(res, 500, err);
         }
     }
 ]

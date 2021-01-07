@@ -7,7 +7,7 @@ const Q = require('../database/query');
 function getDataWhenCreateOrUpdate(req) {
     const formData = {
         id: parseInt(req.params.id),
-        name: req.body.name,
+        name: req.body.fullname,
         email: req.body.email,
         identity_number: req.body.identity_number,
         hash_password: req.body.password,
@@ -76,7 +76,7 @@ exports.empSearch = async (req, res) => {
 
 function validateOnEmployeeForm() {
     return [
-        body('name').trim().not().isEmpty().withMessage('Vui lòng điền họ tên nhân viên').escape(),
+        body('fullname').trim().not().isEmpty().withMessage('Vui lòng điền họ tên nhân viên').escape(),
         body('email').trim().normalizeEmail().not()
             .isEmpty().withMessage('Vui lòng điền Email')
             .isEmail().withMessage('Email không hợp lệ').escape(),
@@ -130,45 +130,7 @@ exports.empCreate = [
 
 exports.empUpdate = [
     ...validateOnEmployeeForm(),
-    async (req, res) => {
-        const formData = getDataWhenCreateOrUpdate(req);
-        const currentEmployeeId = parseInt(req.params.id);
-        const errorValidate = validationResult(req);
-        if (Number.isNaN(currentEmployeeId)) {
-            return sendErrorResponseMessage(res, ['Employee id is invalid']);
-        }
-        if (!errorValidate.isEmpty()) {
-            return res.render('./employee/emp-form', { title: 'update', error: errorValidate.array(), emp: formData });
-        }
-
-        try {
-            const oldEmp = await findOne(Q.user.employeeById, [currentEmployeeId]);
-            if (isResultEmpty(oldEmp)) {
-                sendErrorResponseMessage(res, ['Employee not found']);
-            } else {
-                const [emailInEmployee, emailInCustomer, identity_number, phoneNumber] =
-                    await Promise.resolve(loadCheckDataForUpdateOrCreateEmp(formData));
-
-                if ((!isResultEmpty(emailInEmployee) || !isResultEmpty(emailInCustomer)) && oldEmp.email !== formData.email) {
-                    return sendErrorResponseMessage(res, ['Email đã được sử dụng. Xin hãy kiểm tra lại.']);
-                }
-                if (isDataNotValidForUpdate(identity_number, oldEmp.identity_number, formData.identity_number)) {
-                    return sendErrorResponseMessage(res, ['Số cmnd đã được sử dụng. Xin hãy kiểm tra lại.']);
-                }
-                if (isDataNotValidForUpdate(phoneNumber, oldEmp.phone_number, formData.phone_number)) {
-                    return sendErrorResponseMessage(res, ['Số điện thoại đã được sử dụng. Xin hãy kiểm tra lại.']);
-                }
-
-                await query(Q.user.updateEmployee, [
-                    formData.name, formData.email, formData.identity_number, formData.phone_number,
-                    formData.salary, formData.role, currentEmployeeId
-                ])
-                sendSuccessResponseMessage(res, ['Cập nhật thông tin thành công.']);
-            }
-        } catch (err) {
-            handleError(res, 500, err);
-        }
-    }
+    updateEmployee
 ]
 
 exports.empDelete = async (req, res) => {
@@ -184,3 +146,73 @@ exports.empDelete = async (req, res) => {
         handleError(res, 500, err);
     }
 }
+
+exports.empUpdateProfile = [
+    body('fullname').trim().not().isEmpty().withMessage('Vui lòng điền họ tên nhân viên').escape(),
+    body('email').trim().normalizeEmail().not()
+        .isEmpty().withMessage('Vui lòng điền Email')
+        .isEmail().withMessage('Email không hợp lệ').escape(),
+    body('identity_number').trim().not().isEmpty().withMessage('Vui lòng điền số chứng minh nhân dân.')
+        .matches(/^\d{9}$|^\d{12}$/).withMessage('CMND phải có 9 hoặc 12 số.').escape(),
+    body('phone_number').trim().not().notEmpty().withMessage('Vui lòng điền số điện thoại của nhân viên.')
+        .matches(/^\d{10,15}$/i).withMessage('Số điện thoại không hợp lệ.').escape(),
+    updateEmployee
+];
+
+async function updateEmployee (req, res) {
+    const formData = getDataWhenCreateOrUpdate(req);
+    let currentEmployeeId = parseInt(req.params.id | req.payload.id);
+    const validationError = validationResult(req);
+    if (Number.isNaN(currentEmployeeId)) {
+        return sendErrorResponseMessage(res, ['Employee id is invalid']);
+    }
+    if (!validationError.isEmpty()) {
+        return handleValidationError(res, validationError);
+    }
+
+    try {
+        const oldEmp = await findOne(Q.user.employeeById, [currentEmployeeId]);
+        if (isResultEmpty(oldEmp)) {
+            sendErrorResponseMessage(res, ['Employee not found']);
+        } else {
+            const [emailInEmployee, emailInCustomer, identity_number, phoneNumber] =
+                await Promise.resolve(loadCheckDataForUpdateOrCreateEmp(formData));
+
+            if ((!isResultEmpty(emailInEmployee) || !isResultEmpty(emailInCustomer)) && oldEmp.email !== formData.email) {
+                return sendErrorResponseMessage(res, ['Email đã được sử dụng. Xin hãy kiểm tra lại.']);
+            }
+            if (isDataNotValidForUpdate(identity_number, oldEmp.identity_number, formData.identity_number)) {
+                return sendErrorResponseMessage(res, ['Số cmnd đã được sử dụng. Xin hãy kiểm tra lại.']);
+            }
+            if (isDataNotValidForUpdate(phoneNumber, oldEmp.phone_number, formData.phone_number)) {
+                return sendErrorResponseMessage(res, ['Số điện thoại đã được sử dụng. Xin hãy kiểm tra lại.']);
+            }
+
+            await query(Q.user.updateEmployee, [
+                formData.name, formData.email, formData.identity_number, formData.phone_number,
+                formData.salary, formData.role, currentEmployeeId
+            ])
+            sendSuccessResponseMessage(res, ['Cập nhật thông tin thành công.']);
+        }
+    } catch (err) {
+        handleError(res, 500, err);
+    }
+}
+
+exports.updateNewPassword = [
+    body('new_password').not().isEmpty().withMessage('Please filled in password to continue.'),
+    async (req, res) => {
+        try {
+            const empId = parseInt(req.payload.id);
+            const hashedPassword = await getHashPassword(req.body.new_password);
+            const result = await query(Q.user.updatePasswordForEmployee, [hashedPassword, empId]);
+            if (result.affectedRow != 0) {
+                sendSuccessResponseMessage(res, ['Password has been updated']);
+            } else {
+                sendErrorResponseMessage(res, ['Some error occured. Please try again later']);
+            }
+        } catch (err) {
+            handleError(res, 500, err);
+        }
+    }
+]

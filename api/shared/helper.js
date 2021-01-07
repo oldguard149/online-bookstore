@@ -72,7 +72,7 @@ function preprocessBookList(arr) {
                 "name": element.name,
                 "image_url": element.image_url,
                 "summary": element.summary,
-                "available_qty": element.quantity,
+                "available_qty": element.available_qty,
                 "price": element.price,
                 Genre: {
                     genre_id: element.genre_id || null,

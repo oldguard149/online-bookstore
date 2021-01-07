@@ -4,13 +4,34 @@
             <h2 id="left">Giỏ hàng</h2>
             <span id="right">Giá</span>
         </div>
-        <cart-item *ngFor="let item of cartItems; let i=index;"
-            [cartItem]="item"
-            [index]="i"
-            (onDeleteItem)="handleDeleteCartItem($event)"
-        ></cart-item>
-        <div id="total-price">
-            <h3>Tổng tiền: {{totalPrice}}</h3>
-        </div>
+        <ng-container formArrayName="cartItemFormArray">
+            <div class="cart-item" *ngFor="let item of cartItems; let i=index;">
+                <div class="image">
+                    <img [src]="item.image_url">
+                </div>
+                <div class="info">
+                    <h3>{{item.book_name}}</h3>
+                    <p>Author: <i>{{item.authors}}</i></p>
+                    <p>Publisher: <i>{{item.publisher_name}}</i></p>
+                    <ng-container [formGroupName]="i">
+                        <input type="hidden" formControlName="isbn">
+                        <input type="hidden" formControlName="price">
+                        <label for="qty">Quantity:</label>
+                        <select formControlName="quantity" id="qty">
+                            <option *ngFor="let value of item.available_qty" [value]="value">{{value}}</option>
+                        </select>
+                    </ng-container>
+                    <span class="seperate-horizontal">|</span>
+                    <a class="delete-cart-item" (click)="deleteCartItem(i)">Xóa khỏi giỏ hàng</a>
+                </div>
+                <div class="price">
+                    <h3>{{item.price}}</h3>
+                </div>
+            </div>
+            <div id="total-price">
+                <h3>Tổng tiền: {{totalPrice}}</h3>
+            </div>
+        </ng-container>
+        <button mat-raised-button color="primary" type="submit">Check Out</button>
     </form>
 </div>

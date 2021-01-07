@@ -26,4 +26,8 @@ export class TopnavComponent implements OnInit {
   canDoManagement(): boolean {
     return !this.auth.isCustomer();
   }
+
+  logout(): void {
+    this.auth.logout();
+  }
 }

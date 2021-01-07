@@ -14,6 +14,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatStepperModule } from "@angular/material/stepper";
+import { MatRadioModule } from "@angular/material/radio";
 
 const materialComponents = [
   MatButtonModule,
@@ -29,7 +31,9 @@ const materialComponents = [
   MatExpansionModule,
   MatPaginatorModule,
   MatTableModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatStepperModule,
+  MatRadioModule
 ];
 
 @NgModule({

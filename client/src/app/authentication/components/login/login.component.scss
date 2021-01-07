@@ -12,15 +12,14 @@
 }
 
 .mat-form-field {
-    width: 50%;
     margin-bottom: 0.5rem;
 }
 
-.form-container {
+.form-container, mat-card {
     width: 50%;
 }
 
-.form {
+.form, .mat-form-field {
     width: 100%;
 }
 

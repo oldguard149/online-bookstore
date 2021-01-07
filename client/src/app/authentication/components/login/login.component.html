@@ -1,9 +1,9 @@
 <div class="form-container">
     <h2>Log In</h2>
     <alert [errorMsg]="errorMsg" [style]="{width: '50%'}"></alert>
-    
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form">
-        <mat-card>
+    <mat-card>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form">
+
             <mat-form-field appearance="fill">
                 <mat-label>Email</mat-label>
                 <input matInput type="email" formControlName="email">
@@ -16,6 +16,6 @@
                 <mat-error *ngIf="password.hasError('required')">Password is required</mat-error>
             </mat-form-field>
             <button mat-raised-button color="primary" type="submit">Log in</button>
-        </mat-card>
-    </form>
+        </form>
+    </mat-card>
 </div>

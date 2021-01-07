@@ -24,6 +24,11 @@ import { BookDetailComponent } from './components/book-detail/book-detail.compon
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CartComponent } from './components/cart/cart.component';
 import { CartItemComponent } from './components/cart-item/cart-item.component';
+import { CheckoutComponent } from './components/checkout/checkout.component';
+import { BillService } from './services/bill.service';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { TestCartComponent } from './components/test-cart/test-cart.component';
+import { TestFormArrayComponent } from './components/test-form-array/test-form-array.component';
 
 
 @NgModule({
@@ -46,6 +51,9 @@ import { CartItemComponent } from './components/cart-item/cart-item.component';
     BookDetailComponent,
     CartComponent,
     CartItemComponent,
+    CheckoutComponent,
+    TestCartComponent,
+    TestFormArrayComponent,
   ],
   imports: [
     CommonModule,
@@ -53,10 +61,12 @@ import { CartItemComponent } from './components/cart-item/cart-item.component';
     MaterialModule,
     SharedComponentsModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSnackBarModule
   ],
   providers: [
-    DataService
+    DataService,
+    BillService
   ]
 })
 export class MainModule { }

@@ -1,0 +1,33 @@
+<mat-card>
+    <alert [successMsg]="successMsg" [errorMsg]="errorMsg"></alert>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+        <mat-form-field appearance="fill">
+            <input matInput type="email" formControlName="email">
+            <mat-label>Email</mat-label>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="fullname" type="text">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Phone Number</mat-label>
+            <input matInput type="tel" formControlName="phoneNumber">
+        </mat-form-field>
+
+        <!-- <ng-container *ngIf="true"> -->
+        <mat-form-field appearance="fill">
+            <mat-label>Address</mat-label>
+            <input matInput type="text" formControlName="address">
+        </mat-form-field>
+        <!-- </ng-container> -->
+
+
+        <mat-form-field appearance="fill" *ngIf="!isCustomer()">
+            <mat-label>Identity number</mat-label>
+            <input type="text" matInput formControlName="identityNumber" required>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit">Update info</button>
+    </form>
+</mat-card>

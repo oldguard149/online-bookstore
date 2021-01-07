@@ -15,7 +15,7 @@ export class CartService {
     return this.http.post(apiUrl, body).toPromise();
   }
 
-  getCartItem(): any {
+  getCartItems(): any {
     const apiUrl = `${apiurl}/cart`;
     return this.http.get(apiUrl).toPromise();
   }
@@ -28,5 +28,11 @@ export class CartService {
   updateCartItems(body): any {
     const apiUrl = `${apiurl}/update-cart-items`;
     return this.http.post(apiUrl, body).toPromise();
+  }
+
+  //** Return array number from [startValue, ..., n] */
+  range(n: number, startValue = 1) {
+    !Number.isNaN(n) ? n = n : n = 1;
+    return [...Array(n).keys()].map(x => x+1);
   }
 }

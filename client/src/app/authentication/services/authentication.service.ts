@@ -10,6 +10,12 @@ interface TokenPayload {
   password: string;
   name?: string;
 }
+
+interface IJwtInfo {
+  id: number,
+  role: string,
+  expirey: any
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -39,7 +45,7 @@ export class AuthenticationService {
     this.router.navigateByUrl('/');
   }
 
-  getUserDetail() {
+  getUserDetail(): IJwtInfo | null {
     const token = this.getToken();
     if(token) {
       const payload = window.atob(token.split('.')[1]);

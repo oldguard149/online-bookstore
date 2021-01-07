@@ -7,8 +7,7 @@
             <a mat-button *ngIf="canDoManagement()" routerLink="/management" class="manager">Quản lý</a>
             <a mat-button *ngIf="!isLoggedIn()" routerLink="/login">Đăng nhập</a>
             <a mat-button routerLink="/sign-up">Sign up</a>
-            <a mat-button *ngIf="isLoggedIn()" >Đăng xuất</a> 
-            <!-- (click)="logout()" -->
+            <a mat-button *ngIf="isLoggedIn()" (click)="logout()" >Đăng xuất</a> 
         </div>
     </mat-toolbar-row>
 </mat-toolbar>

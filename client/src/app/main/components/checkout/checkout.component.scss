@@ -1,0 +1,41 @@
+.wrapper-checkout {
+    display: grid;
+    grid-template-areas: "topnav" "main";
+}
+
+.checkout-main {
+    width: 80%;
+    margin: auto;
+}
+
+
+.cart-item-container {
+    display: grid;
+    grid-template-columns: 1fr 4fr; 
+}
+
+.cart-item-container img {
+    width: 100px;
+    margin: auto;
+}
+
+.cart-item-container > * {
+    padding-right: 0.5rem;
+}
+
+select {
+    padding: 0.5rem 1rem;
+}
+
+.medium-width {
+    max-width: 200px;
+}
+
+.small-width {
+    max-width: 50px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}

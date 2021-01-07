@@ -1,0 +1,27 @@
+// #profile-wrapper {
+:host { // select profile-index itself
+    display: grid;
+    grid-template-areas: "topnav topnav"
+                         "sidenav main";
+    grid-template-rows: max-content auto;
+    grid-template-columns: 300px auto;
+}
+
+.mat-sidenav {
+    width: 300px;
+    position: fixed;
+    top: 62px;
+}
+
+#sidenav {
+    grid-area: sidenav;
+}
+
+#profile-main {
+    grid-area: main;
+    min-height: calc(100vh - 62px);
+}
+
+::ng-deep .profile-main {
+    grid-area: main;
+}
