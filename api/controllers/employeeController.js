@@ -32,11 +32,11 @@ exports.employee = async (req, res) => {
     try {
         const empId = parseInt(req.params.id);
         if (Number.isNaN(empId)) {
-            return handleError(res, 400, 'Employee id is invalid');
+            return handleError(res, 400, 'Mã nhân viên không hợp lệ');
         }
         const emp = await findOne(Q.user.employeeById, [empId]);
         if (isResultEmpty(emp)) {
-            sendErrorResponseMessage(res, ['Not found employee']);
+            sendErrorResponseMessage(res, ['Mã nhân viên không tồn tại.']);
         } else {
             res.json({ success: true, employee: emp })
         }
@@ -59,7 +59,7 @@ exports.empList = async (req, res) => {
 
 exports.empSearch = async (req, res) => {
     try {
-        const pageSize = parseInt(getQueryParam(req, 'pageSize', 15));
+        const pageSize = parseInt(getQueryParam(req, 'pagesize', 15));
         const currentPage = parseInt(getQueryParam(req, 'page', 0));
         const rawSearchText = req.query.search;
         const offset = calculateOffsetForPagination(pageSize, currentPage);
@@ -83,7 +83,7 @@ function validateOnEmployeeForm() {
             .isEmail().withMessage('Email không hợp lệ').escape(),
         body('identity_number').trim().not().isEmpty().withMessage('Vui lòng điền số chứng minh nhân dân.')
             .matches(/^\d{9}$|^\d{12}$/).withMessage('CMND phải có 9 hoặc 12 số.').escape(),
-        body('password').trim().not().isEmpty(),
+        body('password').trim().not().isEmpty().withMessage('Vui lòng điên mật khẩu'),
         body('phone_number').trim().not().notEmpty().withMessage('Vui lòng điền số điện thoại của nhân viên.')
             .matches(/^\d{10,15}$/i).withMessage('Số điện thoại không hợp lệ.').escape(),
         body('salary').trim().not().isEmpty().withMessage('Vui lòng điền lương của nhân viên').isFloat(),
@@ -138,7 +138,7 @@ exports.empDelete = async (req, res) => {
     try {
         const empId = parseInt(req.params.id);
         if (isNaN(empId)) {
-            sendErrorResponseMessage(res, 'Invalid employee id');
+            sendErrorResponseMessage(res, 'Mã nhân viên không hợp lệ.');
         } else {
             await query(Q.user.deleteEmployee, empId);
             sendSuccessResponseMessage(res, ['Xóa nhân viên thành công.']);
@@ -153,7 +153,7 @@ async function updateEmployee(req, res) {
     let currentEmployeeId = parseInt(req.params.id | req.payload.id);
     const validationError = validationResult(req);
     if (Number.isNaN(currentEmployeeId)) {
-        return sendErrorResponseMessage(res, ['Employee id is invalid']);
+        return sendErrorResponseMessage(res, ['Mã nhân viên không hợp lệ.']);
     }
     if (!validationError.isEmpty()) {
         return handleValidationError(res, validationError);
@@ -162,7 +162,7 @@ async function updateEmployee(req, res) {
     try {
         const oldEmp = await findOne(Q.user.employeeById, [currentEmployeeId]);
         if (isResultEmpty(oldEmp)) {
-            sendErrorResponseMessage(res, ['Employee not found']);
+            sendErrorResponseMessage(res, ['Không tìm thấy nhân viên']);
         } else {
             const [emailInEmployee, emailInCustomer, identity_number, phoneNumber] =
                 await Promise.resolve(loadCheckDataForUpdateOrCreateEmp(formData));

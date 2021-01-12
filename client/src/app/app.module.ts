@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpErrorInterceptor } from './shared/interceptor/http-error.interceptor';
 import { TokenInterceptor } from './shared/interceptor/token.interceptor';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { SharedComponentsModule } from './shared-components/shared-components.module';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    SharedComponentsModule
   ],
   providers: [
     {

@@ -11,8 +11,8 @@
                 </div>
                 <div class="info">
                     <h3>{{item.book_name}}</h3>
-                    <p>Author: <i>{{item.authors}}</i></p>
-                    <p>Publisher: <i>{{item.publisher_name}}</i></p>
+                    <p>Tác giả: <i>{{item.authors}}</i></p>
+                    <p>Nhà xuất bản: <i>{{item.publisher_name}}</i></p>
                     <ng-container [formGroupName]="i">
                         <input type="hidden" formControlName="isbn">
                         <input type="hidden" formControlName="price">
@@ -29,9 +29,9 @@
                 </div>
             </div>
             <div id="total-price">
-                <h3>Tổng tiền: {{totalPrice}}</h3>
+                <h3>Thành tiền: {{totalPrice}}</h3>
             </div>
         </ng-container>
-        <button mat-raised-button color="primary" type="submit">Check Out</button>
+        <button mat-raised-button color="primary" type="submit">Thanh toán</button>
     </form>
 </div>

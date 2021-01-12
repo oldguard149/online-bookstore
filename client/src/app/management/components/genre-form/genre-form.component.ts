@@ -38,10 +38,10 @@ export class GenreFormComponent implements OnInit {
     this.initializeFormForUpdate();
 
     if (this.type === 'update') {
-      this.displayButton = 'Update';
+      this.displayButton = 'Cập nhật';
       this.onSubmit = this.updateGenre;
     } else {
-      this.displayButton = 'Create';
+      this.displayButton = 'Tạo';
       this.onSubmit = this.createGenre;
     }
   }

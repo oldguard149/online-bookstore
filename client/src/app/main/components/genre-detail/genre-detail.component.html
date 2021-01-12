@@ -1,7 +1,7 @@
 <ng-container *ngIf="booklist && genre">
     <h2>{{genre.name}}</h2>
     <h2 *ngIf="booklist.length === 0" class="no-book">
-        Hiện chưa có sách thuộc tác giả này
+        Hiện chưa có sách thuộc thể loại này
     </h2>
     <booklist
         [booklist]="booklist"

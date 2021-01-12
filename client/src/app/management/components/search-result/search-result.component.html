@@ -7,17 +7,17 @@
         </ng-container>
         <!-- Name Column -->
         <ng-container matColumnDef="name">
-            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef> Tên </mat-header-cell>
             <mat-cell class="link" *matCellDef="let element">
                 {{element[nameKey]}} </mat-cell>
         </ng-container>
 
         <!-- Option Column  -->
         <ng-container matColumnDef="option">
-            <mat-header-cell class="medium-width align-center" *matHeaderCellDef> Option </mat-header-cell>
+            <mat-header-cell class="medium-width align-center" *matHeaderCellDef> Lựa chọn </mat-header-cell>
             <mat-cell class="medium-width align-button" *matCellDef="let element">
-                <a [routerLink]="['/management', 'update', urlPath, element[idKey]]" mat-flat-button color="primary">Update</a>
-                <a [routerLink]="['/management', 'delete', urlPath, element[idKey]]" mat-flat-button color="warn">Delete</a>
+                <a [routerLink]="['/management', 'update', urlPath, element[idKey]]" mat-flat-button color="primary">Cập nhật</a>
+                <a [routerLink]="['/management', 'delete', urlPath, element[idKey]]" mat-flat-button color="warn">Xóa</a>
             </mat-cell>
         </ng-container>
 

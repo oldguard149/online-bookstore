@@ -15,7 +15,7 @@ exports.createBill = async (req, res) => {
         const billId = uuidv4();
 
         if (isResultEmpty(cartItems)) { // make sure there are at least one book in cart before create bill
-            sendErrorResponseMessage(res, ['Your cart is empty']);
+            sendErrorResponseMessage(res, ['Không có sách trong giỏ hàng của bạn.']);
         } else {
             await queryUsingTransaction(connection, Q.startTransaction);
             await queryUsingTransaction(connection, Q.bill.createBill,
@@ -38,13 +38,13 @@ exports.createBill = async (req, res) => {
 
                     totalPrice += parseInt(cartItem.quantity) * parseFloat(cartItem.price);
                 } else {
-                    return sendErrorResponseMessage(res, [`Order quantity of ${cartItem.isbn} is not valid.`])
+                    return sendErrorResponseMessage(res, [`Số lượng sách không đủ. Vui lòng chọn một số nhỏ hơn.`])
                 }
             }
 
             await queryUsingTransaction(connection, Q.bill.updateBillTotalPrice, [totalPrice, billId]);
             await queryUsingTransaction(connection, Q.commit);
-            sendSuccessResponseMessage(res, ['Bill has been created']);
+            sendSuccessResponseMessage(res, ['Hóa đơn đã được tạo']);
         }
     } catch (error) {
         await queryUsingTransaction(connection, Q.rollback);
@@ -60,10 +60,10 @@ exports.confirmBill = async (req, res) => {
         const emp_id = req.payload.id;
         const bill = await query(Q.bill.billByBillId, [billId]);
         if (isResultEmpty(bill)) {
-            sendErrorResponseMessage(res, [`Bill with id ${billId} doesn't exist`]);
+            sendErrorResponseMessage(res, [`Hóa đơn với id ${billId} không tồn tại.`]);
         } else {
             await query(Q.bill.confirmBill, [emp_id, billId]);
-            sendSuccessResponseMessage(res, [`Bill confirmed successfully.`]);
+            sendSuccessResponseMessage(res, [`Duyệt đơn thành công.`]);
         }
     } catch (err) {
         handleError(res, 500, err);
@@ -77,7 +77,7 @@ exports.cancelBillOrder = async (req, res) => {
         const emp_id = req.payload.id;
         const bill = await query(Q.bill.billByBillId, [billId]);
         if (isResultEmpty(bill)) {
-            sendErrorResponseMessage(res, [`Bill with id ${billId} doesn't exist`]);
+            sendErrorResponseMessage(res, [`Hóa đơn với id ${billId} không tồn tại.`]);
         } else {
             const cart = await findOne(Q.cart.cartByCustomerId, [customerId]);
             const cart_id = parseInt(cart.cart_id);
@@ -89,7 +89,7 @@ exports.cancelBillOrder = async (req, res) => {
             }
             await queryUsingTransaction(connection, Q.bill.cancelBill, [emp_id, billId]);
             await queryUsingTransaction(connection, Q.commit);
-            sendSuccessResponseMessage(res, ['Bill has been cancelled']);
+            sendSuccessResponseMessage(res, ['Hóa đơn đã bị hủy.']);
         }
     } catch (err) {
         await queryUsingTransaction(Q.rollback);
@@ -106,7 +106,7 @@ exports.billList = async (req, res) => {
         const bills = await query(Q.bill.billList, [page, pageSize]);
         res.json(bills);
     } catch (error) {
-        handleError(res, 500, error, 'Server error when loading bill list');
+        handleError(res, 500, error, 'Lỗi máy chủ khi tải danh sách hóa đơn');
     }
 }
 
@@ -115,13 +115,13 @@ exports.billDetail = async (req, res) => {
         const billId = req.params.id;
         const bill = await findOne(Q.bill.billByBillId, [billId]);
         if (isResultEmpty(bill)) {
-            return sendErrorResponseMessage(res, [`Bill with id ${billId} does not exist`]);
+            return sendErrorResponseMessage(res, [`Hóa đơn với id ${billId} không tồn tại.`]);
         }
         const billItems = await query(Q.bill.billItemsByBillId, [billId]);
         bill['items'] = billItems;
         res.json({ success: true, bill: bill });
     } catch (error) {
-        handleError(req, 500, error, `Can't find bill.`);
+        handleError(req, 500, error, `Lỗi máy chủ. Vui lòng thử lại sau.`);
     }
 }
 
@@ -133,7 +133,7 @@ exports.billDelete = async (req, res) => {
         await queryUsingTransaction(connection, Q.bill.deleteBillWitthBillId, [billId]);
         await queryUsingTransaction(connection, Q.bill.deleteBillItemsWithBillId, [billId]);
         await queryUsingTransaction(connection, Q.commit);
-        sendSuccessResponseMessage(res, ['Bill has been deleted']);
+        sendSuccessResponseMessage(res, ['Hóa đơn đã được xóa']);
     } catch (err) {
         await queryUsingTransaction(Q.rollback);
         handleError(res, 500, err);
@@ -163,7 +163,7 @@ exports.billDetailForCustomer = async (req, res) => {
             bill['items'] = billItems;
             res.json({ success: true, bill });
         } else {
-            sendErrorResponseMessage(res, [`You don't have permission to view this bill`]);
+            sendErrorResponseMessage(res, [`Bạn không được phép xem hóa đơn này.`]);
         }
     } catch (err) {
         handleError(res, 500, err);

@@ -1,39 +1,39 @@
 <div class="form-container">
-    <h2>Sign Up</h2>
+    <h2>Đăng ký</h2>
     <mat-card>
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="form">
             <mat-form-field appearance="fill">
-                <mat-label>Name</mat-label>
+                <mat-label>Họ tên</mat-label>
                 <input matInput formControlName="name" type="text">
-                <mat-error *ngIf="name.hasError('required')">Name is required</mat-error>
+                <mat-error *ngIf="name.hasError('required')">Vui lòng điền họ tên</mat-error>
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Email</mat-label>
                 <input matInput type="email" formControlName="email">
-                <mat-error *ngIf="email.hasError('email')">Email is invalid</mat-error>
-                <mat-error *ngIf="email.hasError('required')">Email is required</mat-error>
+                <mat-error *ngIf="email.hasError('email')">Email không hợp lệ</mat-error>
+                <mat-error *ngIf="email.hasError('required')">Vui lòng điền email</mat-error>
             </mat-form-field>
             <mat-form-field appearance="fill">
-                <mat-label>Password</mat-label>
+                <mat-label>Mật khẩu</mat-label>
                 <input matInput type="password" formControlName="password">
-                <mat-error *ngIf="password.hasError('required')">Password is required</mat-error>
+                <mat-error *ngIf="password.hasError('required')">Vui lòng điền mật khẩu</mat-error>
             </mat-form-field>
             <mat-form-field appearance="fill">
-                <mat-label>Confirm Password</mat-label>
+                <mat-label>Xác nhận mật khẩu</mat-label>
                 <input matInput type="password" formControlName="confirmPassword">
-                <mat-error *ngIf="confirmPassword.hasError('required')">Please fill in this field to confirm password
+                <mat-error *ngIf="confirmPassword.hasError('required')">Vui lòng điền trường này để xác nhận mật khẩu
                 </mat-error>
-                <mat-error *ngIf="confirmPassword.hasError('mustMatch')">Password does not match</mat-error>
+                <mat-error *ngIf="confirmPassword.hasError('mustMatch')">Mật khẩu không khớp</mat-error>
             </mat-form-field>
             <mat-form-field appearance="fill">
-                <mat-label>Phone Number</mat-label>
+                <mat-label>Số điện thoại</mat-label>
                 <input matInput type="tel" formControlName="phoneNumber">
             </mat-form-field>
             <mat-form-field appearance="fill">
-                <mat-label>Password</mat-label>
+                <mat-label>Địa chỉ</mat-label>
                 <input matInput type="text" formControlName="address">
             </mat-form-field>
-            <button mat-raised-button color="primary" type="submit">Sign up</button>
+            <button mat-raised-button color="primary" type="submit">Đăng ký</button>
 
         </form>
     </mat-card>

@@ -8,14 +8,14 @@
     
       <!-- Name Column -->
       <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> Tên thể loại </mat-header-cell>
         <mat-cell class="link" *matCellDef="let element" 
           [routerLink]="['/genre', element.genre_id]"> {{element.name}} </mat-cell>
       </ng-container>
     
       <!-- Bookcount Column -->
       <ng-container matColumnDef="bookcount">
-        <mat-header-cell class="medium-width align-center" *matHeaderCellDef> Number of books </mat-header-cell>
+        <mat-header-cell class="medium-width align-center" *matHeaderCellDef> Số lượng sách </mat-header-cell>
         <mat-cell class="medium-width align-center" *matCellDef="let element"> {{element.bookcount}} </mat-cell>
       </ng-container>
     

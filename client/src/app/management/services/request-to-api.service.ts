@@ -34,7 +34,7 @@ export class RequestToApiService {
     return this.http.delete(url);
   }
 
-  search(type: 'genre' | 'author' | 'publisher' | 'book',
+  search(type: 'genre' | 'author' | 'publisher' | 'book' | 'employee',
     search: string, page: string, pageSize: string): Observable<any> {
     const url = `search/${type}`;
     const options = {

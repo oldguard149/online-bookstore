@@ -18,7 +18,7 @@ export class SearchFormComponent implements OnInit {
   currentPage: number;
   pageSize: number;
   dataKey: string;
-  @Input() objectType: 'genre' | 'publisher' | 'author' | 'book';
+  @Input() objectType: 'genre' | 'publisher' | 'author' | 'book' | 'employee';
   @Output() sendSearchData: EventEmitter<any> = new EventEmitter();
 
   constructor(

@@ -5,7 +5,7 @@ const { preprocessBookList, calculateOffsetForPagination,
     sendSuccessResponseMessage, getQueryParam, handleValidationError } = require('../shared/helper');
 const pool = require('../config/pool');
 const Q = require('../database/query');
-
+const e = require('../shared/errormessages');
 
 exports.sidenav = async (req, res) => {
     try {
@@ -56,7 +56,7 @@ exports.bookDetail = async (req, res) => {
         const book = preprocessBookList(await query(Q.book.bookDetail, [isbn]))[0];
         if (isResultEmpty(book)) {
             // return res.status(404).json({ message: 'Page not found' });
-            return sendErrorResponseMessage(res, ['Page not found']);
+            return sendErrorResponseMessage(res, [e.pageNotFound]);
         }
         const recommendBook = preprocessBookList(await query(Q.book.recommendBook,
             [book.Publisher.publisher_id, book.Genre.genre_id, isbn, numberOfRecommendBook]));
@@ -72,7 +72,7 @@ exports.bookDelete = async (req, res) => {
         if (result.affectedRows !== 0) {
             sendSuccessResponseMessage(res, ['Sách đã được xóa.']);
         } else {
-            sendErrorResponseMessage(res, ['Some server errors happen. Please try again later'])
+            sendErrorResponseMessage(res, ['Đã xảy ra lỗi ở máy chủ. Vui lòng thử lại sau.'])
         }
     } catch (err) {
         handleError(res, 500, err);
@@ -192,7 +192,7 @@ exports.bookUpdate = [
                 const oldBook = await findOne(Q.book.bookByIsbn, [currentIsbn]);
                 // isbn in url send from client does not exist in database;
                 if (isResultEmpty(oldBook)) {
-                    return sendErrorResponseMessage(res, ['book not found']);
+                    return sendErrorResponseMessage(res, ['Không tìm thấy sách']);
                 }
 
                 // input isbn change and there is already an isbn like this in database

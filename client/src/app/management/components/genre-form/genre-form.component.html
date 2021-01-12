@@ -2,7 +2,7 @@
     <mat-card>
         <mat-form-field>
             <input matInput placeholder="Genre name" formControlName="name">
-            <mat-error *ngIf="name.hasError('required')">Please fill in genre's name</mat-error>
+            <mat-error *ngIf="name.hasError('required')">Vui lòng điển tên thể loại</mat-error>
         </mat-form-field>
         <button mat-raised-button [disabled]="!form.valid" type="submit">{{displayButton}}</button>
     </mat-card>

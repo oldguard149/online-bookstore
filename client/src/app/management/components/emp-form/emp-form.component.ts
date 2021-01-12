@@ -40,20 +40,26 @@ export class EmpFormComponent implements OnInit {
       salary: ['', Validators.required]
     });
 
+    if (this.type === 'update') {
+      this.initializeFormForUpdate();
+      this.onSubmit = this.updateEmp;
+      this.displayButton = 'Cập nhật';
+    } else {
+      this.onSubmit = this.createEmp;
+      this.displayButton = 'Tạo';
+    }
 
   }
 
   initializeFormForUpdate() {
-    if (this.type === 'update') {
-      this.form.patchValue({
-        fullname: this.employee.fullname,
-        email: this.employee.email,
-        identity_number: this.employee.identity_number,
-        phone_number: this.employee.phone_number,
-        role: this.employee.role,
-        salary: this.employee.salary
-      });
-    }
+    this.form.patchValue({
+      fullname: this.employee.fullname,
+      email: this.employee.email,
+      identity_number: this.employee.identity_number,
+      phone_number: this.employee.phone_number,
+      role: this.employee.role,
+      salary: this.employee.salary
+    });
   }
 
   createEmp() {

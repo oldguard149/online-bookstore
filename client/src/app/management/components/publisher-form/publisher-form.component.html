@@ -1,12 +1,12 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <mat-card>
         <mat-form-field>
-            <mat-label>Publisher name</mat-label>
+            <mat-label>Tên nhà xuất bản</mat-label>
             <input matInput placeholder="Publisher name" formControlName="name">
-            <mat-error *ngIf="publisherName.hasError('required')">Please fill in publisher name</mat-error>
+            <mat-error *ngIf="publisherName.hasError('required')">Vui lòng điền tên nhà xuất bản</mat-error>
         </mat-form-field>
         <mat-form-field>
-            <mat-label>Address</mat-label>
+            <mat-label>Địa chỉ</mat-label>
             <input matInput placeholder="Address">
         </mat-form-field>
         <mat-form-field>

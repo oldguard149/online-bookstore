@@ -38,7 +38,7 @@ export class RegisterComponent implements OnInit {
     this.auth.register(this.registerForm.value).toPromise()
       .then(data => {
         if (data.success) {
-          this.flash.setMessage('success', 'Register successfully');
+          this.flash.setMessage('success', 'Đăng ký thành công');
           this.router.navigateByUrl('/login');
         } else {
           this.errorMsg = data.message;

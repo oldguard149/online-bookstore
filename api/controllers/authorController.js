@@ -5,7 +5,7 @@ const { preprocessBookList, calculateOffsetForPagination,
     handleError, isResultEmpty, getQueryParam, 
     sendErrorResponseMessage, sendSuccessResponseMessage } = require('../shared/helper');
 const Q = require('../database/query');
-
+const e = require('../shared/errormessages');
 
 exports.authorList = async (req, res) => {
     try {
@@ -31,13 +31,13 @@ exports.authorDetail = async (req, res) => {
         const bookPerPage = parseInt(req.query.pagesize) || 30;
         const authorId = parseInt(req.params.id);
         if (isNaN(authorId)) {
-            return handleError(res, 404, null, 'Page not found!');
+            return handleError(res, 404, null, e.pageNotFound);
         }
         const offset = calculateOffsetForPagination(bookPerPage, currentPage);
 
         const author = await findOne(Q.author.authorById, [authorId]);
         if (isResultEmpty(author)) {
-            return handleError(res, 404, null, 'Page not found!');
+            return handleError(res, 404, null, e.pageNotFound);
         }
         const count = await countData(Q.author.bookCountForAuthorDetail, [authorId]);
         if (count > 0) {
@@ -79,7 +79,7 @@ exports.author = async (req, res) => {
     try {
         const authorId = parseInt(req.params.id);
         if (isNaN(authorId)) {
-            return handleError(res, 404, null, 'Page not found!');
+            return handleError(res, 404, null, e.pageNotFound);
         }
         const author = await findOne(Q.author.authorInfoForManagement, [authorId]);
         if (isResultEmpty(author)) {
@@ -95,7 +95,7 @@ exports.authorDeleteData = async (req, res) => {
     try {
         const authorId = parseInt(req.params.id);
         if (isNaN(authorId)) {
-            return handleError(res, 404, null, 'Page not found!');
+            return handleError(res, 404, null, e.pageNotFound);
         }
         const author = await findOne(Q.author.authorInfoForManagement, [authorId]);
         if (isResultEmpty(author)) {
@@ -116,7 +116,7 @@ exports.authorUpdate = [
         const formData = { fullname: req.body.fullname, info: req.body.info || null };
         const authorId = parseInt(req.params.id);
         if (isNaN(authorId)) {
-            return handleError(res, 404, null, 'Page not found!');
+            return handleError(res, 404, null, e.pageNotFound);
         }
         const validationError = validationResult(req);
         if (!validationError.isEmpty()) {
@@ -144,7 +144,7 @@ exports.authorDelete = async (req, res) => {
     try {
         const authorId = parseInt(req.params.id);
         if (isNaN(authorId)) {
-            return handleError(res, 404, null, 'Page not found!');
+            return handleError(res, 404, null, e.pageNotFound);
         }
         await query(Q.author.deleteAuthor, [authorId]);
         sendSuccessResponseMessage(res, [`Đã xóa thành công tác giả.`])

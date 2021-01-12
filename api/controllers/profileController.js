@@ -5,9 +5,9 @@ const Q = require('../database/query');
 const { body, validationResult } = require('express-validator');
 
 exports.updateCustomerProfile = [
-    body('fullname').notEmpty().withMessage('Please fill in your full name'),
-    body('phoneNumber').notEmpty().withMessage('Please fill in your phone number'),
-    body('address').notEmpty().withMessage('Address is required for delivering'),
+    body('fullname').notEmpty().withMessage('Vui lòng điền họ tên.'),
+    body('phoneNumber').notEmpty().withMessage('Vui lòng điền số điện thoại.'),
+    body('address').notEmpty().withMessage('Vui lòng điền địa chỉ để giao hàng.'),
 
     async (req, res) => {
         const validationError = validationResult(req);
@@ -23,7 +23,7 @@ exports.updateCustomerProfile = [
             }
             const result = await query(Q.user.updateCustomerInfo,
                 [customerInfo.fullname, customerInfo.phoneNumber, customerInfo.address, customerId]);
-            sendSuccessResponseMessage(res, ['Customer information has been updated.']);
+            sendSuccessResponseMessage(res, ['Thông tin đã được cập nhật.']);
         } catch (err) {
             handleError(res, 500, err);
         }
@@ -31,10 +31,11 @@ exports.updateCustomerProfile = [
 ];
 
 exports.updateEmployeeProfile = [
-    body('fullname').notEmpty().withMessage('Fill name'),
-    body('phone-number').escape(),
-    body('identity-number').notEmpty().withMessage('Fill identity number'),
-
+    body('fullname').notEmpty().withMessage('Vui lòng điền họ tên.'),
+    body('phone-number').trim().not().notEmpty().withMessage('Vui lòng điền số điện thoại của nhân viên.')
+    .matches(/^\d{10,15}$/i).withMessage('Số điện thoại không hợp lệ.').escape(),
+    body('identity-number').trim().not().isEmpty().withMessage('Vui lòng điền số chứng minh nhân dân.')
+    .matches(/^\d{9}$|^\d{12}$/).withMessage('CMND phải có 9 hoặc 12 số.').escape(),
     async (req, res) => {
         const validationError = validationResult(req);
         if (!validationError.isEmpty()) {
@@ -50,15 +51,15 @@ exports.updateEmployeeProfile = [
             const empWithNewPhoneNumber = await findOne(Q.user.employeeByPhoneNumber, [newPhoneNumber]);
             
             if (isDataNotValidForUpdate(empWithNewIdentityNumber, oldEmp.identity_nerm, newIdentityNumber)) {
-                return sendErrorResponseMessage(res, ['identity number has been use, please check again']);
+                return sendErrorResponseMessage(res, ['Số cmnd đã được sử dụng. Xin hãy kiểm tra lại.']);
             }
             if (isDataNotValidForUpdate(empWithNewPhoneNumber, oldEmp.phone_number, newPhoneNumber)) {
-                return sendErrorResponseMessage(res, ['phone number has been use.']);
+                return sendErrorResponseMessage(res, ['Số điện thoại đã được sử dụng. Xin hãy kiểm tra lại.']);
             }
 
             const result = await query(Q.user.updateEmployeeProfile, 
                 [newFullname, newIdentityNumber, newPhoneNumber, empId]);
-            sendSuccessResponseMessage(res, ['Profile info has been updated']);
+            sendSuccessResponseMessage(res, ['Thông tin đã được cập nhật.']);
         } catch (err) {
             handleError(res, 500, err);
         }
@@ -78,7 +79,7 @@ exports.getInfo = async (req, res) => {
         }
 
         if (isResultEmpty(user)) {
-            sendErrorResponseMessage(res, ['User not found']);
+            sendErrorResponseMessage(res, ['Không tìm thấy người dùng.']);
         } else {
             res.json({ success: true, user});
         }
@@ -88,7 +89,7 @@ exports.getInfo = async (req, res) => {
 };
 
 exports.updatePassword = [
-    body('new-password').isEmpty().withMessage('Please fill in password for changed'),
+    body('new-password').isEmpty().withMessage('Vui lòng điền vào mật khẩu để cập nhật.'),
     async (req, res) => {
         try {
             const rawPassword = req.body['new-password'];
@@ -103,9 +104,9 @@ exports.updatePassword = [
             }
 
             if (result.affectedRow !== 0) {
-                sendSuccessResponseMessage(res, ['New passowrd has been updated.']);
+                sendSuccessResponseMessage(res, ['Mật khẩu mới đã được cập nhật']);
             } else {
-                sendErrorResponseMessage(res, ['There are some issues occured. Please try again later.']);
+                sendErrorResponseMessage(res, ['Xảy ra lỗi ở máy chủ. Vui lòng thử lại sau.']);
             }
         } catch (err) {
             handleError(res, 500, err);

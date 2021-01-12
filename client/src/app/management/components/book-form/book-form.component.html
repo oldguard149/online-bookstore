@@ -3,24 +3,24 @@
         <mat-form-field>
             <mat-label>ISBN</mat-label>
             <input matInput placeholder="label" value="" formControlName="isbn">
-            <mat-error *ngIf="formControls.isbn.hasError('required')">ISBN is required</mat-error>
+            <mat-error *ngIf="formControls.isbn.hasError('required')">Vui lòng điền isbn</mat-error>
         </mat-form-field>
         <mat-form-field>
-            <mat-label>Book's name</mat-label>
+            <mat-label>Tên sách</mat-label>
             <input matInput placeholder="name" value="" formControlName="name">
-            <mat-error *ngIf="formControls.name.hasError('required')">Book's name is required</mat-error>
+            <mat-error *ngIf="formControls.name.hasError('required')">Vui lòng điền tên sách</mat-error>
         </mat-form-field>
         <mat-form-field>
-            <mat-label>Cover url</mat-label>
+            <mat-label>Url ảnh bìa</mat-label>
             <input matInput placeholder="Book's cover url" value="" formControlName="image_url">
         </mat-form-field>
         <mat-form-field>
-            <mat-label>Author(s)</mat-label>
+            <mat-label>Tác giả</mat-label>
             <input matInput placeholder="Author" value="" formControlName="author">
-            <mat-hint>If there are more than one author, seperate their name by comma (,)</mat-hint>
+            <mat-hint>Nếu có nhiều tác giả, viết tên cách nhau bởi dấu phẩy</mat-hint>
         </mat-form-field>
         <mat-form-field>
-            <mat-label>Genre</mat-label>
+            <mat-label>Thể loại sách</mat-label>
             <mat-select formControlName="genre_id">
                 <mat-option *ngFor="let genre of genres;" [value]="genre.genre_id">
                     {{genre.name}}
@@ -28,7 +28,7 @@
             </mat-select>
         </mat-form-field>
         <mat-form-field>
-            <mat-label>Publisher</mat-label>
+            <mat-label>Nhà xuất bản</mat-label>
             <mat-select formControlName="publisher_id">
                 <mat-option *ngFor="let publisher of publishers" [value]="publisher.publisher_id">
                     {{publisher.name}}

@@ -1,9 +1,9 @@
 <mat-card *ngIf="bill">
     <ul>
-        <li>Ma don: {{bill.bill_id}}</li>
-        <li>Ngay tao: {{bill.create_date}}</li>
-        <li>Trang thai: {{bill.bill_status}}</li>
-        <li>Tong tien: {{bill.total_price}}</li>
+        <li>Mã đơn hàng: {{bill.bill_id}}</li>
+        <li>Ngày tạo: {{bill.create_date | date}}</li>
+        <li>Trạng thái hóa đơn: {{bill.bill_status}}</li>
+        <li>Thành tiền: {{bill.total_price}}</li>
     </ul>
 
     <mat-table [dataSource]="bill.items">
@@ -13,20 +13,20 @@
         </ng-container>
 
         <ng-container matColumnDef="name">
-            <mat-header-cell *matHeaderCellDef> Ngay tao </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef> Tên sách </mat-header-cell>
             <mat-cell class="link" *matCellDef="let element"> {{element.name}} </mat-cell>
         </ng-container>
 
 
         <ng-container matColumnDef="quantity">
-            <mat-header-cell class="small-width align-center" *matHeaderCellDef> So luong </mat-header-cell>
+            <mat-header-cell class="small-width align-center" *matHeaderCellDef> Số lượng </mat-header-cell>
             <mat-cell class="small-width align-button" *matCellDef="let element">
                 {{element.quantity}}
             </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="price">
-            <mat-header-cell class="small-width align-center" *matHeaderCellDef> Don gia </mat-header-cell>
+            <mat-header-cell class="small-width align-center" *matHeaderCellDef> Đơn giá </mat-header-cell>
             <mat-cell class="small-width align-button" *matCellDef="let element">
                 {{element.price}}
             </mat-cell>

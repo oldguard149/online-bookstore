@@ -1,25 +1,25 @@
 <alert></alert>
 <mat-table [dataSource]="bills">
     <ng-container matColumnDef="id">
-        <mat-header-cell class="small-width" *matHeaderCellDef> Bill id </mat-header-cell>
+        <mat-header-cell class="small-width" *matHeaderCellDef> Mã hóa đơn </mat-header-cell>
         <mat-cell class="small-width" *matCellDef="let element">{{element.bill_id}}</mat-cell>
     </ng-container>
     
     <ng-container matColumnDef="createdate">
-        <mat-header-cell *matHeaderCellDef> Ngay tao </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> Ngày tạo </mat-header-cell>
         <mat-cell class="link" *matCellDef="let element"> {{element.create_date}} </mat-cell>
     </ng-container>
 
     
     <ng-container matColumnDef="state">
-        <mat-header-cell class="medium-width align-center" *matHeaderCellDef> Trang thai </mat-header-cell>
+        <mat-header-cell class="medium-width align-center" *matHeaderCellDef> Trạng thái </mat-header-cell>
         <mat-cell class="medium-width align-button" *matCellDef="let element">
             {{element.state}}
         </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="totalamount">
-        <mat-header-cell class="medium-width align-center" *matHeaderCellDef> Thanh tien </mat-header-cell>
+        <mat-header-cell class="medium-width align-center" *matHeaderCellDef> Thành tiền </mat-header-cell>
         <mat-cell class="medium-width align-button" *matCellDef="let element">
             {{element.total_price}}
         </mat-cell>
@@ -28,7 +28,7 @@
     <ng-container matColumnDef="option">
         <mat-header-cell class="medium-width align-center" *matHeaderCellDef> </mat-header-cell>
         <mat-cell class="medium-width align-button" *matCellDef="let element">
-            <button (click)="manageBill(element.bill_id)" mat-raised-button>Quan ly</button>
+            <button (click)="manageBill(element.bill_id)" mat-raised-button>Quản lý</button>
         </mat-cell>
     </ng-container>
 

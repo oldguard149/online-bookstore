@@ -27,8 +27,6 @@ import { CartItemComponent } from './components/cart-item/cart-item.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { BillService } from './services/bill.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { TestCartComponent } from './components/test-cart/test-cart.component';
-import { TestFormArrayComponent } from './components/test-form-array/test-form-array.component';
 
 
 @NgModule({
@@ -52,8 +50,6 @@ import { TestFormArrayComponent } from './components/test-form-array/test-form-a
     CartComponent,
     CartItemComponent,
     CheckoutComponent,
-    TestCartComponent,
-    TestFormArrayComponent,
   ],
   imports: [
     CommonModule,

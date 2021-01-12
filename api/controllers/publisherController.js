@@ -3,6 +3,7 @@ const { preprocessBookList, calculateOffsetForPagination, handleError,
     sendErrorResponseMessage, sendSuccessResponseMessage,
     handleValidationError, isResultEmpty, getQueryParam, isDataNotValidForUpdate } = require('../shared/helper');
 const Q = require('../database/query');
+const e = require('../shared/errormessages');
 const { body, validationResult } = require('express-validator');
 
 exports.publisherList = async (req, res) => {
@@ -32,7 +33,7 @@ exports.publisherDetail = async (req, res) => {
         }
         const publisher = await findOne(Q.publisher.publisherById, [publisherId]);
         if (isResultEmpty(publisher)) {
-            return sendErrorResponseMessage(res, ['Publisher not found']);
+            return sendErrorResponseMessage(res, [e.pageNotFound]);
         }
         const count = await countData(Q.publisher.bookCountForPublisherDetail, [publisherId]);
         if (count > 0) {
@@ -80,7 +81,7 @@ exports.publisherCreate = [
 
 exports.publisherSearch = async (req, res) => {
     try {
-        const publisherPerPage = parseInt(getQueryParam(req, 'pageSize', 10)); // number of result per page
+        const publisherPerPage = parseInt(getQueryParam(req, 'pagesize', 10)); // number of result per page
         const rawSearchText = req.query.search;
         const currentPage = parseInt(getQueryParam(req, 'page', 0));
         const offset = calculateOffsetForPagination(publisherPerPage, currentPage);

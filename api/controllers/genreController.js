@@ -5,6 +5,7 @@ const { preprocessBookList, calculateOffsetForPagination, isDataNotValidForUpdat
         sendErrorResponseMessage, sendSuccessResponseMessage,
         getQueryParam } = require('../shared/helper');
 const Q = require('../database/query');
+const e = require('../shared/errormessages');
 
 exports.genreList = async (req, res) => {
     try {
@@ -28,11 +29,11 @@ exports.genreDetail = async (req, res) => {
         const bookPerPage = parseInt(req.query.pagesize) || 30;
         const offset = calculateOffsetForPagination(bookPerPage, currentPage);
         if (isNaN(currentGenreId)) {
-            return handleError(res, 404, `${req.params.id} is an invalid id.`, 'Page not found!');
+            return handleError(res, 404, `${req.params.id} is an invalid id.`, e.pageNotFound);
         }
         const genre = await findOne(Q.genre.genreById, [currentGenreId]);
         if (isResultEmpty(genre)) {
-            return handleError(res, 404, null, 'Page not found!');
+            return handleError(res, 404, null, e.pageNotFound);
         }
         const count = await countData(Q.genre.bookCountForGenreDetail, [currentGenreId]);
         if (count > 0) {
@@ -99,7 +100,7 @@ exports.genre = async (req, res) => {
     try {
         const genreId = parseInt(req.params.id);
         if (Number.isNaN(genreId)) {
-            return handleError(res, 400, 'Genre id invalid');
+            return handleError(res, 400, 'Mã thể loại không hợp lệ');
             // return sendErrorResponseMessage(res, ['Genre id is not valid']);
         }
         const genre = await findOne(Q.genre.genreById, [genreId]);
@@ -121,7 +122,7 @@ exports.genreUpdate = [
             const validationError = validationResult(req);
             const newGenreName = req.body.name;
             if (Number.isNaN(genreId)) {
-                return handleError(res, 400, 'Genre id invalid');
+                return handleError(res, 400, 'Mã thể loại không hợp lệ');
                 // return sendErrorResponseMessage(res, ['Genre id is not valid']);
             }
             if (!validationError.isEmpty()) {
@@ -148,7 +149,7 @@ exports.genreDelete = async (req, res) => {
     try {
         const genreId = parseInt(req.params.id);
         if (Number.isNaN(genreId)) {
-            return handleError(res, 400, 'Genre id invalid');
+            return handleError(res, 400, 'Mã thể loại không hợp lệ');
             // return sendErrorResponseMessage(res, ['Genre id is not valid']);
         }
         await query(Q.genre.deleteGerne, [genreId]);

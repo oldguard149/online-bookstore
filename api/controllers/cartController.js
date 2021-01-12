@@ -77,7 +77,7 @@ exports.updateCartItemOrderQuantity = async (req, res) => {
         const customerId = parseInt(req.payload.id);
         const cart = await findOne(Q.cart.cartByCustomerId, [customerId]);
         if (isResultEmpty(cart)) {
-            throw Error('Server error');
+            throw Error('Lỗi máy chủ');
         }
         const cartItems = req.body.cartItemFormArray;
         await queryUsingTransaction(connection, Q.startTransaction);

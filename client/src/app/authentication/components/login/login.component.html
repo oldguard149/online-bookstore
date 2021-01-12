@@ -7,15 +7,15 @@
             <mat-form-field appearance="fill">
                 <mat-label>Email</mat-label>
                 <input matInput type="email" formControlName="email">
-                <mat-error *ngIf="email.hasError('email')">Email is invalid</mat-error>
-                <mat-error *ngIf="email.hasError('required')">Email is required</mat-error>
+                <mat-error *ngIf="email.hasError('email')">Email không hợp lệ</mat-error>
+                <mat-error *ngIf="email.hasError('required')">Vui lòng điền email</mat-error>
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Password</mat-label>
                 <input matInput type="password" formControlName="password">
-                <mat-error *ngIf="password.hasError('required')">Password is required</mat-error>
+                <mat-error *ngIf="password.hasError('required')">Vui lòng điền mật khẩu</mat-error>
             </mat-form-field>
-            <button mat-raised-button color="primary" type="submit">Log in</button>
+            <button mat-raised-button color="primary" type="submit">Đăng nhập</button>
         </form>
     </mat-card>
 </div>

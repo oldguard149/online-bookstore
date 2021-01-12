@@ -34,10 +34,10 @@ export class PublisherFormComponent implements OnInit {
     this.initializeForm();
     if (this.type === 'create') {
       this.onSubmit = this.createPublisher;
-      this.displayButton = 'Create';
+      this.displayButton = 'Thêm';
     } else {
       this.onSubmit = this.updatePublisher;
-      this.displayButton = 'Update';
+      this.displayButton = 'Cập nhật';
     }
   }
 
