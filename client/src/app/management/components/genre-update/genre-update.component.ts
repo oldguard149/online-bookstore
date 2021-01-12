@@ -32,7 +32,7 @@ export class GenreUpdateComponent implements OnInit {
     const genreId = this.route.snapshot.params['id'];
     this.subs.sink = this.management.getDetail('genre', genreId).subscribe(data => {
       if (data.success) {
-        this.genre = data.genre;
+        this.genre = data.genre;      
       } else {
         this.errorMsg = data.message;
       }

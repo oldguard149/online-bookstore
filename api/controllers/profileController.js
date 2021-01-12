@@ -6,7 +6,7 @@ const { body, validationResult } = require('express-validator');
 
 exports.updateCustomerProfile = [
     body('fullname').notEmpty().withMessage('Please fill in your full name'),
-    body('phone-number').notEmpty().withMessage('Please fill in your phone number'),
+    body('phoneNumber').notEmpty().withMessage('Please fill in your phone number'),
     body('address').notEmpty().withMessage('Address is required for delivering'),
 
     async (req, res) => {
@@ -18,7 +18,7 @@ exports.updateCustomerProfile = [
             const customerId = parseInt(req.payload.id);
             const customerInfo = {
                 fullname: req.body['fullname'],
-                phoneNumber: req.body['phone-number'],
+                phoneNumber: req.body['phoneNumber'],
                 address: req.body['address']
             }
             const result = await query(Q.user.updateCustomerInfo,

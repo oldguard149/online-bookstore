@@ -20,7 +20,7 @@ passport.use(new LocalStrategy({
           return done(null, userIsEmployee);
         } else {
           return done(null, false, {
-            message: 'Wrong password'
+            message: 'Sai mật khẩu'
           });
         }
       }
@@ -32,12 +32,12 @@ passport.use(new LocalStrategy({
           return done(null, userIsCustomer);
         } else {
           return done(null, false, {
-            message: 'Wrong password'
+            message: 'Sai mật khẩu'
           });
         }
       }
       return done(null, false, {
-        message: 'User not found'
+        message: 'Không tìm thấy người dùng.'
       });
 
     } catch (error) {

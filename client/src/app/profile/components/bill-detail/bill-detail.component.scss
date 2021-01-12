@@ -1,0 +1,22 @@
+mat-card {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    margin: 2rem auto;
+
+    ul {
+        margin: 2rem auto;
+
+    }
+
+    mat-cell, mat-header-cell {
+        margin-right: 1rem;
+    }
+
+    .medium-width {
+        max-width: 15%;
+    }
+    .small-width {
+        max-width: 7%;
+    }
+}

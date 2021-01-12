@@ -8,7 +8,6 @@ import { ProfileSidenavComponent } from './components/profile-sidenav/profile-si
 import { UserInfoComponent } from './components/user-info/user-info.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { MaterialModule } from '../material.module';
-import { ProfileService } from './services/profile.service';
 import { SharedComponentsModule } from '../shared-components/shared-components.module';
 import { BillListComponent } from './components/bill-list/bill-list.component';
 import { BillDetailComponent } from './components/bill-detail/bill-detail.component';
@@ -27,9 +26,6 @@ import { BillDetailComponent } from './components/bill-detail/bill-detail.compon
     ReactiveFormsModule,
     MaterialModule,
     SharedComponentsModule
-  ],
-  providers: [
-    ProfileService
-  ]
+  ],  
 })
 export class ProfileModule { }

@@ -36,37 +36,39 @@ export class UserInfoComponent implements OnInit {
       this.subs.sink = this._profile.getProfileData().subscribe(data => {
         if (data.success) {
           this.form = this._fb.group({
-            email: [data.customer.email, Validators.required],
-            fullname: [data.customer.fullname, Validators.required],
-            phoneNumber: [data.customer.phone_number, Validators.required],
-            address: [data.customer.address]
+            email: [data.user.email, Validators.required],
+            fullname: [data.user.fullname, Validators.required],
+            phoneNumber: [data.user.phone_number, Validators.required],
+            address: [data.user.address]
           }); 
         }
       });
     } else {
       this.subs.sink = this._profile.getProfileData().subscribe(data => {
         this.form = this._fb.group({
-          email: [data.employee.email],
-          fullname: [data.employee.fullname, Validators.required],
-          phoneNumber: [data.employee.phone_number, Validators.required],
-          identityNumber: [data.employee.identity_number, Validators.required]
+          email: [data.user.email],
+          fullname: [data.user.fullname, Validators.required],
+          phoneNumber: [data.user.phone_number, Validators.required],
+          identityNumber: [data.user.identity_number, Validators.required]
         });
       });
     }
   }
 
   onSubmit(): void {
-    if (this.form.valid) {
-      if (this.isCustomer()) {
-        this.subs.sink = this._profile.updateCustomerProfile(this.form.value).subscribe(data => {
-          data.success ? this.successMsg = data.message : this.errorMsg = data.message;
-        });
-      } else {
-        this.subs.sink = this._profile.updateEmpProfile(this.form.value).subscribe(data => {
-          data.success ? this.successMsg = data.message : this.errorMsg = data.message;
-        });
-      }
-    }
+    console.log(this.form.value);
+    
+    // if (this.form.valid) {
+    //   if (this.isCustomer()) {
+    //     this.subs.sink = this._profile.updateCustomerProfile(this.form.value).subscribe(data => {
+    //       data.success ? this.successMsg = data.message : this.errorMsg = data.message;
+    //     });
+    //   } else {
+    //     this.subs.sink = this._profile.updateEmpProfile(this.form.value).subscribe(data => {
+    //       data.success ? this.successMsg = data.message : this.errorMsg = data.message;
+    //     });
+    //   }
+    // }
   }
 
   isCustomer(): boolean {

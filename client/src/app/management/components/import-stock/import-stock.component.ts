@@ -15,12 +15,34 @@ export class ImportStockComponent implements OnInit {
   ngOnInit(): void {
     this.form = this._fb.group({
       publisher: ['', Validators.required],
-      stocks: this._fb.array([])
+      stocks: this._fb.array([
+        this._fb.group({
+          isbn: ['', Validators.required],
+          quantity: ['', Validators.required],
+          price: ['', Validators.required]
+        })
+      ])
     });
   }
 
 
   get stocks() {
     return this.form.get('stocks') as FormArray;
+  }
+
+  addRow() {
+    this.stocks.push(this._fb.group({
+      isbn: ['', Validators.required],
+      quantity: ['', Validators.required],
+      price: ['', Validators.required]
+    }));
+  }
+
+  removeRow(i: number) {
+    this.stocks.removeAt(i);
+  }
+
+  onSubmit() {
+    console.log(this.form.value);
   }
 }

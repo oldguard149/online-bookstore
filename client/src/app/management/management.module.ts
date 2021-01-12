@@ -19,7 +19,7 @@ import { GenreDeleteComponent } from './components/genre-delete/genre-delete.com
 import { GenreSearchComponent } from './components/genre-search/genre-search.component';
 import { BookCreateComponent } from './components/book-create/book-create.component';
 import { BookUpdateComponent } from './components/book-update/book-update.component';
-import { BookDeleteComponent } from './components/book-delete/book-delete.component';
+import { BookDeleteComponent,  } from './components/book-delete/book-delete.component';
 import { BookFormComponent } from './components/book-form/book-form.component';
 import { BookSearchComponent } from './components/book-search/book-search.component';
 import { SearchComponent } from './components/search/search.component';
@@ -39,7 +39,7 @@ import { EmpSearchComponent } from './components/emp-search/emp-search.component
 import { ImportStockComponent } from './components/import-stock/import-stock.component';
 import { BillListComponent } from './components/bill-list/bill-list.component';
 import { BillDetailComponent } from './components/bill-detail/bill-detail.component';
-
+import { ConfirmDeleteDialogComponent } from "./components/confirm-delete-dialog/confirm-delete-dialog.component";
 
 
 @NgModule({
@@ -75,6 +75,7 @@ import { BillDetailComponent } from './components/bill-detail/bill-detail.compon
     ImportStockComponent,
     BillListComponent,
     BillDetailComponent,
+    ConfirmDeleteDialogComponent
   ],
   imports: [
     CommonModule,

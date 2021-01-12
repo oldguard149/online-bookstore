@@ -8,7 +8,7 @@ import { FlashMessageService } from 'src/app/shared/services/flash-message.servi
 @Component({
   selector: 'app-author-update',
   templateUrl: './author-update.component.html',
-  styleUrls: ['./author-update.component.scss'],
+  styleUrls: ['./author-update.component.scss', '../../style/mform.scss'],
   host: {
     class: 'management-main'
   }

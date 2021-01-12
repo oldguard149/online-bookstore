@@ -25,7 +25,9 @@ interface IEmployeeResponse {
   }
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ProfileService {
 
   constructor(
@@ -34,15 +36,15 @@ export class ProfileService {
   ) { }
 
   getProfileData(): any {
-    return this._http.get(`${apiurl}`);
+    return this._http.get(`${apiurl}/profile`);
   }
 
   updateCustomerProfile(customer) {
-    return this._http.put<any>(`${apiurl}/customer`, customer);
+    return this._http.put<any>(`${apiurl}/profile/customer`, customer);
   }
 
   updateEmpProfile(emp) {
-    return this._http.put<any>(`${apiurl}/employee/`, emp);
+    return this._http.put<any>(`${apiurl}/profile/employee/`, emp);
   }
 
   updatePassword(password) {

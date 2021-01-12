@@ -1,1 +1,8 @@
-<p>emp-delete works!</p>
+<ng-container *ngIf="emp">
+    <h2>Xoa nhan vien</h2>
+    <ul>
+        <li>Ho ten: {{emp.fullname}}</li>
+        <li>Thong tin: {{emp.identity_number}}</li>
+    </ul>
+    <button mat-raised-button color="warn" (click)="openDialog()">Xoa</button>
+</ng-container>

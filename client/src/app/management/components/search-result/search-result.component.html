@@ -16,8 +16,8 @@
         <ng-container matColumnDef="option">
             <mat-header-cell class="medium-width align-center" *matHeaderCellDef> Option </mat-header-cell>
             <mat-cell class="medium-width align-button" *matCellDef="let element">
-                <a [routerLink]="['/', urlPath, 'update', element[idKey]]" mat-flat-button color="primary">Update</a>
-                <a [routerLink]="['/', urlPath, 'delete', element[idKey]]" mat-flat-button color="warn">Delete</a>
+                <a [routerLink]="['/management', 'update', urlPath, element[idKey]]" mat-flat-button color="primary">Update</a>
+                <a [routerLink]="['/management', 'delete', urlPath, element[idKey]]" mat-flat-button color="warn">Delete</a>
             </mat-cell>
         </ng-container>
 

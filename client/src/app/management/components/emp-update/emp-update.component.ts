@@ -6,7 +6,10 @@ import { SubSink } from 'subsink';
 @Component({
   selector: 'app-emp-update',
   templateUrl: './emp-update.component.html',
-  styleUrls: ['./emp-update.component.scss']
+  styleUrls: ['./emp-update.component.scss'],
+  host: {
+    class: 'management-main'
+  }
 })
 export class EmpUpdateComponent implements OnInit {
   employee: any;

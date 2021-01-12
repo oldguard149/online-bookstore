@@ -6,24 +6,24 @@
     
     <ng-container matColumnDef="createdate">
         <mat-header-cell *matHeaderCellDef> Ngay tao </mat-header-cell>
-        <mat-cell class="link" *matCellDef="let element"> {{element.create_date}} </mat-cell>
+        <mat-cell class="link" *matCellDef="let element"> {{element.create_date | date}} </mat-cell>
     </ng-container>
 
     
     <ng-container matColumnDef="state">
-        <mat-header-cell class="medium-width align-center" *matHeaderCellDef> Option </mat-header-cell>
+        <mat-header-cell class="medium-width align-center" *matHeaderCellDef> Trang thai </mat-header-cell>
         <mat-cell class="medium-width align-button" *matCellDef="let element">
-            {{element.state}}
+            {{element.bill_status}}
         </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="totalamount">
-        <mat-header-cell class="medium-width align-center" *matHeaderCellDef> Option </mat-header-cell>
+        <mat-header-cell class="medium-width align-center" *matHeaderCellDef> Thanh tien </mat-header-cell>
         <mat-cell class="medium-width align-button" *matCellDef="let element">
             {{element.total_price}}
         </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;" [routerLink]="['/bill', row.bill_id]"></mat-row>
 </mat-table>

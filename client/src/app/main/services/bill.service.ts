@@ -21,10 +21,10 @@ export class BillService {
   ) { }
 
   getCustomerInfo() {
-    return this.http.get<ICustomerReponse>(`${apiurl}/customer`);
+    return this.http.get<any>(`${apiurl}/profile`);
   }
 
   createBill() {
-    
+    return this.http.get<any>(`${apiurl}/create-bill`);
   }
 }

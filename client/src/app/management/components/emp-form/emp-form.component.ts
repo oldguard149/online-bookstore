@@ -8,7 +8,10 @@ import { FlashMessageService } from 'src/app/shared/services/flash-message.servi
 @Component({
   selector: 'emp-form',
   templateUrl: './emp-form.component.html',
-  styleUrls: ['./emp-form.component.scss']
+  styleUrls: ['../../style/mform.scss'],
+  host: {
+    class: 'm-form'
+  }
 })
 export class EmpFormComponent implements OnInit {
   @Input() employee: any; // using for update

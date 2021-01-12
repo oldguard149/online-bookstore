@@ -2,7 +2,7 @@
 <div class="checkout-main">
     <mat-horizontal-stepper linear>
         <mat-step [stepControl]="customerForm" label="Customer information">
-            <form [formGroup]="customerForm">
+            <form [formGroup]="customerForm" class="customer-form">
                 <mat-form-field>
                     <mat-label>Fullname</mat-label>
                     <input type="text" matInput formControlName="fullname" required>
@@ -15,18 +15,20 @@
                     <mat-label>Address</mat-label>
                     <input type="text" matInput formControlName="address" required>
                 </mat-form-field>
-                <button mat-button matStepperNext (click)="updateCustomerInfo()">Next</button>
+                <button mat-raised-button color="primary" matStepperNext (click)="updateCustomerInfo()">Next</button>
             </form>
         </mat-step>
 
         <mat-step label="Check out method">
-            <form [formGroup]="checkoutForm">   
-                <mat-label>Payment Method</mat-label>
-                <mat-radio-group formControlName="checkoutMethod">
-                    <mat-radio-button value="0">
-                        Cash On Delivery
-                    </mat-radio-button>
-                </mat-radio-group>
+            <form [formGroup]="checkoutForm">
+                <div class="radio">
+                    <mat-label style="margin-right: 1rem">Payment Method:</mat-label>
+                    <mat-radio-group formControlName="checkoutMethod">
+                        <mat-radio-button value="0">
+                            Cash On Delivery
+                        </mat-radio-button>
+                    </mat-radio-group>
+                </div>
 
                 <mat-table [dataSource]="cartItems">
                     <ng-container matColumnDef="item">
@@ -37,16 +39,18 @@
                                 <div class="info">
                                     <h3>{{element.book_name}}</h3>
                                     <p>Authors: {{element.authors}}</p>
-                                    <p>Publisher: {{element.publishser_name}}</p>
+                                    <p>Publisher: {{element.publisher_name}}</p>
                                 </div>
                             </div>
                         </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="quantity">
-                        <mat-header-cell *matHeaderCellDef>Order quantity</mat-header-cell>
+                        <mat-header-cell class="medium-width align-center" *matHeaderCellDef>Order quantity
+                        </mat-header-cell>
                         <ng-container formArrayName="cartItemsFormArray">
-                            <mat-cell *matCellDef="let element; let i = index;" [formGroupName]="i">
+                            <mat-cell class="medium-width align-center" *matCellDef="let element; let i = index;"
+                                [formGroupName]="i">
                                 <input type="hidden" formControlName="isbn">
                                 <input type="hidden" formControlName="price">
                                 <mat-form-field>
@@ -63,7 +67,7 @@
 
                     <ng-container matColumnDef="delete-option">
                         <mat-header-cell class="medium-width align-center" *matHeaderCellDef>Delete</mat-header-cell>
-                        <mat-cell class="medium-width align-button" *matCellDef="let element; let i = index;">
+                        <mat-cell class="medium-width align-center" *matCellDef="let element; let i = index;">
                             <a mat-flat-button color="warn" (click)="deleteItem(i)">X</a>
                         </mat-cell>
                     </ng-container>
@@ -72,8 +76,11 @@
                     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
                 </mat-table>
             </form>
-            <button mat-button matStepperPrevious>Back</button>
-            <button mat-button matStepperNext (click)="createBill()">Finish</button>
+            <div id="button-container">
+                <button mat-raised-button matStepperPrevious color="primary">Back</button>
+                <button mat-raised-button matStepperNext [disabled]="cartItemsForm.length === 0" (click)="createBill()"
+                    color="primary">Finish</button>
+            </div>
         </mat-step>
     </mat-horizontal-stepper>
 </div>

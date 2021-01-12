@@ -36,18 +36,8 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.isCustomer()) {
-      this.subs.sink = this._profile.updatePassword('customer', this.form.value).subscribe(data => {
-        data.success ? this.successMsg = data.message : this.errorMsg = data.message;
-      });
-    } else {
-      this.subs.sink = this._profile.updatePassword('employee', this.form.value).subscribe(data => {
-        data.success ? this.successMsg = data.message : this.errorMsg = data.message;
-      });
-    }
-  }
-
-  isCustomer(): boolean {
-    return this._auth.isCustomer();
+    this.subs.sink = this._profile.updatePassword(this.form.value).subscribe(data => {
+      data.success ? this.successMsg = data.message : this.errorMsg = data.message;
+    });
   }
 }

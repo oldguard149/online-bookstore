@@ -1,3 +1,4 @@
+<alert></alert>
 <mat-table [dataSource]="bills">
     <ng-container matColumnDef="id">
         <mat-header-cell class="small-width" *matHeaderCellDef> Bill id </mat-header-cell>
@@ -11,24 +12,23 @@
 
     
     <ng-container matColumnDef="state">
-        <mat-header-cell class="medium-width align-center" *matHeaderCellDef> Option </mat-header-cell>
+        <mat-header-cell class="medium-width align-center" *matHeaderCellDef> Trang thai </mat-header-cell>
         <mat-cell class="medium-width align-button" *matCellDef="let element">
             {{element.state}}
         </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="totalamount">
-        <mat-header-cell class="medium-width align-center" *matHeaderCellDef> Option </mat-header-cell>
+        <mat-header-cell class="medium-width align-center" *matHeaderCellDef> Thanh tien </mat-header-cell>
         <mat-cell class="medium-width align-button" *matCellDef="let element">
             {{element.total_price}}
         </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="option">
-        <mat-header-cell class="medium-width align-center" *matHeaderCellDef> Option </mat-header-cell>
+        <mat-header-cell class="medium-width align-center" *matHeaderCellDef> </mat-header-cell>
         <mat-cell class="medium-width align-button" *matCellDef="let element">
-            <a [routerLink]="['/', urlPath, 'update', element[idKey]]" mat-flat-button color="primary">Update</a>
-            <!-- <a [routerLink]="['/', urlPath, 'delete', element[idKey]]" mat-flat-button color="warn">Delete</a> -->
+            <button (click)="manageBill(element.bill_id)" mat-raised-button>Quan ly</button>
         </mat-cell>
     </ng-container>
 

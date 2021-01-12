@@ -1,1 +1,6 @@
-<p>book-delete works!</p>
+<ng-container *ngIf="book">
+    <h2>Xoa sach</h2>
+    <p>Isbn: {{book.isbn}}</p>
+    <p>Ten sach: {{book.name}}</p>
+    <button mat-raised-button color="warn" (click)="openDialog()">Xoa</button>
+</ng-container>

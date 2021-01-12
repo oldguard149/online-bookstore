@@ -1,11 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ManagementService } from '../../services/management.service';
 import { SubSink } from 'subsink';
+import { Router } from '@angular/router';
+import { apiurl } from 'src/app/shared/api-url';
 
 @Component({
   selector: 'management-bill-list',
   templateUrl: './bill-list.component.html',
-  styleUrls: ['./bill-list.component.scss']
+  styleUrls: ['./bill-list.component.scss'],
+  host: {
+    class: 'management-main'
+  }
 })
 export class BillListComponent implements OnInit {
   private subs = new SubSink();
@@ -13,7 +18,8 @@ export class BillListComponent implements OnInit {
   totalItems: number;
   displayedColumns = ['id', 'createdate', 'state', 'totalamount', 'option'];
   constructor(
-    private _management: ManagementService
+    private _management: ManagementService,
+    private _router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -25,6 +31,10 @@ export class BillListComponent implements OnInit {
 
   ngOnDestroy() {
     this.subs.unsubscribe();
+  }
+
+  manageBill(id: string) {
+    this._router.navigateByUrl(`${apiurl}/management/bill/${id}`);
   }
 
 }

@@ -1,3 +1,23 @@
-// ::ng-deep .profile-main{
-//     grid-area: main;
-// }
+mat-card {
+    width: 60%;
+    margin: 2rem auto;
+}
+
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    // justify-content: center;
+    align-items: center;
+
+    h3 {
+        width: max-content;
+    }
+
+    mat-form-field {
+        width: 60%;
+    }
+
+    button {
+        width: 30%;
+    }
+}

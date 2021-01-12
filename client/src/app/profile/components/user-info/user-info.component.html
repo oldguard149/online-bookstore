@@ -1,6 +1,6 @@
 <mat-card *ngIf="form">
     <alert [successMsg]="successMsg" [errorMsg]="errorMsg"></alert>
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="profile-form">
 
         <mat-form-field appearance="fill">
             <input matInput type="email" formControlName="email">

@@ -6,7 +6,10 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-book-update',
   templateUrl: './book-update.component.html',
-  styleUrls: ['./book-update.component.scss']
+  styleUrls: ['./book-update.component.scss'],
+  host: {
+    class: 'management-main'
+  }
 })
 export class BookUpdateComponent implements OnInit {
   book: any;

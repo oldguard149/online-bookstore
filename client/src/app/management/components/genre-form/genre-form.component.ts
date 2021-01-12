@@ -9,7 +9,7 @@ import { SubSink } from 'subsink';
 @Component({
   selector: 'genre-form',
   templateUrl: './genre-form.component.html',
-  styleUrls: [ '../../style/mform.scss'],
+  styleUrls: ['../../style/mform.scss'],
   host: {
     class: 'm-form'
   }
@@ -36,7 +36,7 @@ export class GenreFormComponent implements OnInit {
       name: ['', Validators.required]
     });
     this.initializeFormForUpdate();
-    
+
     if (this.type === 'update') {
       this.displayButton = 'Update';
       this.onSubmit = this.updateGenre;
@@ -53,7 +53,7 @@ export class GenreFormComponent implements OnInit {
   }
 
   initializeFormForUpdate() {
-    if (this.type === 'update' && this.genreDataForUpdate) {
+    if (this.type === 'update') {
       const genre = this.genreDataForUpdate;
       this.name.setValue(genre.name);
     }
@@ -73,7 +73,7 @@ export class GenreFormComponent implements OnInit {
     }
   }
 
-  updateGenre() {
+  updateGenre() {  
     if (this.form.valid) {
       const genre = this.form.value;
       const genreId = this.route.snapshot.params['id'];

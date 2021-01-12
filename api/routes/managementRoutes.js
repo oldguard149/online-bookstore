@@ -32,6 +32,7 @@ router.post('/book', book.bookCreate);
 router.put('/book/:isbn', book.bookUpdate);
 router.delete('/book/:isbn', book.bookDelete);
 router.get('/genres-and-publishers', book.fetchGenresAndPublishers);
+router.post('/stocks', book.importBookStock);
 
 router.get('/confirm-bill/:id', bill.confirmBill);
 router.get('/cancel-bill/:id', bill.cancelBillOrder);

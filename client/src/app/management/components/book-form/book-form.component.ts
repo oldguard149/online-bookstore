@@ -66,13 +66,13 @@ export class BookFormComponent implements OnInit {
     if (this.bookInforForUpdate) {
       const book = this.bookInforForUpdate;
       this.form.patchValue({
-        isbn: [book.isbn, Validators.required],
-        name: [book.name, Validators.required],
-        image_url: [book.image_url, Validators.required],
-        summary: [book.summary ? book.summary : ''],
-        author: [this.convertAuthorsFromArrayToString(book)],
-        genre_id: [book.Genre.genre_id],
-        publisher_id: [book.Publisher.publisher_id]
+        isbn: book.isbn,
+        name: book.name,
+        image_url: book.image_url,
+        summary: book.summary ? book.summary : '',
+        author: this.convertAuthorsFromArrayToString(book),
+        genre_id: book.Genre.genre_id,
+        publisher_id: book.Publisher.publisher_id
       });
     }
   }

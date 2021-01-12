@@ -24,7 +24,12 @@ export class TopnavComponent implements OnInit {
   }
 
   canDoManagement(): boolean {
-    return !this.auth.isCustomer();
+    if (this.isLoggedIn()) {
+      const user = this.auth.getUserDetail();
+      return user.role === 'EMP' || user.role === 'ADMIN';
+    } else {
+      return false;
+    }
   }
 
   logout(): void {

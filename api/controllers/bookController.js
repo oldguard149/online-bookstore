@@ -229,9 +229,13 @@ exports.bookUpdate = [
     }
 ];
 
-exports.importStock = async (req, res) => {
+/* create import stock form 
+    loop through array
+        check if isbn is valid
+            insert into stockdetail*/
+exports.importBookStock = async (req, res) => {
     try {
-
+        
     } catch (err) {
         handleError(res, 500, err);
     }
@@ -254,10 +258,6 @@ function convertAuthorsFromStringToArray(authorsArray) {
         .trim().split(',')
         .filter(author => author !== "")
         .map(author => author.trim());
-}
-
-function convertAuthorsListToString(authorsList) {
-    return authorsList.join(', ');
 }
 
 function getInputDataOnCreateOrUpdate(req) {

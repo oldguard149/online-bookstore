@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@ang
 import { BillService } from '../../services/bill.service';
 import { SubSink } from 'subsink';
 import { CartService } from '../../services/cart.service';
+import { ProfileService } from 'src/app/profile/services/profile.service';
 
 @Component({
   selector: 'app-checkout',
@@ -21,16 +22,17 @@ export class CheckoutComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private bill: BillService,
-    private cart: CartService
+    private cart: CartService,
+    private profile: ProfileService
   ) { }
 
   ngOnInit(): void {
     this.initializeForms();
     this.subs.sink =  this.bill.getCustomerInfo().subscribe(data => {
       this.customerForm.patchValue({
-        fullname: data.customer.fullname,
-        phoneNumber: data.customer.phone_number,
-        address: data.customer.address
+        fullname: data.user.fullname,
+        phoneNumber: data.user.phone_number,
+        address: data.user.address
       });
     });
     
@@ -56,11 +58,14 @@ export class CheckoutComponent implements OnInit {
   }
 
   updateCustomerInfo() {
-    console.log(this.customerForm.value);
+    this.subs.sink = this.profile.updateCustomerProfile(this.customerForm.value).subscribe(data => {
+      console.log(data.message);
+    })
   }
 
   createBill() {
-    console.log(this.checkoutForm.value);
+    // console.log(this.checkoutForm.value);
+
   }
 
   deleteItem(i: number): void {

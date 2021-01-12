@@ -1,7 +1,7 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <mat-card>
         <mat-form-field>
-            <input matInput placeholder="Genre name" fromControlName="name">
+            <input matInput placeholder="Genre name" formControlName="name">
             <mat-error *ngIf="name.hasError('required')">Please fill in genre's name</mat-error>
         </mat-form-field>
         <button mat-raised-button [disabled]="!form.valid" type="submit">{{displayButton}}</button>

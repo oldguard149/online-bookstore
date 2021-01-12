@@ -22,9 +22,15 @@ export class PublisherUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     const publisherId = this.route.snapshot.params['id'];
+    console.log(publisherId);
+    
     this.subs.sink = this.management.getDetail('publisher', publisherId).subscribe(data => {
       this.publisher = data.publisher;
     })
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
   getMessage(msgObject: any) {

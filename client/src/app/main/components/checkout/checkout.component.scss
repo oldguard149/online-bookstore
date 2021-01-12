@@ -35,7 +35,53 @@ select {
     max-width: 50px;
 }
 
-form {
+.customer-form {
     display: flex;
     flex-direction: column;
+    width: 40%;
+    margin: auto;
+
+    button {
+        width: 50%;
+        margin: auto;
+    }
+}
+
+.radio {
+    width: 30%;
+    margin: auto;
+}
+
+.medium-width {
+    max-width: 200px;
+}
+
+.small-width {
+    max-width: 50px;
+}
+
+.align-center {
+    display: flex;
+    justify-content: center;
+}
+
+.align-button {
+    display: flex;
+    justify-content: space-around;
+}
+
+#button-container {
+    margin: auto;
+    width: 20%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    button {
+        margin: 0.5rem;
+    }
+}
+
+mat-row {
+    padding: 0.5rem;
 }

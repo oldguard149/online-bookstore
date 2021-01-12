@@ -1,5 +1,3 @@
-<div class="create-update-container">
-    <h2>Thêm sách</h2>
-    <alert [successMsg]="successMsg" [errorMsg]="errorMsg"></alert>
-    <emp-form  [type]="'create'" (sendMessage)="getMessage($event)"></emp-form>
-</div>
+<h2>Thêm sách</h2>
+<alert [successMsg]="successMsg" [errorMsg]="errorMsg"></alert>
+<emp-form [type]="'create'" (sendMessage)="getMessage($event)"></emp-form>
