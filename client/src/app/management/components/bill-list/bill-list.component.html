@@ -1,0 +1,37 @@
+<mat-table [dataSource]="bills">
+    <ng-container matColumnDef="id">
+        <mat-header-cell class="small-width" *matHeaderCellDef> Bill id </mat-header-cell>
+        <mat-cell class="small-width" *matCellDef="let element">{{element.bill_id}}</mat-cell>
+    </ng-container>
+    
+    <ng-container matColumnDef="createdate">
+        <mat-header-cell *matHeaderCellDef> Ngay tao </mat-header-cell>
+        <mat-cell class="link" *matCellDef="let element"> {{element.create_date}} </mat-cell>
+    </ng-container>
+
+    
+    <ng-container matColumnDef="state">
+        <mat-header-cell class="medium-width align-center" *matHeaderCellDef> Option </mat-header-cell>
+        <mat-cell class="medium-width align-button" *matCellDef="let element">
+            {{element.state}}
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="totalamount">
+        <mat-header-cell class="medium-width align-center" *matHeaderCellDef> Option </mat-header-cell>
+        <mat-cell class="medium-width align-button" *matCellDef="let element">
+            {{element.total_price}}
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="option">
+        <mat-header-cell class="medium-width align-center" *matHeaderCellDef> Option </mat-header-cell>
+        <mat-cell class="medium-width align-button" *matCellDef="let element">
+            <a [routerLink]="['/', urlPath, 'update', element[idKey]]" mat-flat-button color="primary">Update</a>
+            <!-- <a [routerLink]="['/', urlPath, 'delete', element[idKey]]" mat-flat-button color="warn">Delete</a> -->
+        </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>

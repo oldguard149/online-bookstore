@@ -33,7 +33,17 @@ export class BookFormComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.initializeForm();
+    this.form = this.fb.group({
+      isbn: ['', Validators.required],
+      name: ['', Validators.required],
+      image_url: ['', Validators.required],
+      summary: [''],
+      author: [''],
+      genre_id: [''],
+      publisher_id: ['']
+    });
+
+    this.initializeFormForUpdate();
     this.subs.sink = this.management.genresAndPublishers().subscribe(data => {
       this.genres = data.genres;
       this.publishers = data.publishers;
@@ -44,20 +54,18 @@ export class BookFormComponent implements OnInit {
       this.displayButton = 'Thêm';
     } else {
       this.onSubmit = this.updateBook;
-      this.displayButton = 'Cập nhậtt';
+      this.displayButton = 'Cập nhật';
     }
   }
 
   ngOnDestroy(): void {
-    //Called once, before the instance is destroyed.
-    //Add 'implements OnDestroy' to the class.
     this.subs.unsubscribe();
   }
 
-  initializeForm() {
+  initializeFormForUpdate() {
     if (this.bookInforForUpdate) {
       const book = this.bookInforForUpdate;
-      this.form = this.fb.group({
+      this.form.patchValue({
         isbn: [book.isbn, Validators.required],
         name: [book.name, Validators.required],
         image_url: [book.image_url, Validators.required],
@@ -66,35 +74,23 @@ export class BookFormComponent implements OnInit {
         genre_id: [book.Genre.genre_id],
         publisher_id: [book.Publisher.publisher_id]
       });
-    } else {
-      this.form = this.fb.group({
-        isbn: ['', Validators.required],
-        name: ['', Validators.required],
-        image_url: ['', Validators.required],
-        summary: [''],
-        author: [''],
-        genre_id: [''],
-        publisher_id: ['']
-      });
     }
   }
 
   createBook() {
     if (this.form.valid) {
-      // const book = this.form.value;
-      // this.subs.sink = this.management.create('book', book)
-      //   .subscribe(data => {
-      //     if (data.success) {
-      //       this.triggerSendMessageEvent('success', data.message);
-      //       this.form.reset();
-      //     } else {
-      //       this.triggerSendMessageEvent('fail', data.message);
-      //     }
-      //   });
-      console.log(this.form.value);
-      
+      const book = this.form.value;
+      this.subs.sink = this.management.create('book', book)
+        .subscribe(data => {
+          if (data.success) {
+            this.triggerSendMessageEvent('success', data.message);
+            this.form.reset();
+          } else {
+            this.triggerSendMessageEvent('fail', data.message);
+          }
+        });      
     }
-  } // end of createBook
+  }
 
   updateBook() {
     if (this.form.valid) {

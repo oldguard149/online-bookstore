@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ManagementService } from '../../services/management.service';
 import { SubSink } from 'subsink';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-book-update',
-  templateUrl: './book-update.component.html',
-  styleUrls: ['./book-update.component.scss']
+  selector: 'app-emp-update',
+  templateUrl: './emp-update.component.html',
+  styleUrls: ['./emp-update.component.scss']
 })
-export class BookUpdateComponent implements OnInit {
-  book: any;
+export class EmpUpdateComponent implements OnInit {
+  employee: any;
   errorMsg: string[];
   private subs = new SubSink();
   constructor(
@@ -18,14 +18,18 @@ export class BookUpdateComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const isbn = this._route.snapshot.params['isbn'];
-    this.subs.sink = this._management.getDetail('book', isbn).subscribe(data => {
+    const empId = this._route.snapshot.params['id'];
+    this._management.getDetail('employee', empId).subscribe(data => {
       if (data.success) {
-        this.book = data.book;
+        this.employee = data.employee;
       } else {
         this.errorMsg = data.message;
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
 
   getMessage(msgObject: any) {

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { BillService } from '../../services/bill.service';
 import { SubSink } from 'subsink';
 import { CartService } from '../../services/cart.service';
@@ -14,10 +14,7 @@ import { CartService } from '../../services/cart.service';
 })
 export class CheckoutComponent implements OnInit {
   customerForm: FormGroup;
-  checkoutForm: FormGroup = this.fb.group({
-    checkoutMethod: ['0', Validators.required],
-    cartItemsFormArray: this.fb.array([])
-  });
+  checkoutForm: FormGroup;
   private subs = new SubSink();
   cartItems: any;
   displayedColumns = ['item', 'quantity', 'delete-option']
@@ -28,22 +25,29 @@ export class CheckoutComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.initializeForms();
     this.subs.sink =  this.bill.getCustomerInfo().subscribe(data => {
-      console.log(data.customer);
-      
-      this.customerForm = this.fb.group({
-        name: ['name sdf', [Validators.required]],
-        phoneNumber: [data.customer.phone_number, [Validators.required]],
-        address: [data.customer.address, [Validators.required]]
+      this.customerForm.patchValue({
+        fullname: data.customer.fullname,
+        phoneNumber: data.customer.phone_number,
+        address: data.customer.address
       });
     });
     
+    this.fetchCartItems();
+  }
+
+  initializeForms(): void {
+    this.customerForm = this.fb.group({
+      fullname: ['', Validators.required],
+      phoneNumber: ['', Validators.required],
+      address: ['', Validators.required]
+    });
+
     this.checkoutForm = this.fb.group({
       checkoutMethod: ['0', Validators.required],
       cartItemsFormArray: this.fb.array([])
     });
-
-    this.fetchCartItems();
   }
 
   ngOnDestroy(): void {
@@ -87,7 +91,6 @@ export class CheckoutComponent implements OnInit {
       if (data.success) {
         this.cartItems = data.cartItems;
         // this.totalItems = data.totalItems;
-        
         this.preprocessCartItems();
         for (let i = 0; i < parseInt(data.totalItems); i++) {
           this.cartItemsForm.push(this.fb.group({

@@ -16,7 +16,7 @@ import { MustMatch } from 'src/app/authentication/components/register/checkMatch
 export class ChangePasswordComponent implements OnInit {
   errorMsg: string[];
   successMsg: string[];
-  form: FormGroup
+  form: FormGroup;
   private subs = new SubSink();
   constructor(
     private _profile: ProfileService,

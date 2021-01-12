@@ -31,6 +31,14 @@ import { PublisherFormComponent } from './components/publisher-form/publisher-fo
 import { PublisherCreateComponent } from './components/publisher-create/publisher-create.component';
 import { PublisherUpdateComponent } from './components/publisher-update/publisher-update.component';
 import { PublisherDeleteComponent } from './components/publisher-delete/publisher-delete.component';
+import { EmpFormComponent } from './components/emp-form/emp-form.component';
+import { EmpCreateComponent } from './components/emp-create/emp-create.component';
+import { EmpUpdateComponent } from './components/emp-update/emp-update.component';
+import { EmpDeleteComponent } from './components/emp-delete/emp-delete.component';
+import { EmpSearchComponent } from './components/emp-search/emp-search.component';
+import { ImportStockComponent } from './components/import-stock/import-stock.component';
+import { BillListComponent } from './components/bill-list/bill-list.component';
+import { BillDetailComponent } from './components/bill-detail/bill-detail.component';
 
 
 
@@ -59,6 +67,14 @@ import { PublisherDeleteComponent } from './components/publisher-delete/publishe
     PublisherCreateComponent,
     PublisherUpdateComponent,
     PublisherDeleteComponent,
+    EmpFormComponent,
+    EmpCreateComponent,
+    EmpUpdateComponent,
+    EmpDeleteComponent,
+    EmpSearchComponent,
+    ImportStockComponent,
+    BillListComponent,
+    BillDetailComponent,
   ],
   imports: [
     CommonModule,

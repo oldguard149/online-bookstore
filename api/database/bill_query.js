@@ -1,6 +1,4 @@
-exports.billByCustomerIdAndBillId = `SELECT * FROM bills WHERE customer_id=? AND bill_id=?;`;
-
-exports.billByCustomerId = `SELECT * FROM bills WHERE customer_id=?;`;
+exports.billListForCustomer = `SELECT * FROM bills WHERE customer_id=?;`;
 
 exports.billByBillId = `
 SELECT
@@ -15,7 +13,17 @@ FROM
 WHERE
     bill_id = ?;`;
 
-exports.billItemsByBillId = `SELECT bill_id, isbn, quantity, price FROM billdetails WHERE bill_id=?;`;
+exports.billItemsByBillId = `
+SELECT
+    bd.isbn,
+    b.name,
+    bd.quantity,
+    bd.price
+FROM
+    billdetails bd
+    JOIN books b using (isbn)
+WHERE
+    bill_id = ?;`;
 
 exports.billList = `SELECT * FROM bills LIMIT ?, ?;`;
 

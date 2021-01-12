@@ -1,0 +1,5 @@
+<div class="create-update-container">
+    <h2>Thêm sách</h2>
+    <alert  [errorMsg]="errorMsg"></alert>
+    <emp-form *ngIf="employee" [type]="'update'" [employee]="employee" (sendMessage)="getMessage($event)"></emp-form>
+</div>

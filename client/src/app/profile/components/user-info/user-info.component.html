@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card *ngIf="form">
     <alert [successMsg]="successMsg" [errorMsg]="errorMsg"></alert>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
@@ -6,7 +6,7 @@
             <input matInput type="email" formControlName="email">
             <mat-label>Email</mat-label>
         </mat-form-field>
-        <mat-form-field>
+        <mat-form-field appearance="fill">
             <mat-label>Name</mat-label>
             <input matInput formControlName="fullname" type="text">
         </mat-form-field>
@@ -15,13 +15,10 @@
             <input matInput type="tel" formControlName="phoneNumber">
         </mat-form-field>
 
-        <!-- <ng-container *ngIf="true"> -->
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" *ngIf="isCustomer()">
             <mat-label>Address</mat-label>
             <input matInput type="text" formControlName="address">
         </mat-form-field>
-        <!-- </ng-container> -->
-
 
         <mat-form-field appearance="fill" *ngIf="!isCustomer()">
             <mat-label>Identity number</mat-label>

@@ -32,7 +32,11 @@ export class GenreFormComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.initializeForm();
+    this.form = this.fb.group({
+      name: ['', Validators.required]
+    });
+    this.initializeFormForUpdate();
+    
     if (this.type === 'update') {
       this.displayButton = 'Update';
       this.onSubmit = this.updateGenre;
@@ -48,16 +52,10 @@ export class GenreFormComponent implements OnInit {
     this.subs.unsubscribe();
   }
 
-  initializeForm() {
+  initializeFormForUpdate() {
     if (this.type === 'update' && this.genreDataForUpdate) {
       const genre = this.genreDataForUpdate;
-      this.form = this.fb.group({
-        name: [genre.name, Validators.required]
-      });
-    } else {
-      this.form = this.fb.group({
-        name: ['', Validators.required]
-      });
+      this.name.setValue(genre.name);
     }
   }
 

@@ -46,23 +46,31 @@ export class ManagementService {
     return this.apiGet(url, options);
   }
 
-  public create(type: 'genre' | 'author' | 'publisher' | 'book', data: any): Observable<any> {
+  public create(type: 'genre' | 'author' | 'publisher' | 'book' | 'employee', data: any): Observable<any> {
     return this.apiPost(type, data);
   }
 
-  public update(type: 'genre' | 'author' | 'publisher' | 'book', id: string, data: any): Observable<any> {
+  public update(type: 'genre' | 'author' | 'publisher' | 'book' | 'employee', id: string, data: any): Observable<any> {
     return this.apiPut(`${type}/${id}`, data);
   }
 
-  public getDetail(type: 'genre' | 'author' | 'publisher' | 'book', id: string): Observable<any> {
+  public getDetail(type: 'genre' | 'author' | 'publisher' | 'book' | 'employee', id: string): Observable<any> {
     return this.apiGet(`${type}/${id}`);
   }
 
-  public delete(type: 'genre' | 'author' | 'publisher' | 'book', id: string): Observable<any> {
+  public delete(type: 'genre' | 'author' | 'publisher' | 'book' | 'employee', id: string): Observable<any> {
     return this.apiDelete(`${type}/${id}`);
   }
 
   public genresAndPublishers(): Observable<any> {
     return this.apiGet('genres-and-publishers');
+  }
+
+  public billList(): Observable<any> {
+    return this.apiGet('bills');
+  }
+
+  public billDetails(id: string): Observable<any> {
+    return this.apiGet(`bill/${id}`);
   }
 }

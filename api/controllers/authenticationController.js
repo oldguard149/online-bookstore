@@ -93,29 +93,3 @@ exports.register = [ // todo: check unique for phone number
         }
     }
 ]
-
-exports.changePassword = [
-    body('new-password').isEmpty().withMessage('Please fill in password for changed'),
-    async (req, res) => {
-        try {
-            const rawPassword = req.body['new-password'];
-            const userId = parseInt(req.payload.id);
-            const userRole = req.payload.role;
-            const hashedPassword = await getHashPassword(rawPassword);
-            let result;
-            if (userRole === role.CUSTOMER) {
-                result = await query(Q.user.updateCustomerPassword, [hashedPassword, userId]);
-            } else { 
-                result = await query(Q.user.updateEmployeePassword, [hashedPassword, userId]);
-            }
-
-            if (result.affectedRow !== 0) {
-                sendSuccessResponseMessage(res, ['New passowrd has been updated.']);
-            } else {
-                sendErrorResponseMessage(res, ['There are some issues occured. Please try again later.']);
-            }
-        } catch (err) {
-            handleError(res, 500, err);
-        }
-    }
-]

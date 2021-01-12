@@ -1,1 +1,5 @@
-<p>book-update works!</p>
+<div class="create-update-container">
+    <h2>Thêm sách</h2>
+    <alert [errorMsg]="errorMsg"></alert>
+    <book-form *ngIf="book" [type]="'update'" [book]="book" (sendMessage)="getMessage($event)"></book-form>
+</div>

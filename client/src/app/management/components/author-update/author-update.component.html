@@ -1,1 +1,15 @@
-<p>author-update works!</p>
+<h2>Cập nhật tác giả</h2>
+<alert [errorMsg]="errorMsg"></alert>
+<mat-card>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <mat-form-field>
+            <mat-label>Họ và tên</mat-label>
+            <input type="text" matInput formControlName="fullname">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Thông tin</mat-label>
+            <input type="text" matInput formControlName="info">
+        </mat-form-field>
+        <button mat-raised-button type="submit">Cập nhật</button>
+    </form>
+</mat-card>

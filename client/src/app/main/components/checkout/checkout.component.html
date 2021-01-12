@@ -4,8 +4,8 @@
         <mat-step [stepControl]="customerForm" label="Customer information">
             <form [formGroup]="customerForm">
                 <mat-form-field>
-                    <mat-label>Full name</mat-label>
-                    <input type="text" matInput formControlName="name" required>
+                    <mat-label>Fullname</mat-label>
+                    <input type="text" matInput formControlName="fullname" required>
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Phone number</mat-label>
@@ -20,8 +20,7 @@
         </mat-step>
 
         <mat-step label="Check out method">
-            <form [formGroup]="checkoutForm">
-
+            <form [formGroup]="checkoutForm">   
                 <mat-label>Payment Method</mat-label>
                 <mat-radio-group formControlName="checkoutMethod">
                     <mat-radio-button value="0">
@@ -58,11 +57,6 @@
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
-                                <!-- <label for="qty">Quantity:</label> -->
-                                <!-- <select formControlName="quantity" id="qty">
-                                    <option *ngFor="let value of element.available_qty" [value]="value">{{value}}
-                                    </option>
-                                </select> -->
                             </mat-cell>
                         </ng-container>
                     </ng-container>

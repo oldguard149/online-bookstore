@@ -13,13 +13,14 @@ exports.createBill = async (req, res) => {
         const cart = await findOne(Q.cart.cartByCustomerId, [customerId]);
         const cart_id = parseInt(cart.cart_id);
         const billId = uuidv4();
-        const cartItems = await query(Q.cart.allItemsInCart, [cart_id]);
+
         if (isResultEmpty(cartItems)) { // make sure there are at least one book in cart before create bill
             sendErrorResponseMessage(res, ['Your cart is empty']);
         } else {
             await queryUsingTransaction(connection, Q.startTransaction);
             await queryUsingTransaction(connection, Q.bill.createBill,
                 [billId, customerId, null, 0, new Date()]);
+            const cartItems = await queryUsingTransaction(connection, Q.cart.allItemsInCart, [cart_id]);
             for (const cartItem of cartItems) {
                 const book = await findOne(Q.bill.bookQuantity, [cartItem.isbn]);
                 const bookQuantity = parseInt(book.quantity);
@@ -140,3 +141,31 @@ exports.billDelete = async (req, res) => {
         connection.release();
     }
 };
+
+exports.billListForCustomer = async (req, res) => {
+    try {
+        const customerId = parseInt(req.payload.id);
+        const bills = await query(Q.bill.billListForCustomer, [customerId]);
+        res.json({ success: true, bills });
+    } catch (err) {
+        handleError(res, 500, err);
+    }
+};
+
+exports.billDetailForCustomer = async (req, res) => {
+    try {
+        const customerId = parseInt(req.payload.id);
+        const billId = req.params.id;
+        const bill = await findOne(Q.bill.billByBillId, [billId]);
+        console.log(bill);
+        if (bill.customer_id === customerId) {
+            const billItems = await query(Q.bill.billItemsByBillId, [bill.bill_id]);
+            bill['items'] = billItems;
+            res.json({ success: true, bill });
+        } else {
+            sendErrorResponseMessage(res, [`You don't have permission to view this bill`]);
+        }
+    } catch (err) {
+        handleError(res, 500, err);
+    }
+}

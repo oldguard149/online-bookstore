@@ -35,7 +35,8 @@ router.get('/genres-and-publishers', book.fetchGenresAndPublishers);
 
 router.get('/confirm-bill/:id', bill.confirmBill);
 router.get('/cancel-bill/:id', bill.cancelBillOrder);
-router.get('/bill', bill.billList);
+router.get('/bills', bill.billList);
+router.get('/bill/:id', bill.billDetail);
 router.delete('/bill/:id', bill.billDelete);
 
 router.get('/search/employee', emp.empSearch);

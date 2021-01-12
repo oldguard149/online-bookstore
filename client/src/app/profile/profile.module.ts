@@ -10,6 +10,8 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
 import { MaterialModule } from '../material.module';
 import { ProfileService } from './services/profile.service';
 import { SharedComponentsModule } from '../shared-components/shared-components.module';
+import { BillListComponent } from './components/bill-list/bill-list.component';
+import { BillDetailComponent } from './components/bill-detail/bill-detail.component';
 
 
 @NgModule({
@@ -17,7 +19,7 @@ import { SharedComponentsModule } from '../shared-components/shared-components.m
     ProfileIndexComponent, 
     ProfileSidenavComponent, 
     UserInfoComponent, 
-    ChangePasswordComponent
+    ChangePasswordComponent, BillListComponent, BillDetailComponent
   ],
   imports: [
     CommonModule,

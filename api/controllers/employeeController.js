@@ -1,6 +1,7 @@
 const { body, validationResult } = require('express-validator');
 const { getHashPassword, isResultEmpty, isDataNotValidForUpdate,
-    handleValidationError, sendSuccessResponseMessage, handleError, getQueryParam, calculateOffsetForPagination, sendErrorResponseMessage } = require('../shared/helper');
+    handleValidationError, sendSuccessResponseMessage, handleError, getQueryParam,
+    calculateOffsetForPagination, sendErrorResponseMessage, role } = require('../shared/helper');
 const { query, findOne, countData } = require('../database/db_hepler');
 const Q = require('../database/query');
 
@@ -147,19 +148,7 @@ exports.empDelete = async (req, res) => {
     }
 }
 
-exports.empUpdateProfile = [
-    body('fullname').trim().not().isEmpty().withMessage('Vui lòng điền họ tên nhân viên').escape(),
-    body('email').trim().normalizeEmail().not()
-        .isEmpty().withMessage('Vui lòng điền Email')
-        .isEmail().withMessage('Email không hợp lệ').escape(),
-    body('identity_number').trim().not().isEmpty().withMessage('Vui lòng điền số chứng minh nhân dân.')
-        .matches(/^\d{9}$|^\d{12}$/).withMessage('CMND phải có 9 hoặc 12 số.').escape(),
-    body('phone_number').trim().not().notEmpty().withMessage('Vui lòng điền số điện thoại của nhân viên.')
-        .matches(/^\d{10,15}$/i).withMessage('Số điện thoại không hợp lệ.').escape(),
-    updateEmployee
-];
-
-async function updateEmployee (req, res) {
+async function updateEmployee(req, res) {
     const formData = getDataWhenCreateOrUpdate(req);
     let currentEmployeeId = parseInt(req.params.id | req.payload.id);
     const validationError = validationResult(req);
@@ -198,21 +187,3 @@ async function updateEmployee (req, res) {
         handleError(res, 500, err);
     }
 }
-
-exports.updateNewPassword = [
-    body('new_password').not().isEmpty().withMessage('Please filled in password to continue.'),
-    async (req, res) => {
-        try {
-            const empId = parseInt(req.payload.id);
-            const hashedPassword = await getHashPassword(req.body.new_password);
-            const result = await query(Q.user.updatePasswordForEmployee, [hashedPassword, empId]);
-            if (result.affectedRow != 0) {
-                sendSuccessResponseMessage(res, ['Password has been updated']);
-            } else {
-                sendErrorResponseMessage(res, ['Some error occured. Please try again later']);
-            }
-        } catch (err) {
-            handleError(res, 500, err);
-        }
-    }
-]

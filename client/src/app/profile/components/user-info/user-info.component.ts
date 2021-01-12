@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from 'src/app/authentication/services/authentication.service';
 import { ProfileService } from '../../services/profile.service';
 import { SubSink } from 'subsink';
@@ -33,40 +33,36 @@ export class UserInfoComponent implements OnInit {
 
   fecthFormData(): void {
     if (this.isCustomer()) {
-      this.subs.sink = this._profile.getCustomerInfo().subscribe(data => {
+      this.subs.sink = this._profile.getProfileData().subscribe(data => {
         if (data.success) {
           this.form = this._fb.group({
             email: [data.customer.email, Validators.required],
             fullname: [data.customer.fullname, Validators.required],
             phoneNumber: [data.customer.phone_number, Validators.required],
             address: [data.customer.address]
-          });
+          }); 
         }
       });
     } else {
-      const user = this._auth.getUserDetail()
-      this.subs.sink = this._profile.getEmpInfo(user.id).subscribe(data => {
+      this.subs.sink = this._profile.getProfileData().subscribe(data => {
         this.form = this._fb.group({
           email: [data.employee.email],
           fullname: [data.employee.fullname, Validators.required],
           phoneNumber: [data.employee.phone_number, Validators.required],
           identityNumber: [data.employee.identity_number, Validators.required]
-        })
+        });
       });
     }
   }
 
   onSubmit(): void {
-    if (this.isCustomer()) {
-      if (this.form.valid) {
-        this.subs.sink = this._profile.updateCustomerInfo(this.form.value).subscribe(data => {
+    if (this.form.valid) {
+      if (this.isCustomer()) {
+        this.subs.sink = this._profile.updateCustomerProfile(this.form.value).subscribe(data => {
           data.success ? this.successMsg = data.message : this.errorMsg = data.message;
         });
-      }
-    } else {
-      if (this.form.valid) {
-        const user = this._auth.getUserDetail()
-        this.subs.sink = this._profile.updateEmpInfo(user.id, this.form.value).subscribe(data => {
+      } else {
+        this.subs.sink = this._profile.updateEmpProfile(this.form.value).subscribe(data => {
           data.success ? this.successMsg = data.message : this.errorMsg = data.message;
         });
       }

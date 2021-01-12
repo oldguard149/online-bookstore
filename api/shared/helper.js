@@ -122,8 +122,12 @@ function preprocessCartItem(data) {
     }
 }
 
-function isDataNotValidForUpdate(checkObjOfNewField, oldField, newField) {
-    return (!isResultEmpty(checkObjOfNewField) && oldField !== newField)
+
+// field must be unique. If oldField !== newField, that mean value has been changed
+// objectWithValueOfNewField not empty mean newValue already exist, return false because
+// newValue violate unique constraint 
+function isDataNotValidForUpdate(objectWithValueOfNewField, oldValue, newValue) {
+    return (!isResultEmpty(objectWithValueOfNewField) && oldValue !== newValue)
 }
 
 function handleError(res, status, error, msg = 'Server error.') {

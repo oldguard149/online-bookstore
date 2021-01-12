@@ -1,8 +1,7 @@
 const { body, validationResult } = require('express-validator');
-
 const { findOne, query, countData, loadDataForSideNav, loadGenresAndPublishers } = require('../database/db_hepler');
 const { preprocessBookList, calculateOffsetForPagination,
-    pagination, handleError, isResultEmpty, sendErrorResponseMessage,
+     handleError, isResultEmpty, sendErrorResponseMessage,
     sendSuccessResponseMessage, getQueryParam, handleValidationError } = require('../shared/helper');
 const pool = require('../config/pool');
 const Q = require('../database/query');
@@ -55,8 +54,6 @@ exports.bookDetail = async (req, res) => {
         const isbn = processIsbn(req.params.isbn);
         const numberOfRecommendBook = 5;
         const book = preprocessBookList(await query(Q.book.bookDetail, [isbn]))[0];
-        // const book = await query(Q.book.bookDetail, [isbn]);
-        console.log(book);
         if (isResultEmpty(book)) {
             // return res.status(404).json({ message: 'Page not found' });
             return sendErrorResponseMessage(res, ['Page not found']);
@@ -72,7 +69,6 @@ exports.bookDetail = async (req, res) => {
 exports.bookDelete = async (req, res) => {
     try {
         const result = await query(Q.book.deleteBook, [processIsbn(req.params.isbn)]);
-        console.log(result);
         if (result.affectedRows !== 0) {
             sendSuccessResponseMessage(res, ['Sách đã được xóa.']);
         } else {

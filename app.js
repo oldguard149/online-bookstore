@@ -22,7 +22,7 @@ app.use('/', (req, res, next) => {
   next();
 });
 app.use('/api', mainRouter);
-app.use('/api/management', authMiddleware, managementRouter);
+app.use('/api/management', managementRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

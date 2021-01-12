@@ -1,0 +1,17 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <ng-container formArrayName="stocks">
+        <div *ngFor="let control of stocks.controls; let i=index;" [formGroupName]="i">
+            <mat-form-field >
+                <input type="text" matInput formControlName="isbn">
+            </mat-form-field>
+            <mat-form-field>
+                <input type="number" matInput formControlName="price">
+            </mat-form-field>
+            <mat-form-field>
+                <input type="number" matInput formControlName="quantity">
+            </mat-form-field>
+        </div>
+        
+    </ng-container>
+    <button mat-raised-button>Cập nhật</button>
+</form>
