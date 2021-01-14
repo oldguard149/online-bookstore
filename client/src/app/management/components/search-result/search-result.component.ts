@@ -32,7 +32,7 @@ export class SearchResultComponent implements OnInit {
     this.router.navigate([], {
       queryParams: {
         'page': page.pageIndex,
-        'pageSize': page.pageSize
+        'pagesize': page.pageSize
       },
       queryParamsHandling: 'merge'
     });

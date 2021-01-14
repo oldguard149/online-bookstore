@@ -34,6 +34,7 @@ router.post('/add-to-cart/:isbn', authMiddleware, isCustomer, cart.addToCart); /
 router.get('/cart', authMiddleware, isCustomer, cart.cartDetailData);
 router.get('/delete-cart-item/:isbn', authMiddleware, isCustomer, cart.deleteCartItem); // can sua
 router.post('/update-cart-items', authMiddleware, isCustomer, cart.updateCartItemOrderQuantity);
+router.post('/cartitems-with-isbnlist', cart.cartItemsWithIsbnList);
 
 router.get('/create-bill', authMiddleware, isCustomer, bill.createBill);
 router.get('/bills', authMiddleware, isCustomer,bill.billListForCustomer);

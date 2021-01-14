@@ -1,14 +1,12 @@
-<h2>{{publisher.name}}</h2>
-<div class="detail-info">
-    <p>Email: {{publisher.email}}</p>
-    <p>Địa chỉ: {{publisher.address}}</p>
-</div>
-<h2 *ngIf="booklist.length === 0" class="no-book">
-    Hiện chưa có sách thuộc nhà xuất bản này
-</h2>
-<booklist
-    [booklist]="booklist"
-    [pageSize]="pageSize"
-    [pageIndex]="currentPage"
-    [totalItems]="totalItems"
-></booklist>
+<ng-container *ngIf="publisher">
+    <h2>{{publisher.name}}</h2>
+    <div class="detail-info">
+        <p>Email: {{publisher.email}}</p>
+        <p>Địa chỉ: {{publisher.address}}</p>
+    </div>
+    <h2 *ngIf="booklist.length === 0" class="no-book">
+        Hiện chưa có sách thuộc nhà xuất bản này
+    </h2>
+    <booklist [booklist]="booklist" [pageSize]="pageSize" [pageIndex]="currentPage" [totalItems]="totalItems">
+    </booklist>
+</ng-container>

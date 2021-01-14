@@ -46,7 +46,7 @@ export class DataService {
 
   getDetail(type: 'author' | 'genre' | 'publisher', id: string,
     currentPage: string = '1', pageSize: string = '30') {
-      
+
     const options = {
       params: new HttpParams()
         .set('page', currentPage)
@@ -59,5 +59,16 @@ export class DataService {
   getSideAdBooklist() {
     const urlPath = `side-ad-booklist`;
     return this.get(urlPath).toPromise();
+  }
+
+  search(type: 'book' | 'author' | 'publisher' | 'genre', searchtext: string, offset: number, limit: number) {
+    const options = {
+      params: new HttpParams()
+        .set('search', searchtext)
+        .set('type', type)
+        .set('offset', String(offset))
+        .set('limit', String(limit))
+    }
+    return this.http.get<any>(`${apiurl}/search`, options);
   }
 }

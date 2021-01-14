@@ -26,7 +26,7 @@ exports.authorList = async (req, res) => {
 
 exports.authorDetail = async (req, res) => {
     try {
-        let booklist = [];
+        let books = [];
         const currentPage = parseInt(req.query.page) || 0;
         const bookPerPage = parseInt(req.query.pagesize) || 30;
         const authorId = parseInt(req.params.id);
@@ -41,15 +41,15 @@ exports.authorDetail = async (req, res) => {
         }
         const count = await countData(Q.author.bookCountForAuthorDetail, [authorId]);
         if (count > 0) {
-            booklist = preprocessBookList(await query(Q.author.bookListForAuthorDetail,
+            books = preprocessBookList(await query(Q.author.bookListForAuthorDetail,
                 [authorId, offset, bookPerPage]));
         }
         // convert authors from array to string
-        for (let i = 0; i < booklist.length; i++) {
-            booklist[i].Authors = booklist[i].Authors.map(author => author.fullname).join(', ');
+        for (let i = 0; i < books.length; i++) {
+            books[i].Authors = books[i].Authors.map(author => author.fullname).join(', ');
         }
 
-        const data = { author, booklist, totalItems: count };
+        const data = { author, booklist: books, totalItems: count };
         res.status(200).json(data);
     } catch (error) {
         handleError(res, 500, error);

@@ -27,6 +27,7 @@ import { CartItemComponent } from './components/cart-item/cart-item.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { BillService } from './services/bill.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MainSearchComponent } from './components/main-search/main-search.component';
 
 
 @NgModule({
@@ -50,6 +51,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     CartComponent,
     CartItemComponent,
     CheckoutComponent,
+    MainSearchComponent,
   ],
   imports: [
     CommonModule,

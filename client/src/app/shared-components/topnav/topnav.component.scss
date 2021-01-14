@@ -23,3 +23,13 @@
 .mat-toolbar {
     box-shadow: 1px 1px 10px 5px #c7c5ce;
 }
+
+form {
+    display: inline;
+    margin-right: 1rem;
+    width: 200px;
+
+    input {
+        width: 250px;
+    }
+}

@@ -6,6 +6,8 @@ import { RouterModule } from '@angular/router';
 import { AlertComponent } from './alert/alert.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { MatButtonModule } from '@angular/material/button';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
 
 
 
@@ -19,7 +21,9 @@ import { MatButtonModule } from '@angular/material/button';
     CommonModule,
     MaterialModule,
     RouterModule,
-    MatButtonModule
+    MatButtonModule,
+    ReactiveFormsModule,
+    MatInputModule
   ],
   exports: [
     TopnavComponent,

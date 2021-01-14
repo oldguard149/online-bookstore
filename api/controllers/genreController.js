@@ -1,9 +1,9 @@
 const { body, validationResult } = require('express-validator');
 const { findOne, query, countData } = require('../database/db_hepler');
 const { preprocessBookList, calculateOffsetForPagination, isDataNotValidForUpdate,
-        handleError, isResultEmpty, handleValidationError,
-        sendErrorResponseMessage, sendSuccessResponseMessage,
-        getQueryParam } = require('../shared/helper');
+    handleError, isResultEmpty, handleValidationError,
+    sendErrorResponseMessage, sendSuccessResponseMessage,
+    getQueryParam } = require('../shared/helper');
 const Q = require('../database/query');
 const e = require('../shared/errormessages');
 
@@ -39,6 +39,9 @@ exports.genreDetail = async (req, res) => {
         if (count > 0) {
             books = preprocessBookList(await query(Q.genre.bookListForGenreDetail,
                 [currentGenreId, offset, bookPerPage]));
+            for (let i = 0; i < books.length; i++) {
+                books[i].Authors = books[i].Authors.map(author => author.fullname).join(', ');
+            }
         }
         const data = {
             genre, booklist: books, totalItems: count
@@ -59,7 +62,7 @@ exports.genreCreate = [
             return handleValidationError(res, validationError);
         }
 
-        try {            
+        try {
             const genre = await findOne(Q.genre.genreByName, [genreName]);
             if (!isResultEmpty(genre)) {
                 const error = ['Tên thể loại sách này đã tồn tại trong hệ thống.'];
@@ -80,7 +83,7 @@ exports.genreCreate = [
 
 exports.genreSearch = async (req, res) => {
     try {
-        const genrePerPage = parseInt(getQueryParam(req, 'pagesize', 15)); // number of result per page
+        const genrePerPage = parseInt(req.query.pagesize) || 10;
         const rawSearchText = req.query.search;
         const currentPage = parseInt(getQueryParam(req, 'page', 0));
         const offset = calculateOffsetForPagination(genrePerPage, currentPage);
@@ -90,7 +93,7 @@ exports.genreSearch = async (req, res) => {
         const searchText = String(rawSearchText).replace(/\+/gi, ' ');
         const count = await countData(Q.genre.genreSearchCount, [searchText]);
         const genres = await query(Q.genre.genreSearch, [searchText, offset, genrePerPage]);
-        res.json({success: true, totalItems: count, genres});
+        res.json({ success: true, totalItems: count, genres });
     } catch (err) {
         handleError(res, 500, err);
     }
@@ -107,7 +110,7 @@ exports.genre = async (req, res) => {
         if (isResultEmpty(genre)) {
             return sendErrorResponseMessage(res, [`Thể loại sách với id ${genreId} không tồn tại trong hệ thống.`]);
         }
-        res.json({success: true, genre});
+        res.json({ success: true, genre });
     } catch (err) {
         handleError(res, 500, err);
     }
@@ -126,14 +129,14 @@ exports.genreUpdate = [
                 // return sendErrorResponseMessage(res, ['Genre id is not valid']);
             }
             if (!validationError.isEmpty()) {
-               return handleValidationError(res, validationError);
+                return handleValidationError(res, validationError);
             }
 
             const oldGenre = await findOne(Q.genre.genreById, [genreId]);
             const checkExistGenre = await findOne(Q.genre.genreByName, [newGenreName]);
 
             if (isDataNotValidForUpdate(checkExistGenre, oldGenre.name, newGenreName)) {
-                const error = [`Đã tồn tại thể loại ${newGenreName} trong hệ thống.` ];
+                const error = [`Đã tồn tại thể loại ${newGenreName} trong hệ thống.`];
                 sendErrorResponseMessage(res, error);
             } else {
                 await query(Q.genre.updateGenre, [newGenreName, genreId]);

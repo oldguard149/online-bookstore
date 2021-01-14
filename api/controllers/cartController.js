@@ -4,6 +4,7 @@ const { query, findOne, queryUsingTransaction, findOneUsingTransaction } = requi
 const Q = require('../database/query');
 const { body, validationResult } = require('express-validator');
 const pool = require('../config/pool');
+const sql2 = require('mysql2');
 
 //* in route index.js, insert a middleware to guarantee that user accesses its route is customer
 exports.addToCart = [
@@ -82,8 +83,8 @@ exports.updateCartItemOrderQuantity = async (req, res) => {
         const cartItems = req.body.cartItemFormArray;
         await queryUsingTransaction(connection, Q.startTransaction);
         for (const item of cartItems) {
-            await queryUsingTransaction(connection, Q.cart.updateCartItem, 
-                [ parseInt(item.quantity), item.price, cart.cart_id, item.isbn ]);
+            await queryUsingTransaction(connection, Q.cart.updateCartItem,
+                [parseInt(item.quantity), item.price, cart.cart_id, item.isbn]);
         }
 
         await queryUsingTransaction(connection, Q.commit);
@@ -93,5 +94,21 @@ exports.updateCartItemOrderQuantity = async (req, res) => {
         handleError(res, 500, err);
     } finally {
         connection.release();
+    }
+};
+
+
+exports.cartItemsWithIsbnList = async (req, res) => {
+    try {
+        const requestIsbn = req.body.items;
+        const isbnList = Object.keys(requestIsbn);
+        const rawData = await query(Q.cart.cartItemsWithIsbnList, [isbnList]);
+        const { cartItems, totalItems } = preprocessCartItem(rawData);
+        for (let i = 0; i < cartItems.length; i++) {
+            cartItems[i]['order_qty'] = Number(requestIsbn[cartItems[i].isbn]);
+        }
+        res.json({ success: true, cartItems, totalItems });
+    } catch (err) {
+        handleError(res, 500, err);
     }
 };

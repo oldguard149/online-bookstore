@@ -3,7 +3,7 @@
         <!-- Id Column -->
         <ng-container matColumnDef="author_id">
           <mat-header-cell [ngClass]="'small-width'" *matHeaderCellDef> No. </mat-header-cell>
-          <mat-cell [ngClass]="'small-width'" *matCellDef="let element; i=index"> {{i}} </mat-cell>
+          <mat-cell [ngClass]="'small-width'" *matCellDef="let element; let i=index;"> {{i}} </mat-cell>
         </ng-container>
       
         <!-- Name Column -->

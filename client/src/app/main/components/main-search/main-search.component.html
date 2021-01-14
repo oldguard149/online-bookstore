@@ -1,0 +1,48 @@
+<form [formGroup]="form">
+    <mat-form-field>
+        <input type="text" matInput formControlName="searchtext" required>
+    </mat-form-field>
+    <mat-radio-group formControlName="type">
+        <label>Tìm kiếm theo:</label>
+        <mat-radio-button value="book">
+            Sách
+        </mat-radio-button>
+        <mat-radio-button value="genre">
+            Thể loại sách
+        </mat-radio-button>
+        <mat-radio-button value="publisher">
+            Nhà xuất bản
+        </mat-radio-button>
+        <mat-radio-button value="author">
+            Tác giả
+        </mat-radio-button>
+    </mat-radio-group>
+    <mat-select>
+        <mat-option *ngFor="let i in "></mat-option>
+    </mat-select>
+</form>
+
+<mat-table *ngIf="searchResult" [dataSource]="searchResult">
+    <ng-container matColumnDef="name">
+        <mat-header-cell [ngClass]="'small-width'" *matHeaderCellDef> Số thứ tự </mat-header-cell>
+        <mat-cell [ngClass]="'small-width'" *matCellDef="let element"> {{element.publisher_id}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="option">
+        <mat-header-cell *matHeaderCellDef> Tên </mat-header-cell>
+        <mat-cell class="link" *matCellDef="let element">
+            <a mat-raised-button color="primary" [routerLink]="[]">Xem chi tiết</a>
+        </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+
+<mat-paginator
+    [length]="totalItems"
+    [pageSize]="pageSize"
+    [pageIndex]="currentPage"
+    [pageSizeOptions]="[10,20,30,50]"
+    (page)="handlePageChange($event)"
+></mat-paginator>

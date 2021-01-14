@@ -41,7 +41,7 @@ export class RequestToApiService {
       params: new HttpParams()
         .set('search', search)
         .set('page', page)
-        .set('pageSize', pageSize)
+        .set('pagesize', pageSize)
     };
     return this.get(url, options);
   }

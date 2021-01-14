@@ -4,6 +4,7 @@ import { BillService } from '../../services/bill.service';
 import { SubSink } from 'subsink';
 import { CartService } from '../../services/cart.service';
 import { ProfileService } from 'src/app/profile/services/profile.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-checkout',
@@ -23,7 +24,8 @@ export class CheckoutComponent implements OnInit {
     private fb: FormBuilder,
     private bill: BillService,
     private cart: CartService,
-    private profile: ProfileService
+    private profile: ProfileService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -64,8 +66,11 @@ export class CheckoutComponent implements OnInit {
   }
 
   createBill() {
-    // console.log(this.checkoutForm.value);
-
+    this.subs.sink = this.bill.createBill().subscribe(data => {
+      if (data.success) {
+        this.router.navigateByUrl(`/bill/${data.billid}`);
+      }
+    });
   }
 
   deleteItem(i: number): void {
@@ -95,7 +100,6 @@ export class CheckoutComponent implements OnInit {
     this.cart.getCartItems().then(data => {
       if (data.success) {
         this.cartItems = data.cartItems;
-        // this.totalItems = data.totalItems;
         this.preprocessCartItems();
         for (let i = 0; i < parseInt(data.totalItems); i++) {
           this.cartItemsForm.push(this.fb.group({

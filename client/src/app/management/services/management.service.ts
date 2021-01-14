@@ -41,7 +41,7 @@ export class ManagementService {
       params: new HttpParams()
         .set('search', search)
         .set('page', page)
-        .set('pageSize', pageSize)
+        .set('pagesize', pageSize)
     };
     return this.apiGet(url, options);
   }

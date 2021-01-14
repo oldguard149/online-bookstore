@@ -65,7 +65,7 @@ export class SearchFormComponent implements OnInit {
           this.formSearchText.setValue(rawSearchText.replace(/\+/gi, ' '));
           this.formPageSize.setValue(this.pageSize);
         }
-        const searchText = rawSearchText.replace(/ /gi, '+');
+        const searchText = rawSearchText.replace(/ /gi, '+'); // make sure there are no whitespace in searchtext
 
         this.subs.sink = this.requestToApi.search(this.objectType, searchText, currentPage, pageSize)
           .subscribe(data => {

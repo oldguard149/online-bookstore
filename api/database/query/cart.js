@@ -54,3 +54,24 @@ FROM
     LEFT OUTER JOIN publishers p ON b.publisher_id = p.publisher_id
 ORDER BY
     ci.isbn;`;
+
+exports.cartItemsWithIsbnList = `
+SELECT
+    b.isbn,
+    b.price,
+    b.name AS book_name,
+    b.quantity as available_qty,
+    b.image_url as image_url,
+    a.fullname as author_name,
+    p.name as publisher_name
+FROM
+    books b
+LEFT OUTER JOIN (
+    writtens w
+    JOIN authors a ON w.author_id = a.author_id
+) ON b.isbn = w.isbn
+LEFT OUTER JOIN publishers p ON b.publisher_id = p.publisher_id
+WHERE
+    b.isbn IN (?)
+ORDER BY
+    b.isbn;`

@@ -157,7 +157,7 @@ function sendErrorResponseMessage(res, messageArray) {
 
 /** Get query params. key: string */
 function getQueryParam(req, key, defaultValue) {
-    return req.query[key] !== undefined ? req.query[key] : defaultValue;
+    return req.query[key] ? req.query[key] : defaultValue;
 }
 module.exports = {
     role,

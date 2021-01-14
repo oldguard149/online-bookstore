@@ -80,7 +80,7 @@ export class GenreFormComponent implements OnInit {
       this.subs.sink = this.management.update('genre', genreId, genre).subscribe(data => {
         if (data.success) {
           this.flash.setMessage('success', data.message[0]);
-          this.router.navigateByUrl('/search/genre');
+          this.router.navigateByUrl('/management/search/genre');
         } else {
           this.triggerSendMessageEvent('fail', data.message);
         }

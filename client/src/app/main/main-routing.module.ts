@@ -9,10 +9,9 @@ import { GenreDetailComponent } from './components/genre-detail/genre-detail.com
 import { GenreListComponent } from './components/genre-list/genre-list.component';
 import { IndexBooklistComponent } from './components/index-booklist/index-booklist.component';
 import { IndexPageComponent } from './components/index-page/index-page.component';
+import { MainSearchComponent } from './components/main-search/main-search.component';
 import { PublisherDetailComponent } from './components/publisher-detail/publisher-detail.component';
 import { PublisherListComponent } from './components/publisher-list/publisher-list.component';
-import { TestCartComponent } from './components/test-cart/test-cart.component';
-import { TestFormArrayComponent } from './components/test-form-array/test-form-array.component';
 
 
 const routes: Routes = [
@@ -27,12 +26,11 @@ const routes: Routes = [
       { path: 'publisher/:id', component: PublisherDetailComponent },
       { path: 'author/:id', component: AuthorDetailComponent },
       { path: 'book/:isbn', component: BookDetailComponent },
-      { path: 'cart', component: CartComponent }
+      { path: 'cart', component: CartComponent },
+      { path: 'search', component: MainSearchComponent }
     ]
   },
   { path: 'checkout', component: CheckoutComponent },
-  { path: 'test-form-array', component: TestFormArrayComponent },
-  { path: 'test-cart', component: TestCartComponent }
 ];
 
 @NgModule({

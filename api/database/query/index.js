@@ -1,11 +1,11 @@
 'use strict';
-const author = require('./author_query');
-const bill = require('./bill_query');
-const book = require('./book_query');
-const cart = require('./cart_query');
-const genre = require('./genre_query');
-const publisher = require('./publisher_query');
-const user = require('./user_query');
+const author = require('./author');
+const bill = require('./bill');
+const book = require('./book');
+const cart = require('./cart');
+const genre = require('./genre');
+const publisher = require('./publisher');
+const user = require('./user');
 
 //------------------------------------------ LAYOUTS ------------------------------------------
 const startTransaction = `START TRANSACTION;`;

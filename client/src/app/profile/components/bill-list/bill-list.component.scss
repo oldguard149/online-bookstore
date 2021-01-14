@@ -3,9 +3,14 @@
     margin: auto;
 }
 
-// mat-row {
-//     padding: 0.5rem;
-// }
+mat-row {
+    transition: background-color 300ms;
+}
+
+mat-row:hover {
+    cursor: pointer;
+    background-color: #dfdaf56e;
+}
 
 .medium-width {
     max-width: 15%;

@@ -1,5 +1,6 @@
 <div>
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <h1 class="noitems" *ngIf="cartItems && cartItems.length === 0">Không có sách trong giỏ hàng</h1>
+    <form *ngIf="cartItems && cartItems.length !== 0" [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="header-title">
             <h2 id="left">Giỏ hàng</h2>
             <span id="right">Giá</span>

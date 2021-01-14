@@ -13,14 +13,14 @@ exports.createBill = async (req, res) => {
         const cart = await findOne(Q.cart.cartByCustomerId, [customerId]);
         const cart_id = parseInt(cart.cart_id);
         const billId = uuidv4();
-
+        
+        const cartItems = await queryUsingTransaction(connection, Q.cart.allItemsInCart, [cart_id]);
         if (isResultEmpty(cartItems)) { // make sure there are at least one book in cart before create bill
             sendErrorResponseMessage(res, ['Không có sách trong giỏ hàng của bạn.']);
         } else {
             await queryUsingTransaction(connection, Q.startTransaction);
             await queryUsingTransaction(connection, Q.bill.createBill,
                 [billId, customerId, null, 0, new Date()]);
-            const cartItems = await queryUsingTransaction(connection, Q.cart.allItemsInCart, [cart_id]);
             for (const cartItem of cartItems) {
                 const book = await findOne(Q.bill.bookQuantity, [cartItem.isbn]);
                 const bookQuantity = parseInt(book.quantity);
@@ -44,7 +44,8 @@ exports.createBill = async (req, res) => {
 
             await queryUsingTransaction(connection, Q.bill.updateBillTotalPrice, [totalPrice, billId]);
             await queryUsingTransaction(connection, Q.commit);
-            sendSuccessResponseMessage(res, ['Hóa đơn đã được tạo']);
+            // sendSuccessResponseMessage(res, ['Hóa đơn đã được tạo']);
+            res.json({ success: true, message: ['Hóa đơn đã được tạo'], billid: billId });
         }
     } catch (error) {
         await queryUsingTransaction(connection, Q.rollback);

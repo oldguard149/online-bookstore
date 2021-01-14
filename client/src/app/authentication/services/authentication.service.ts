@@ -72,10 +72,10 @@ export class AuthenticationService {
   }
 
   private request(type: 'login' | 'register', user: TokenPayload) {
-    let $returnData: Observable<any>;
-    $returnData = this.http.post(`${apiurl}/${type}`, user);
+    let returnData: Observable<any>;
+    returnData = this.http.post(`${apiurl}/${type}`, user);
 
-    return $returnData.pipe(
+    return returnData.pipe(
       map(data => {
         if (data.token) {
           this.saveToken(data.token);
