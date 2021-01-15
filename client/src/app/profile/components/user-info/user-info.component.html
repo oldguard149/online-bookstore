@@ -3,28 +3,35 @@
     <form [formGroup]="form" (ngSubmit)="onSubmit()" class="profile-form">
 
         <mat-form-field appearance="fill">
-            <input matInput type="email" formControlName="email">
             <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="email" disabled>
         </mat-form-field>
         <mat-form-field appearance="fill">
             <mat-label>Họ tên</mat-label>
-            <input matInput formControlName="fullname" type="text">
+            <input matInput formControlName="fullname" type="text" required>
+            <mat-error *ngIf="fullname.hasError('required')">Vui lòng điền họ tên</mat-error>
         </mat-form-field>
         <mat-form-field appearance="fill">
             <mat-label>Số điện thoại</mat-label>
-            <input matInput type="tel" formControlName="phoneNumber">
+            <input matInput type="tel" formControlName="phoneNumber" required>
+            <mat-error *ngIf="phoneNumber.hasError('required')">Vui lòng điền số điện thoại</mat-error>
+            <mat-error *ngIf="phoneNumber.hasError('pattern')">Số điện có từ 10 đến 15 chữ số</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill" *ngIf="isCustomer()">
             <mat-label>Địa chỉ</mat-label>
-            <input matInput type="text" formControlName="address">
+            <input matInput type="text" formControlName="address" required>
+            <mat-error *ngIf="address?.hasError('required')">Vui lòng điền địa chỉ</mat-error>
+
         </mat-form-field>
 
         <mat-form-field appearance="fill" *ngIf="!isCustomer()">
             <mat-label>Số CMND</mat-label>
             <input type="text" matInput formControlName="identityNumber" required>
+            <mat-error *ngIf="identityNumber?.hasError('required')">Vui lòng điền số cmnd</mat-error>
+            <mat-error *ngIf="identityNumber?.hasError('pattern')">CMND có 9 hoặc 12 số</mat-error>
         </mat-form-field>
 
-        <button mat-raised-button color="primary" type="submit">Cập nhật thông tin</button>
+        <button mat-raised-button [disabled]="!form.valid" color="primary" type="submit">Cập nhật thông tin</button>
     </form>
 </mat-card>

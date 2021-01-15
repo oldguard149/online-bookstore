@@ -40,4 +40,12 @@ export class ChangePasswordComponent implements OnInit {
       data.success ? this.successMsg = data.message : this.errorMsg = data.message;
     });
   }
+
+  get newpassword() {
+    return this.form.get('new_password');
+  }
+
+  get confirmpassword() {
+    return this.form.get('confirm_password');
+  }
 }

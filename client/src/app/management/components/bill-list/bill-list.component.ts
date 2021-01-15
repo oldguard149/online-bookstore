@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ManagementService } from '../../services/management.service';
 import { SubSink } from 'subsink';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { apiurl } from 'src/app/shared/api-url';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpParams } from '@angular/common/http';
+import { param } from 'express-validator';
 
 @Component({
   selector: 'management-bill-list',
@@ -14,18 +17,53 @@ import { apiurl } from 'src/app/shared/api-url';
 })
 export class BillListComponent implements OnInit {
   private subs = new SubSink();
+  private validSearchType = new Set(['all', 'unconfirmed', 'confirmed']);
+  billStatusType = [
+    { type: 'confirmed', displayName: 'Đã xác nhận' },
+    { type: 'unconfirmed', displayName: 'Chờ xác nhận' },
+    { type: 'all', displayName: 'Tất cả' }
+  ]
+  displayedColumns = ['id', 'createdate', 'state', 'totalamount', 'option'];
+  errorMsg: string[];
+  form: FormGroup;
   bills: any;
   totalItems: number;
-  displayedColumns = ['id', 'createdate', 'state', 'totalamount', 'option'];
+  pageSize: number = 10;
+  currentPage: number = 0;
+  searchType: any = 'all';
   constructor(
     private _management: ManagementService,
     private _router: Router,
+    private _fb: FormBuilder,
+    private _route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
-    this.subs.sink = this._management.billList().subscribe(data => {
-      this.bills = data.bills;
-      this.totalItems = data.totalItems;
+    this.form = this._fb.group({
+      statusType: ['all', Validators.required],
+      pageSize: ['10', Validators.required]
+    })
+    
+  }
+
+  fetchBills() {
+    this.subs.sink = this._route.queryParams.subscribe(params => {
+      this.validSearchType.has(params['type']) ? this.searchType = params['type']: this.searchType = 'all';
+      this.currentPage = this.getValidPaginationNumber(params['page'], 0);
+      this.pageSize = this.getValidPaginationNumber(params['pagesize'], 10);
+
+      this.form.patchValue({
+        statusType: this.searchType,
+        pageSize: this.pageSize
+      });
+
+      this.subs.sink = this._management.billList(this.searchType, this.currentPage, this.pageSize).subscribe(data => {
+        if (data.success) {
+          this.bills = data.bills;
+        } else {
+          this.errorMsg = data.message;
+        }
+      })
     });
   }
 
@@ -33,8 +71,26 @@ export class BillListComponent implements OnInit {
     this.subs.unsubscribe();
   }
 
+  onSubmit() {
+    this._router.navigate([], {
+      queryParams: {
+        type: this.formType.value,
+        page: this.currentPage,
+        pagesize: this.formPageSize.value
+      },
+      queryParamsHandling: 'merge'
+    })
+  }
   manageBill(id: string) {
     this._router.navigateByUrl(`${apiurl}/management/bill/${id}`);
   }
 
+  get formType() { return this.form.get('statusType') }
+  get formPageSize() { return this.form.get('pageSize') }
+  getValidPaginationNumber(checkValue: any, defaultValue: number): number {
+    if (isNaN(checkValue) || Number(checkValue) < 0) {
+      return defaultValue;
+    }
+    return parseInt(checkValue);
+  }
 }

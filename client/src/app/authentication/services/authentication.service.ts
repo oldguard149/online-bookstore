@@ -71,6 +71,22 @@ export class AuthenticationService {
     return false;
   }
 
+  isEmp():boolean {
+    const user = this.getUserDetail();
+    if (user) {
+      return user.role === 'EMP' || user.role === 'ADMIN';
+    }
+    return false;
+  }
+
+  isAdmin(): boolean {
+    const user = this.getUserDetail();
+    if (user) {
+      return user.role === 'ADMIN';
+    }
+    return false;
+  }
+
   private request(type: 'login' | 'register', user: TokenPayload) {
     let returnData: Observable<any>;
     returnData = this.http.post(`${apiurl}/${type}`, user);

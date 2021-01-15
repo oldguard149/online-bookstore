@@ -2,27 +2,36 @@
     <mat-card>
         <mat-form-field>
             <mat-label>Họ và tên</mat-label>
-            <input type="text" matInput formControlName="fullname">
+            <input type="text" matInput formControlName="fullname" required>
+            <mat-error *ngIf="fullname.hasError('required')">Vui lòng điền họ tên</mat-error>
         </mat-form-field>
         <mat-form-field>
             <mat-label>Email</mat-label>
-            <input type="text" matInput formControlName="email">
+            <input type="text" matInput formControlName="email" required>
+            <mat-error *ngIf="email.hasError('email')">Email không hợp lệ</mat-error>
+            <mat-error *ngIf="email.hasError('required')">Vui lòng điền email</mat-error>
         </mat-form-field>
         <mat-form-field>
             <mat-label>Số CMND</mat-label>
-            <input type="number" matInput formControlName="identity_number">
+            <input type="number" matInput formControlName="identity_number" required>
+            <mat-error *ngIf="identity_number.hasError('pattern')">CMND có 9 hoặc 12 số</mat-error>
+            <mat-error *ngIf="identity_number.hasError('required')">Vui lòng điền số CMND</mat-error>
         </mat-form-field>
         <mat-form-field>
             <mat-label>Số điện thoại</mat-label>
-            <input type="number" matInput formControlName="phone_number">
+            <input type="number" matInput formControlName="phone_number" required>
+            <mat-error *ngIf="phone_number.hasError('pattern')">Số điện có từ 10 đến 15 chữ số</mat-error>
+            <mat-error *ngIf="phone_number.hasError('required')">Vui lòng điền số điện thoại</mat-error>
         </mat-form-field>
         <mat-form-field *ngIf="type !== 'update'">
             <mat-label>Mật khẩu</mat-label>
-            <input type="password" matInput formControlName="password">
+            <input type="password" matInput formControlName="password" required>
+            <mat-error *ngIf="password.hasError('required')">Vui lòng điền mật khẩu</mat-error>
         </mat-form-field>
         <mat-form-field>
             <mat-label>Lương</mat-label>
-            <input type="number" matInput formControlName="salary">
+            <input type="number" matInput formControlName="salary" required>
+            <mat-error *ngIf="salary.hasError('required')">Vui lòng điền lương nhân viên</mat-error>
         </mat-form-field>
         <mat-form-field>
             <mat-label>Chức cụ</mat-label>

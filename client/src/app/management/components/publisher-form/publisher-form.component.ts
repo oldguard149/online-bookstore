@@ -52,13 +52,11 @@ export class PublisherFormComponent implements OnInit {
       this.form = this.fb.group({
         name: [publisher.name, Validators.required],
         address: [publisher.address ? publisher.address : ''],
-        email: [publisher.email ? publisher.email : '']
       });
     } else {
       this.form = this.fb.group({
         name: ['', Validators.required],
         address: [''],
-        email: ['']
       });
     }
   }
@@ -83,9 +81,9 @@ export class PublisherFormComponent implements OnInit {
       .subscribe(data => {
         if (data.success) {
           this.flash.setMessage('success', data.message[0]);
-          this.router.navigateByUrl('/search/publisher');
+          this.router.navigateByUrl('/management/search/publisher');
         } else {
-          this.triggerSendMessageEvent('success', data.message);
+          this.triggerSendMessageEvent('fail', data.message);
         }
       })
     }

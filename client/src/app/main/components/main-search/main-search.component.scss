@@ -1,0 +1,29 @@
+:host {
+    grid-area: main;
+    margin-top: 2rem;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    mat-radio-group label, mat-radio-group mat-radio-button {
+        margin-right: 1rem;
+    }
+
+    
+}
+
+mat-table {
+    width: 95%;
+    margin: auto;
+}
+
+.small-width {
+    max-width: 15%;
+}
+
+form > * {
+    margin-bottom: 2rem;
+}

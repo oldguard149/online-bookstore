@@ -24,9 +24,9 @@ exports.publisherByName = `SELECT publisher_id, name FROM publishers WHERE name 
 
 exports.publisherByEmail = `Select publisher_id, name, email FROM publishers WHERE email = ?;`;
 
-exports.createPublisher = `INSERT INTO publishers(name, email, address) VALUES (?, ?, ?);`;
+exports.createPublisher = `INSERT INTO publishers(name, email) VALUES (?, ?);`;
 
-exports.updatePublisher = `UPDATE publishers SET name=?, email=?, address=? WHERE publisher_id = ?;`;
+exports.updatePublisher = `UPDATE publishers SET name=?, email=? WHERE publisher_id = ?;`;
 
 exports.deletePublisher = `DELETE FROM publishers WHERE publisher_id = ?;`;
 

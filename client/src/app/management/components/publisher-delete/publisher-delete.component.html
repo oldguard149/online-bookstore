@@ -1,7 +1,7 @@
-<ng-container *ngIf="publisher">
+<mat-card *ngIf="publisher">
     <h2>Xoa nhà xuất bản</h2>
     <ul>
         <li>Tên: {{publisher.name}}</li>
     </ul>
     <button mat-raised-button color="warn" (click)="openDialog()">Xoá</button>
-</ng-container>
+</mat-card>

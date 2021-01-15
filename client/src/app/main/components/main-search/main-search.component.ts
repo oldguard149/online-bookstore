@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SubSink } from 'subsink';
+import { isBoolean } from 'util';
 import { DataService } from '../../services/data.service';
 
 @Component({
@@ -17,8 +18,11 @@ export class MainSearchComponent implements OnInit {
   totalItems: number;
   currentPage: number = 0;
   pageSize: number = 10;
+  idKey: string = 'isbn';
+  nameKey: string = 'name';
+  searchType: any = 'book';
   private subs = new SubSink();
-  private validSeachType = new Set(['book', 'genre', 'publisher', 'genre']);
+  private validSeachType = new Set(['book', 'genre', 'publisher', 'author']);
   constructor(
     private _route: ActivatedRoute,
     private _fb: FormBuilder,
@@ -29,9 +33,10 @@ export class MainSearchComponent implements OnInit {
   ngOnInit(): void {
     this.form = this._fb.group({
       searchtext: ['', Validators.required],
-      type: ['', Validators.required],
-      pagesize: ['10', Validators.required]
-    })
+      type: ['book', Validators.required],
+      pagesize: [10, Validators.required]
+    });
+    this.fetchSearchResult();
   }
 
   ngOnDestroy() {
@@ -39,28 +44,41 @@ export class MainSearchComponent implements OnInit {
   }
 
   fetchSearchResult(): void {
-    this.subs.sink = this._route.params.subscribe(params => {
+    this.subs.sink = this._route.queryParams.subscribe(params => {
       const searchtext = params['search'];
       const currentPage = this.getValidPaginationNumber(params['page'], 0);
       const pageSize = this.getValidPaginationNumber(params['pagesize'], 10);
-      let searchType: any;
-      this.validSeachType.has(params['type']) ? searchType = params['type'] : searchType = 'book';
+      this.validSeachType.has(params['type']) ? this.searchType = params['type'] : this.searchType = 'book';
 
+      this.idKey = this.searchObject[this.searchType].id;
+      this.nameKey = this.searchObject[this.searchType].name;
       this.currentPage = currentPage;
       this.pageSize = pageSize;
       if (searchtext !== undefined) {
         this.form.patchValue({
           searchtext: searchtext.replace(/\+/gi, ' '),
-          type: searchType,
+          type: this.searchType,
           pagesize: pageSize
         });
-        this.subs.sink = this._data.search(searchType, searchtext.replace(/ /gi, '+'), currentPage, pageSize)
+        this.subs.sink = this._data.search(this.searchType, searchtext.replace(/ /gi, '+'), currentPage, pageSize)
           .subscribe(data => {
-            this.searchResult = data.searchResult;
+            this.searchResult = data.result;
             this.totalItems = data.totalItems;
           })
 
       }
+    })
+  }
+
+  onSubmit() {
+    this._router.navigate([], {
+      queryParams: {
+        search: this.searchText.value,
+        page: this.currentPage,
+        pagesize: this.formPagesize.value,
+        type: this.formSearchType.value
+      },
+      queryParamsHandling: 'merge'
     })
   }
 
@@ -75,9 +93,28 @@ export class MainSearchComponent implements OnInit {
     this._router.navigate([], {
       queryParams: {
         'page': page.pageIndex,
-        'pageSize': page.pageSize
+        'pagesize': page.pageSize
       },
       queryParamsHandling: 'merge'
     });
+  }
+
+  get searchText() {
+    return this.form.get('searchtext');
+  }
+
+  get formPagesize() {
+    return this.form.get('pagesize');
+  }
+
+  get formSearchType() {
+    return this.form.get('type');
+  }
+
+  private searchObject = {
+    'book': { name: 'name', id: 'isbn' },
+    'genre': { name: 'name', id: 'genre_id' },
+    'publisher': { name: 'name', id: 'publisher_id' },
+    'author': { name: 'fullname', id: 'author_id' }
   }
 }

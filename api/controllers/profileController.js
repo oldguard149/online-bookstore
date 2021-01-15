@@ -32,9 +32,9 @@ exports.updateCustomerProfile = [
 
 exports.updateEmployeeProfile = [
     body('fullname').notEmpty().withMessage('Vui lòng điền họ tên.'),
-    body('phone-number').trim().not().notEmpty().withMessage('Vui lòng điền số điện thoại của nhân viên.')
+    body('phoneNumber').trim().not().notEmpty().withMessage('Vui lòng điền số điện thoại của nhân viên.')
     .matches(/^\d{10,15}$/i).withMessage('Số điện thoại không hợp lệ.').escape(),
-    body('identity-number').trim().not().isEmpty().withMessage('Vui lòng điền số chứng minh nhân dân.')
+    body('identityNumber').trim().not().isEmpty().withMessage('Vui lòng điền số chứng minh nhân dân.')
     .matches(/^\d{9}$|^\d{12}$/).withMessage('CMND phải có 9 hoặc 12 số.').escape(),
     async (req, res) => {
         const validationError = validationResult(req);
@@ -43,14 +43,14 @@ exports.updateEmployeeProfile = [
         }
         try {
             const empId = parseInt(req.payload.id);
-            const newIdentityNumber = req.body['identity-number'];
+            const newIdentityNumber = req.body['identityNumber'];
             const newFullname = req.body['fullname'];
-            const newPhoneNumber = req.body['phone-number'];
+            const newPhoneNumber = req.body['phoneNumber'];
             const oldEmp = await findOne(Q.user.employeeById, [empId]);
             const empWithNewIdentityNumber = await findOne(Q.user.employeeByIdentityNumber, [newIdentityNumber]);
             const empWithNewPhoneNumber = await findOne(Q.user.employeeByPhoneNumber, [newPhoneNumber]);
             
-            if (isDataNotValidForUpdate(empWithNewIdentityNumber, oldEmp.identity_nerm, newIdentityNumber)) {
+            if (isDataNotValidForUpdate(empWithNewIdentityNumber, oldEmp.identity_number, newIdentityNumber)) {
                 return sendErrorResponseMessage(res, ['Số cmnd đã được sử dụng. Xin hãy kiểm tra lại.']);
             }
             if (isDataNotValidForUpdate(empWithNewPhoneNumber, oldEmp.phone_number, newPhoneNumber)) {

@@ -17,6 +17,7 @@ import { GenreCreateComponent } from './components/genre-create/genre-create.com
 import { GenreDeleteComponent } from './components/genre-delete/genre-delete.component';
 import { GenreSearchComponent } from './components/genre-search/genre-search.component';
 import { GenreUpdateComponent } from './components/genre-update/genre-update.component';
+import { ImportStockComponent } from './components/import-stock/import-stock.component';
 import { ManagementIndexComponent } from './components/management-index/management-index.component';
 import { PublisherCreateComponent } from './components/publisher-create/publisher-create.component';
 import { PublisherDeleteComponent } from './components/publisher-delete/publisher-delete.component';
@@ -52,7 +53,9 @@ const routes: Routes = [
       { path: 'delete/employee/:id', component: EmpDeleteComponent },
 
       { path: 'bills', component: BillListComponent },
-      { path: 'bill/:id', component: BillDetailComponent }
+      { path: 'bill/:id', component: BillDetailComponent },
+      { path: 'import-stock', component: ImportStockComponent},
+      
     ]
   }
 ];

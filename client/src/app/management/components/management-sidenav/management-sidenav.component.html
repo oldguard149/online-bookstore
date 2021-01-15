@@ -46,3 +46,27 @@
         <a mat-list-item [routerLink]="['/management/search/author']">Cập nhật hoặc xóa tác giả</a>
     </mat-nav-list>
 </mat-expansion-panel>
+
+<mat-expansion-panel class="sidenav_item">
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            Nhân viên
+        </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-nav-list>
+        <a mat-list-item [routerLink]="['/management/create/employee']">Thêm nhân viên</a>
+        <a mat-list-item [routerLink]="['/management/search/employee']">Cập nhật hoặc xóa nhân viên</a>
+    </mat-nav-list>
+</mat-expansion-panel>
+
+<mat-expansion-panel class="sidenav_item">
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            Quản lý kho
+        </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-nav-list>
+        <a mat-list-item [routerLink]="['/management/import-stock']">Nhập sách</a>
+        <a mat-list-item [routerLink]="['/management/search/employee']">Danh sách đơn nhập sách</a>
+    </mat-nav-list>
+</mat-expansion-panel>

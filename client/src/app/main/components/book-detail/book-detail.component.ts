@@ -19,6 +19,7 @@ import { LocalCartService } from '../../services/local-cart.service';
 })
 export class BookDetailComponent implements OnInit {
   book: IBook;
+  booklist: any;
   recommendBook: IBook[];
   orderQtyForm: FormControl;
   available_qty: number[] = [];
@@ -44,6 +45,13 @@ export class BookDetailComponent implements OnInit {
         }
       });
     }); 
+
+    const isbn = this.route.snapshot.params['isbn'];
+    this.subs.sink = this.data.getRecommendBooks(isbn, String(15)).subscribe(data => {
+      if (data.success) {
+        this.booklist = data.books
+      }
+    })
   }
 
   ngOnDestroy(): void {

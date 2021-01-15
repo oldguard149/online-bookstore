@@ -1,7 +1,7 @@
-<ng-container *ngIf="genre">
+<mat-card *ngIf="genre">
     <h2>Xóa thể loại</h2>
     <ul>
         <li>Tên thể loại: {{genre.name}}</li>
     </ul>
     <button mat-raised-button color="warn" (click)="openDialog()">Xoá</button>
-</ng-container>
+</mat-card>

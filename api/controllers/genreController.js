@@ -155,6 +155,7 @@ exports.genreDelete = async (req, res) => {
             return handleError(res, 400, 'Mã thể loại không hợp lệ');
             // return sendErrorResponseMessage(res, ['Genre id is not valid']);
         }
+        console.log('here');
         await query(Q.genre.deleteGerne, [genreId]);
         sendSuccessResponseMessage(res, ['Đã xóa thể loại.']);
     } catch (err) {

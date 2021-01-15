@@ -1,9 +1,10 @@
+<alert></alert>
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <ng-container formArrayName="stocks">
         <div id="header">
             <h3>isbn</h3>
-            <h3>so luong</h3>
-            <h3>don gia</h3>
+            <h3>Số lượng</h3>
+            <h3>Đơn giá</h3>
         </div>
         <div *ngFor="let control of stocks.controls; let i=index;" [formGroupName]="i" class="row">
             <mat-form-field >

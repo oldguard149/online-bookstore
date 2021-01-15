@@ -1,9 +1,9 @@
 <h1 mat-dialog-title>Cảnh báo</h1>
 <div mat-dialog-content>
-  <p>Bạn có chắc muốn xóa {{data.type}}: {{data.name}}</p>
+  <p>Bạn có chắc muốn xóa {{displayName[data.type]}}: {{data.name}}</p>
 </div>
 <!-- <mat-divider></mat-divider> -->
 <div mat-dialog-actions>
   <button mat-raised-button (click)="onNoClick()">Không</button>
-  <button mat-raised-button (click)="deleteBook(data.id)" >Có, tôi muốn xóa</button>
+  <button mat-raised-button (click)="delete(data)" >Có, tôi muốn xóa</button>
 </div>

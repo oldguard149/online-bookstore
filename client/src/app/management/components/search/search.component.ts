@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { FlashMessageService } from 'src/app/shared/services/flash-message.service';
 
 @Component({
   selector: 'management-search',
@@ -14,7 +15,13 @@ export class SearchComponent implements OnInit {
   pageIndex: number;
   pageSize: number;
   urlPath: string;
-  constructor() { }
+  constructor(
+    private _flash: FlashMessageService
+  ) { }
+
+  ngOnDestroy() {
+    this._flash.initialize();
+  }
 
   ngOnInit(): void {
     this.urlPath = this.objectType;

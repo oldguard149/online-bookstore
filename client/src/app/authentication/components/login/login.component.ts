@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from '../../services/authentication.service';
 import { SubSink } from 'subsink';
 import { FlashMessageService } from 'src/app/shared/services/flash-message.service';
+import { LocalCartService } from 'src/app/main/services/local-cart.service';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,8 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private auth: AuthenticationService,
     private router: Router,
-    private flash: FlashMessageService
+    private flash: FlashMessageService,
+    private localCart: LocalCartService
   ) { }
 
   ngOnInit(): void {
@@ -38,13 +40,21 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     this.subs.sink = this.auth.login(this.loginForm.value)
-    .subscribe(data => {
-      if (data.success) {
-        this.router.navigateByUrl('/');
-      } else {
-        this.errorMsg = data.message;
-      }
-    });
+      .subscribe(data => {
+        if (data.success) {
+
+          if (this.auth.isCustomer()) {
+            this.localCart.syncLocalCartWithServerCart().toPromise()
+              .then(data => {
+                console.log(data.message[0]);
+              })
+          }
+
+          this.router.navigateByUrl('/');
+        } else {
+          this.errorMsg = data.message;
+        }
+      });
   }
 
   get email() {

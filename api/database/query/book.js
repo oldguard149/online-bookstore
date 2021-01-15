@@ -106,11 +106,6 @@ exports.written = `INSERT INTO writtens(isbn, author_id) VALUES (?, ?);`;
 
 exports.deleteAuthorFromWrittens = `DELETE FROM writtens WHERE isbn = ?;`;
 
-exports.updateBookStockQuantity = `
-UPDATE books
-SET quantity = ?
-WHERE isbn = ?;`;
-
 //------------------------------------------ IMPORT STOCK FORM ------------------------------------------
 exports.createImportStockForm = `
 INSERT INTO importbookforms (import_date, total_price, emp_id, publisher_id)
@@ -123,3 +118,5 @@ INSERT INTO importbookformdetails(form_id, isbn, quantity, price)
 VALUES (?, ?, ?, ?);`;
 
 exports.updateImportStockFormTotalPrice = `UPDATE importbookforms SET total_price=? WHERE form_id = ?;`;
+
+exports.checkValidBook = `SELECT isbn, quantity, price FROM books WHERE isbn = ?;`;

@@ -33,10 +33,10 @@ export class EmpFormComponent implements OnInit {
     this.form = this._fb.group({
       fullname: ['', Validators.required],
       email: ['', Validators.required, Validators.email],
-      identity_number: ['', Validators.required],
-      phone_number: ['', Validators.required],
+      identity_number: ['', [Validators.required, Validators.pattern(/^\d{9}$|^\d{12}$/)]],
+      phone_number: ['', [Validators.required, Validators.pattern(/^\d{10,15}$/i)], ],
       password: ['', Validators.required],
-      role: ['', Validators.required],
+      role: ['EMP', Validators.required],
       salary: ['', Validators.required]
     });
 
@@ -93,4 +93,10 @@ export class EmpFormComponent implements OnInit {
   triggerSendMessageEvent(type: 'success' | 'fail', message: string[]) {
     this.sendMessage.emit({ type: type, message: message });
   }
+
+  get fullname() { return this.form.get('fullname') };
+  get email() { return this.form.get('email') };
+  get identity_number() { return this.form.get('identity_number') };
+  get phone_number() { return this.form.get('phone_number') };
+  get salary() { return this.form.get('salary') };
 }

@@ -1,7 +1,7 @@
 const { v4: uuidv4 } = require('uuid');
 const pool = require('../config/pool');
 const Q = require('../database/query');
-const { queryUsingTransaction, findOne, query } = require('../database/db_hepler');
+const { queryUsingTransaction, findOne, query, countData } = require('../database/db_hepler');
 const { handleError, isResultEmpty, sendErrorResponseMessage, sendSuccessResponseMessage } = require('../shared/helper');
 
 
@@ -13,7 +13,7 @@ exports.createBill = async (req, res) => {
         const cart = await findOne(Q.cart.cartByCustomerId, [customerId]);
         const cart_id = parseInt(cart.cart_id);
         const billId = uuidv4();
-        
+
         const cartItems = await queryUsingTransaction(connection, Q.cart.allItemsInCart, [cart_id]);
         if (isResultEmpty(cartItems)) { // make sure there are at least one book in cart before create bill
             sendErrorResponseMessage(res, ['Không có sách trong giỏ hàng của bạn.']);
@@ -102,10 +102,19 @@ exports.cancelBillOrder = async (req, res) => {
 
 exports.billList = async (req, res) => {
     try {
-        const page = parseInt(req.params.page) || 0;
-        const pageSize = parseInt(req.params.size) || 10;
-        const bills = await query(Q.bill.billList, [page, pageSize]);
-        res.json(bills);
+        const page = parseInt(req.params.offset) || 0;
+        const pageSize = parseInt(req.params.limit) || 10;
+        const type = req.params.type;
+        let bills;
+        let totalItems;
+        if (type === 'all') {
+            bills = await query(Q.bill.billList, [page, pageSize]);
+            totalItems = await countData(Q.bill.billListCount);
+        } else {
+            bills = await query(Q.bill.billsFilterByStatus, [type]);
+            totalItems = await countData(Q.bill.billsFilterByStatusCount, [type]);
+        }
+        res.json({ success: true, bills , totalItems});
     } catch (error) {
         handleError(res, 500, error, 'Lỗi máy chủ khi tải danh sách hóa đơn');
     }

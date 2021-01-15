@@ -27,7 +27,13 @@ WHERE
 
 exports.billList = `SELECT * FROM bills LIMIT ?, ?;`;
 
-exports.billCount = `SELECT COUNT(*) AS count FROM bills;`;
+exports.billListCount = `SELECT COUNT(bill_id) as count FROM bills`;
+
+exports.billsFilterByStatus = `SELECT * FROM bills WHERE status = ? LIMIT ?, ?;`;
+
+exports.billsFilterByStatusCount = `SELECT COUNT(bill_id) as count FROM bills WHERE status = ?;`;
+
+// exports.billCount = `SELECT COUNT(*) AS count FROM bills;`;
 
 exports.unconfirmedBillList = `SELECT * FROM bills WHERE bill_status = 'UNCONFIRMED' LIMIT ?, ?`;
 

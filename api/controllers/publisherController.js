@@ -54,7 +54,6 @@ exports.publisherDetail = async (req, res) => {
 exports.publisherCreate = [
     body('name').trim().not().isEmpty().withMessage('Tên không được để trống.').escape(),
     body('email').optional({ checkFalsy: true }).trim().isEmail().withMessage('Email không hợp lệ.').normalizeEmail().escape(),
-    body('address').optional({ checkFalsy: true }).trim().escape(),
 
     async (req, res) => {
         const publisher = {
@@ -74,7 +73,7 @@ exports.publisherCreate = [
                 return sendErrorResponseMessage(res, error);
             }
 
-            await query(Q.publisher.createPublisher, [publisher.name, publisher.email, publisher.address]);
+            await query(Q.publisher.createPublisher, [publisher.name, publisher.email]);
             sendSuccessResponseMessage(res, [`Thêm nhà xuất bản mới thành công.`]);
         } catch (err) {
             handleError(res, 500, err);
@@ -122,13 +121,11 @@ exports.publisher = async (req, res) => {
 exports.publisherUpdate = [
     body('name').trim().not().isEmpty().withMessage('Vui lòng điền vào tên nhà xuất bản.'),
     body('email').optional({ checkFalsy: true }).trim().isEmail().withMessage('Email không hợp lệ.').normalizeEmail().escape(),
-    body('address').optional({ checkFalsy: true }).trim().escape(),
 
     async (req, res) => {
         const formData = {
             name: req.body.name,
             email: req.body.email || null,
-            address: req.body.address || null
         };
         const publisherId = parseInt(req.params.id);
         const validationError = validationResult(req);
@@ -155,7 +152,7 @@ exports.publisherUpdate = [
                 return sendErrorResponseMessage(res, error);
             }
 
-            await query(Q.publisher.updatePublisher, [formData.name, formData.email, formData.address, publisherId]);
+            await query(Q.publisher.updatePublisher, [formData.name, formData.email, publisherId]);
             sendSuccessResponseMessage(res, ['Cập nhật thông tin nhà xuất bản thành công.']);
         } catch (err) {
             const errorMsg = ['Đã xảy ra lỗi ở server. Vui lòng thực hiện lại hoặc liên hệ admin để được trợ giúp.'];

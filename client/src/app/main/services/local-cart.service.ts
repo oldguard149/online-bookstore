@@ -34,7 +34,7 @@ export class LocalCartService {
       }
     }
     console.log(this.localCartItems);
-    
+
     this.saveLocalCart(this.localCartItems);
   }
 
@@ -42,7 +42,7 @@ export class LocalCartService {
     const cartItems = formValue.cartItemFormArray;
     const expireydDate = this.localCartItems.expirey_date;
     this.clearLocalCart();
-    
+
     this.localCartItems = {
       expirey_date: expireydDate,
       items: {}
@@ -63,8 +63,13 @@ export class LocalCartService {
     return this._http.post<any>(`${apiurl}/cartitems-with-isbnlist`, { items: this.localCartItems.items });
   }
 
-  syncLocalWithServerCart() {
-    return this._http.post<any>(`${apiurl}/sync-cart`, { items: this.localCartItems.items });
+  syncLocalCartWithServerCart() {
+    this.localCartItems = this.getLocalCart();
+    const form = [];
+    for (const key of Object.keys(this.localCartItems.items)) {
+      form.push({ isbn: key, quantity: this.localCartItems.items[key] });
+    }
+    return this._http.post<any>(`${apiurl}/sync-cart`, { items: form });
   }
 
 

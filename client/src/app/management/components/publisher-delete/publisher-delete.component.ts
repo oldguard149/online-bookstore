@@ -7,7 +7,10 @@ import { ConfirmDeleteDialogComponent } from "../confirm-delete-dialog/confirm-d
 @Component({
   selector: 'app-publisher-delete',
   templateUrl: './publisher-delete.component.html',
-  styleUrls: ['./publisher-delete.component.scss']
+  styleUrls: ['./publisher-delete.component.scss'],
+  host: {
+    class: 'management-main'
+  }
 })
 export class PublisherDeleteComponent implements OnInit {
   publisher: any;
@@ -30,7 +33,7 @@ export class PublisherDeleteComponent implements OnInit {
       data: {
         id: this.route.snapshot.params['id'],
         name: this.publisher.name,
-        type: 'book'
+        type: 'publisher'
       }
     });
   }

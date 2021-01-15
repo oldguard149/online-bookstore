@@ -1,16 +1,32 @@
-<alert></alert>
+<alert [errorMsg]="errorMsg"></alert>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+        <mat-label>Trạng thái hóa đơn</mat-label>
+        <mat-select formControlName="statusType">
+            <mat-option *ngFor="let type of billStatusType;" [value]="type.type">{{type.displayName}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Số lượng kết quả hiển thị</mat-label>
+        <mat-select formControlName="pagesize">
+            <mat-option *ngFor="let i of [10,20,30,50];" [value]="i">{{i}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <button type="submit" mat-raised-button color="primary">Lọc kết quả</button>
+</form>
+
 <mat-table [dataSource]="bills">
     <ng-container matColumnDef="id">
         <mat-header-cell class="small-width" *matHeaderCellDef> Mã hóa đơn </mat-header-cell>
         <mat-cell class="small-width" *matCellDef="let element">{{element.bill_id}}</mat-cell>
     </ng-container>
-    
+
     <ng-container matColumnDef="createdate">
         <mat-header-cell *matHeaderCellDef> Ngày tạo </mat-header-cell>
         <mat-cell class="link" *matCellDef="let element"> {{element.create_date}} </mat-cell>
     </ng-container>
 
-    
+
     <ng-container matColumnDef="state">
         <mat-header-cell class="medium-width align-center" *matHeaderCellDef> Trạng thái </mat-header-cell>
         <mat-cell class="medium-width align-button" *matCellDef="let element">
@@ -35,3 +51,6 @@
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 </mat-table>
+<mat-paginator [length]="totalItems" [pageSize]="pageSize" [pageSizeOptions]="[10,20,30,50]" [pageIndex]="currentPage"
+    (page)="handlePageChange($event)">
+</mat-paginator>

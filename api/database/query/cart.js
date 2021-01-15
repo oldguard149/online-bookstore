@@ -14,6 +14,16 @@ exports.allItemsInCart = `SELECT isbn, quantity, price FROM cartdetails WHERE ca
 
 exports.bookDataForCart = `SELECT isbn, quantity, price FROM books WHERE isbn = ?;`;
 
+exports.cartItemsWithIsbnAndCartId = `
+SELECT
+    isbn, quantity, price
+FROM
+    cartdetails
+WHERE
+    isbn = ? AND cart_id = ?;`;
+
+exports.bookPriceAndQuantity = `SELECT price, quantity FROM books WHERE isbn = ?;`;
+
 exports.deleteCartItem = `
 DELETE FROM
     cartdetails

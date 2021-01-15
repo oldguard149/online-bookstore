@@ -30,17 +30,17 @@ router.get('/publisher/:id', publisher.publisherDetail);
 router.post('/login', auth.login);
 router.post('/register', auth.register);
 
-router.post('/add-to-cart/:isbn', authMiddleware, isCustomer, cart.addToCart); // can sua
+router.post('/add-to-cart/:isbn', authMiddleware, isCustomer, cart.addToCart); // can sua post cart
 router.get('/cart', authMiddleware, isCustomer, cart.cartDetailData);
-router.get('/delete-cart-item/:isbn', authMiddleware, isCustomer, cart.deleteCartItem); // can sua
+router.get('/delete-cart-item/:isbn', authMiddleware, isCustomer, cart.deleteCartItem); // can sua delete cart:isbb
 router.post('/update-cart-items', authMiddleware, isCustomer, cart.updateCartItemOrderQuantity);
 router.post('/cartitems-with-isbnlist', cart.cartItemsWithIsbnList);
-
+router.post('/sync-cart', authMiddleware, isCustomer, cart.syncCart);
 router.get('/create-bill', authMiddleware, isCustomer, bill.createBill);
 router.get('/bills', authMiddleware, isCustomer,bill.billListForCustomer);
 router.get('/bill/:id', authMiddleware, isCustomer, bill.billDetailForCustomer);
 
-router.post('/search', other.search);
+router.get('/search', other.search);
 
 router.get('/profile', authMiddleware, profile.getInfo);
 router.post('/change-password', authMiddleware, profile.updatePassword);

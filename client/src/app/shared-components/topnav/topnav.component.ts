@@ -39,6 +39,10 @@ export class TopnavComponent implements OnInit {
     }
   }
 
+  canAccessCart(): boolean {
+    return !this.auth.isEmp();
+  }
+
   logout(): void {
     this.auth.logout();
   }

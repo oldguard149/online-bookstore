@@ -1,5 +1,6 @@
-<form [formGroup]="form">
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
     <mat-form-field>
+        <mat-label>Từ khóa tìm kiếm</mat-label>
         <input type="text" matInput formControlName="searchtext" required>
     </mat-form-field>
     <mat-radio-group formControlName="type">
@@ -17,32 +18,35 @@
             Tác giả
         </mat-radio-button>
     </mat-radio-group>
-    <mat-select>
-        <mat-option *ngFor="let i in "></mat-option>
-    </mat-select>
+    <mat-form-field>
+        <mat-label>Số lượng kết quả</mat-label>
+        <mat-select formControlName="pagesize">
+            <mat-option *ngFor="let i of [10, 20, 30, 50]" [value]="i">{{i}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit">Tìm kiếm</button>
 </form>
 
-<mat-table *ngIf="searchResult" [dataSource]="searchResult">
-    <ng-container matColumnDef="name">
-        <mat-header-cell [ngClass]="'small-width'" *matHeaderCellDef> Số thứ tự </mat-header-cell>
-        <mat-cell [ngClass]="'small-width'" *matCellDef="let element"> {{element.publisher_id}} </mat-cell>
-    </ng-container>
+<ng-container *ngIf="searchResult">
+    <mat-table [dataSource]="searchResult">
+        <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef> Tên </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element[nameKey]}} </mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="option">
-        <mat-header-cell *matHeaderCellDef> Tên </mat-header-cell>
-        <mat-cell class="link" *matCellDef="let element">
-            <a mat-raised-button color="primary" [routerLink]="[]">Xem chi tiết</a>
-        </mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="option">
+            <mat-header-cell class="small-width" *matHeaderCellDef> Lựa chọn </mat-header-cell>
+            <mat-cell class="small-width" *matCellDef="let element">
+                <a mat-raised-button color="primary" [routerLink]="['/', searchType, element[idKey]]">
+                    Xem chi tiết
+                </a>
+            </mat-cell>
+        </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-</mat-table>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
 
-<mat-paginator
-    [length]="totalItems"
-    [pageSize]="pageSize"
-    [pageIndex]="currentPage"
-    [pageSizeOptions]="[10,20,30,50]"
-    (page)="handlePageChange($event)"
-></mat-paginator>
+    <mat-paginator [length]="totalItems" [pageSize]="pageSize" [pageIndex]="currentPage"
+        [pageSizeOptions]="[10,20,30,50]" (page)="handlePageChange($event)"></mat-paginator>
+</ng-container>

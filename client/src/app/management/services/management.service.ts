@@ -66,11 +66,21 @@ export class ManagementService {
     return this.apiGet('genres-and-publishers');
   }
 
-  public billList(): Observable<any> {
-    return this.apiGet('bills');
+  public billList(type: 'all' | 'unconfirmed' | 'confirmed', page: number, pagesize: number): Observable<any> {
+    const options = {
+      params: new HttpParams()
+        .set('type', type)
+        .set('offset', String(page))
+        .set('limit', String(pagesize))
+    }
+    return this.apiGet('bills', options);
   }
 
   public billDetails(id: string): Observable<any> {
     return this.apiGet(`bill/${id}`);
+  }
+
+  public importStock(form: any) {
+    return this.apiPost('import-stock', form);
   }
 }

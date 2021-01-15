@@ -71,4 +71,11 @@ export class DataService {
     }
     return this.http.get<any>(`${apiurl}/search`, options);
   }
+
+  getRecommendBooks(isbn: string, noOfBook: string) {
+    const options = {
+      params: new HttpParams().set('number', noOfBook)
+    }
+    return this.http.get<any>(`${apiurl}/recommend/${isbn}`, options);
+  }
 }

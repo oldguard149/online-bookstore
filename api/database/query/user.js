@@ -62,7 +62,7 @@ WHERE emp_id = ?;`;
 exports.deleteEmployee = `DELETE FROM employees WHERE emp_id = ?;`;
 
 
-exports.employeeProfileData = `SELECT emp_id, email, identity_number, phone_number FROM employees WHERE emp_id=?`;
+exports.employeeProfileData = `SELECT emp_id, fullname, email, identity_number, phone_number FROM employees WHERE emp_id=?`;
 
 exports.updateEmployeeProfile = `
 UPDATE employees SET fullname=?, identity_number=?, phone_number=? WHERE emp_id=?;`;

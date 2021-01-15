@@ -43,3 +43,12 @@
     <p *ngIf="book?.summary">{{book?.summary}}</p>
     <hr>
 </div>
+
+<div class="recommend-book" *ngIf="booklist">
+    <bookcard *ngFor="let book of booklist;"
+        [isbn]="book.isbn" [name]="book.name" 
+        [image_url]="book.image_url"
+        [author]="book.Authors" 
+        [price]="book.price">
+    </bookcard>
+</div>

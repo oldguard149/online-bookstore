@@ -1,11 +1,13 @@
 const { body, validationResult } = require('express-validator');
-const { findOne, query, countData, loadDataForSideNav, loadGenresAndPublishers } = require('../database/db_hepler');
+const { findOne, query, countData, loadDataForSideNav, loadGenresAndPublishers,
+    queryUsingTransaction, findOneUsingTransaction } = require('../database/db_hepler');
 const { preprocessBookList, calculateOffsetForPagination,
-     handleError, isResultEmpty, sendErrorResponseMessage,
+    handleError, isResultEmpty, sendErrorResponseMessage,
     sendSuccessResponseMessage, getQueryParam, handleValidationError } = require('../shared/helper');
 const pool = require('../config/pool');
 const Q = require('../database/query');
 const e = require('../shared/errormessages');
+const { checkValidBook } = require('../database/query/book');
 
 exports.sidenav = async (req, res) => {
     try {
@@ -234,10 +236,42 @@ exports.bookUpdate = [
         check if isbn is valid
             insert into stockdetail*/
 exports.importBookStock = async (req, res) => {
+    const connection = await pool.getConnection();
     try {
-        
+        const publisherId = parseInt(req.body.publisher);
+        const formItems = req.body.stocks;
+        const empId = parseInt(req.payload.id);
+        const create_date = new Date();
+        let totalAmount = 0;
+        await queryUsingTransaction(connection, Q.startTransaction);
+        const importForm = await queryUsingTransaction(connection, Q.book.createImportStockForm,
+            [create_date, 0, empId, publisherId]);
+
+
+        for (const item of formItems) {
+            const book = await findOneUsingTransaction(connection, Q.book.checkValidBook, [item['isbn']]);
+            if (isResultEmpty(book)) {
+                return sendErrorResponseMessage(res, [`Sách với ISBN ${item.isbn} không tồn tại trong hệ thống.`]);
+            }
+
+            await queryUsingTransaction(connection, Q.book.createStockFormDetail,
+                [importForm.insertId, item.isbn, item.quantity, item.price]);
+            totalAmount += parseInt(item.quantity) * parseInt(item.price);
+
+            await queryUsingTransaction(connection, Q.book.updateBookStock,
+                [parseInt(item.quantity) + parseInt(book.quantity), item.price, item.isbn]);
+
+            await queryUsingTransaction(connection, Q.book.updateImportStockFormTotalPrice, 
+                [totalAmount, importForm.insertId]);
+        }
+        await queryUsingTransaction(connection, Q.commit);
+        sendSuccessResponseMessage(res, ['Đơn nhập sách được thêm thành công.']);
+
     } catch (err) {
-        handleError(res, 500, err);
+        await queryUsingTransaction(connection, Q.rollback);
+        handleError(res, 500, err, 'Xảy ra lỗi ở server. Liên hệ admin để được trọ giúp');
+    } finally {
+        connection.release();
     }
 };
 

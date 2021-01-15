@@ -4,7 +4,6 @@ const { query, findOne, queryUsingTransaction, findOneUsingTransaction } = requi
 const Q = require('../database/query');
 const { body, validationResult } = require('express-validator');
 const pool = require('../config/pool');
-const sql2 = require('mysql2');
 
 //* in route index.js, insert a middleware to guarantee that user accesses its route is customer
 exports.addToCart = [
@@ -112,3 +111,41 @@ exports.cartItemsWithIsbnList = async (req, res) => {
         handleError(res, 500, err);
     }
 };
+
+exports.syncCart = async (req, res) => {
+    const items = req.body.items;
+    const customerId = parseInt(req.payload.id);
+    const connection = await pool.getConnection();
+    if (Object.keys(items).length === 0) {
+        return sendSuccessResponseMessage(res, ['Không có sách để cập nhật.']);
+    }
+    try {
+        const cart = await findOne(Q.cart.cartByCustomerId, [customerId]);
+        if (isResultEmpty(cart)) {
+            return sendErrorResponseMessage(res, ['Lỗi hệ thống']);
+        }
+        const cartId = cart.cart_id;
+        for (const item of items) {
+            const book = await findOneUsingTransaction(connection, Q.cart.bookPriceAndQuantity, [item.isbn]);
+            if (isResultEmpty(book)) {// invalid book
+                continue;
+            } else {
+                const cartItem = await findOneUsingTransaction(connection, Q.cart.cartDetailByCartIdAndIsbn,
+                    [cartId, item.isbn]);
+                    console.log(cartItem);
+                if (isResultEmpty(cartItem)) { // item not exist in cart, create new one
+                    await queryUsingTransaction(connection, Q.cart.createCartItem,
+                        [cartId, item.isbn, item.quantity, book.price]);
+                } else { // item already exist, update its quantity
+                    await queryUsingTransaction(connection, Q.cart.updateCartItem,
+                        [parseInt(cartItem.quantity) + parseInt(item.quantity), book.price, cartId, item.isbn]);
+                }
+            }
+        }
+        sendSuccessResponseMessage(res, ['Giỏ hàng đã được cập nhật']);
+    } catch (error) {
+        handleError(res, 500, error);
+    } finally {
+        connection.release();
+    }
+}

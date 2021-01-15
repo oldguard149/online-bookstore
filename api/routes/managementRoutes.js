@@ -6,6 +6,7 @@ const author = require('../controllers/authorController');
 const publisher = require('../controllers/publisherController');
 const bill = require('../controllers/billController');
 const emp = require('../controllers/employeeController');
+const { authMiddleware } = require('../shared/helper');
 
 router.get('/search/genre', genre.genreSearch);
 router.get('/genre/:id', genre.genre);
@@ -32,7 +33,7 @@ router.post('/book', book.bookCreate);
 router.put('/book/:isbn', book.bookUpdate);
 router.delete('/book/:isbn', book.bookDelete);
 router.get('/genres-and-publishers', book.fetchGenresAndPublishers);
-router.post('/stocks', book.importBookStock);
+router.post('/import-stock', authMiddleware, book.importBookStock);
 
 router.get('/confirm-bill/:id', bill.confirmBill);
 router.get('/cancel-bill/:id', bill.cancelBillOrder);

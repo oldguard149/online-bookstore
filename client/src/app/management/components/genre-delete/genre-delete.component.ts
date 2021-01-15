@@ -7,7 +7,10 @@ import { ConfirmDeleteDialogComponent } from "../confirm-delete-dialog/confirm-d
 @Component({
   selector: 'app-genre-delete',
   templateUrl: './genre-delete.component.html',
-  styleUrls: ['./genre-delete.component.scss']
+  styleUrls: ['./genre-delete.component.scss'],
+  host: {
+    class: 'management-main'
+  }
 })
 export class GenreDeleteComponent implements OnInit {
   genre: any;
@@ -30,7 +33,7 @@ export class GenreDeleteComponent implements OnInit {
       data: {
         id: this.route.snapshot.params['id'],
         name: this.genre.fullname,
-        type: 'book'
+        type: 'genre'
       }
     });
   }

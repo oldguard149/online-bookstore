@@ -1,0 +1,28 @@
+.form {
+    width: 70%;
+    margin: auto;
+    border: 1px solid black;
+}
+
+#header {
+    display: grid;
+    grid-template-areas: "isbn quantity price delete";
+    grid-template-columns: 2fr 1fr 1fr 0.25fr;
+}
+
+#header h3 {
+    text-align: center;
+}
+
+.row {
+    display: grid;
+    grid-template-areas: "isbn quantity price delete";
+    grid-template-columns: 2fr 1fr 1fr 0.25fr;
+    /* padding: 5px; */
+    margin: 3px 5px;
+}
+
+.row > * {
+    padding: 5px;
+    margin: 5px;
+}
