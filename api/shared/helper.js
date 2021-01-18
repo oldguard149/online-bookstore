@@ -7,7 +7,7 @@ const authMiddleware = jwt({
     secret: process.env.jwt_secret,
     userProperty: 'payload',
     algorithms: ['HS256']
-});
+}).unless({path: ['/api/side-ad-booklist']});
 
 async function getHashPassword(plainPassword) {
     const saltRounds = 10;

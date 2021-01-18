@@ -6,6 +6,7 @@ import { apiurl } from 'src/app/shared/api-url';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpParams } from '@angular/common/http';
 import { param } from 'express-validator';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'management-bill-list',
@@ -17,11 +18,12 @@ import { param } from 'express-validator';
 })
 export class BillListComponent implements OnInit {
   private subs = new SubSink();
-  private validSearchType = new Set(['all', 'unconfirmed', 'confirmed']);
+  private validSearchType = new Set(['all', 'unconfirmed', 'confirmed', 'canceled']);
   billStatusType = [
     { type: 'confirmed', displayName: 'Đã xác nhận' },
     { type: 'unconfirmed', displayName: 'Chờ xác nhận' },
-    { type: 'all', displayName: 'Tất cả' }
+    { type: 'all', displayName: 'Tất cả' },
+    { type: 'canceled', displayName: 'Đã hủy' }
   ]
   displayedColumns = ['id', 'createdate', 'state', 'totalamount', 'option'];
   errorMsg: string[];
@@ -43,12 +45,12 @@ export class BillListComponent implements OnInit {
       statusType: ['all', Validators.required],
       pageSize: ['10', Validators.required]
     })
-    
+    this.fetchBills();
   }
 
   fetchBills() {
     this.subs.sink = this._route.queryParams.subscribe(params => {
-      this.validSearchType.has(params['type']) ? this.searchType = params['type']: this.searchType = 'all';
+      this.validSearchType.has(params['type']) ? this.searchType = params['type'] : this.searchType = 'all';
       this.currentPage = this.getValidPaginationNumber(params['page'], 0);
       this.pageSize = this.getValidPaginationNumber(params['pagesize'], 10);
 
@@ -82,7 +84,17 @@ export class BillListComponent implements OnInit {
     })
   }
   manageBill(id: string) {
-    this._router.navigateByUrl(`${apiurl}/management/bill/${id}`);
+    this._router.navigateByUrl(`/management/bill/${id}`);
+  }
+
+  handlePageChange(page: PageEvent) {
+    this._router.navigate([], {
+      queryParams: {
+        'page': page.pageIndex,
+        'pagesize': page.pageSize
+      },
+      queryParamsHandling: 'merge'
+    });
   }
 
   get formType() { return this.form.get('statusType') }

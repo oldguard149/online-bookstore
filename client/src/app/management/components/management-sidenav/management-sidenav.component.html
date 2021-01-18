@@ -47,7 +47,7 @@
     </mat-nav-list>
 </mat-expansion-panel>
 
-<mat-expansion-panel class="sidenav_item">
+<mat-expansion-panel class="sidenav_item" *ngIf="isAdmin()">
     <mat-expansion-panel-header>
         <mat-panel-title>
             Nhân viên
@@ -68,5 +68,16 @@
     <mat-nav-list>
         <a mat-list-item [routerLink]="['/management/import-stock']">Nhập sách</a>
         <a mat-list-item [routerLink]="['/management/search/employee']">Danh sách đơn nhập sách</a>
+    </mat-nav-list>
+</mat-expansion-panel>
+
+<mat-expansion-panel class="sidenav_item">
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            Quản lý đơn hàng
+        </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-nav-list>
+        <a mat-list-item [routerLink]="['/management/bills']">Danh sách đơn hàng</a>
     </mat-nav-list>
 </mat-expansion-panel>

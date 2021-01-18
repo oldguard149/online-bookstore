@@ -48,7 +48,7 @@ export class ProfileService {
   }
 
   updatePassword(password) {
-    return this._http.post<any>(`${apiurl}/update-password`, password);
+    return this._http.post<any>(`${apiurl}/change-password`, password);
   }
 
   getBillListForCustomer() {

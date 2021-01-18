@@ -32,9 +32,9 @@ export class EmpFormComponent implements OnInit {
   ngOnInit(): void {
     this.form = this._fb.group({
       fullname: ['', Validators.required],
-      email: ['', Validators.required, Validators.email],
+      email: ['', [Validators.required, Validators.email]],
       identity_number: ['', [Validators.required, Validators.pattern(/^\d{9}$|^\d{12}$/)]],
-      phone_number: ['', [Validators.required, Validators.pattern(/^\d{10,15}$/i)], ],
+      phone_number: ['', [Validators.required, Validators.pattern(/^\d{10,15}$/i)]],
       password: ['', Validators.required],
       role: ['EMP', Validators.required],
       salary: ['', Validators.required]
@@ -60,6 +60,7 @@ export class EmpFormComponent implements OnInit {
       role: this.employee.role,
       salary: this.employee.salary
     });
+    this.form.removeControl('password');
   }
 
   createEmp() {
@@ -99,4 +100,5 @@ export class EmpFormComponent implements OnInit {
   get identity_number() { return this.form.get('identity_number') };
   get phone_number() { return this.form.get('phone_number') };
   get salary() { return this.form.get('salary') };
+  get password() { return this.form.get('password') };
 }

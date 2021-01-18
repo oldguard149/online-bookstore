@@ -132,13 +132,15 @@ exports.syncCart = async (req, res) => {
             } else {
                 const cartItem = await findOneUsingTransaction(connection, Q.cart.cartDetailByCartIdAndIsbn,
                     [cartId, item.isbn]);
-                    console.log(cartItem);
                 if (isResultEmpty(cartItem)) { // item not exist in cart, create new one
                     await queryUsingTransaction(connection, Q.cart.createCartItem,
                         [cartId, item.isbn, item.quantity, book.price]);
                 } else { // item already exist, update its quantity
-                    await queryUsingTransaction(connection, Q.cart.updateCartItem,
-                        [parseInt(cartItem.quantity) + parseInt(item.quantity), book.price, cartId, item.isbn]);
+                    const newQuantity = parseInt(cartItem.quantity) + parseInt(item.quantity);
+                    if (newQuantity <= book.quantity) {
+                        await queryUsingTransaction(connection, Q.cart.updateCartItem,
+                            [newQuantity, book.price, cartId, item.isbn]);
+                    }
                 }
             }
         }

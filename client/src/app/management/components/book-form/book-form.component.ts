@@ -100,7 +100,7 @@ export class BookFormComponent implements OnInit {
         .subscribe(data => {
           if (data.success) {
             this.flash.setMessage('success', data.message[0]);
-            this.router.navigateByUrl('/management/book/search');
+            this.router.navigateByUrl('/management/search/book');
           } else {
             this.triggerSendMessageEvent('fail', data.message);
           }

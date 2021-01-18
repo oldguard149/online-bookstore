@@ -8,7 +8,6 @@ const cart = require('../controllers/cartController');
 const other = require('../controllers/otherController');
 const bill = require('../controllers/billController');
 const profile = require('../controllers/profileController');
-const emp = require('../controllers/employeeController');
 
 const { authMiddleware } = require('../shared/helper');
 const { isCustomer } = require('../shared/permissions');
@@ -18,7 +17,8 @@ router.get('/', book.indexBookList);
 
 router.get('/booklist', book.indexBookList);
 router.get('/book/:isbn', book.bookDetail);
-router.get('/side-ad-booklist', book.sideAdBooklist);
+router.get('/side-ad-for-guest', other.sideAdBooklistForGuestGuest);
+router.get('/side-ad-for-customer', authMiddleware, other.sideAdBooklistForCustomer)
 
 router.get('/genre', genre.genreList);
 router.get('/author', author.authorList);

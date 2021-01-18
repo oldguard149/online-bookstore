@@ -1,12 +1,11 @@
-const { body, validationResult } = require('express-validator');
+const { validationResult } = require('express-validator');
 const fetch = require('node-fetch');
 const { findOne, query, countData } = require('../database/db_hepler');
 const { preprocessBookList, calculateOffsetForPagination,
     handleError, isResultEmpty, sendErrorResponseMessage,
     sendSuccessResponseMessage, getQueryParam, handleValidationError } = require('../shared/helper');
-const pool = require('../config/pool');
 const recommendSystemServerUrl = 'http://localhost:5000';
-
+const Q = require('../database/query');
 const mysql2 = require('mysql2');
 
 const recommendIsbnQuery = `
@@ -44,53 +43,78 @@ exports.recommendBookList = async (req, res) => {
         for (let i = 0; i < books.length; i++) {
             books[i].Authors = books[i].Authors.map(author => author.fullname).join(', ');
         }
-        res.json({ success: true, books});
+        res.json({ success: true, books });
     } catch (error) {
         handleError(res, 500, error);
     }
 }
 
-exports.search = [
-    // body('searchtext').not().isEmpty().withMessage('Vui lòng điền tên muốn tìm kiếm').escape(),
-    async (req, res) => {
-        const validationError = validationResult(req);
-        if (!validationError.isEmpty()) {
-            handleValidationError(res, validationError);
-        } else {
-            try {
-                const searchText = req.query.search;
-                const type = req.query.type; // book || author || genre || publisher 
-                const resultPerPage = parseInt(getQueryParam(req, 'limit', 10));
-                // const resultPerPage = parseInt(req.query.pagesize) || 10;
-                const currentPage = parseInt(getQueryParam(req, 'offset', 0));
-                const offset = calculateOffsetForPagination(resultPerPage, currentPage);
-                console.log(resultPerPage);
-                if (prepareObj[type]) { // valid type
-                    selectCols = prepareObj[type].selectCols;
-                    dbTableName = prepareObj[type].tableName;
-                    conditionCol = prepareObj[type].conditionCol;
-                    countCol = prepareObj[type].countCol;
-                    
-                    const searchQuery =
-                        `SELECT ${selectCols} FROM ${dbTableName}
+exports.search = async (req, res) => {
+    const validationError = validationResult(req);
+    if (!validationError.isEmpty()) {
+        handleValidationError(res, validationError);
+    } else {
+        try {
+            const rawSearchText = req.query.search;
+            const type = req.query.type; // book || author || genre || publisher 
+            const resultPerPage = parseInt(getQueryParam(req, 'limit', 10));
+            const currentPage = parseInt(getQueryParam(req, 'offset', 0));
+            const offset = calculateOffsetForPagination(resultPerPage, currentPage);
+            if (prepareObj[type]) { // valid type
+                selectCols = prepareObj[type].selectCols;
+                dbTableName = prepareObj[type].tableName;
+                conditionCol = prepareObj[type].conditionCol;
+                countCol = prepareObj[type].countCol;
+
+                const searchQuery =
+                    `SELECT ${selectCols} FROM ${dbTableName}
                         WHERE ${conditionCol} LIKE CONCAT('%', ?, '%') LIMIT ?, ?;`;
 
-                    const searchCoutQuery =
-                        `SELECT COUNT(${countCol}) as count FROM ${dbTableName} 
+                const searchCoutQuery =
+                    `SELECT COUNT(${countCol}) as count FROM ${dbTableName} 
                         WHERE ${conditionCol} LIKE CONCAT('%', ?, '%');`;
 
-                    const result = await query(searchQuery, [searchText, offset, resultPerPage]);
-                    const totalItems = await countData(searchCoutQuery, [searchText]);
-                    res.json({ success: true, totalItems, result });
-                } else {
-                    sendErrorResponseMessage(res, ['Loại tìm kiếm không hợp lệ, vui lòng chọn lại']);
-                }
-            } catch (err) {
-                handleError(res, 500, err);
+                const searchText = rawSearchText.replace(/\+/gi, ' ');
+                const result = await query(searchQuery, [searchText, offset, resultPerPage]);
+                const totalItems = await countData(searchCoutQuery, [searchText]);
+                res.json({ success: true, totalItems, result });
+            } else {
+                sendErrorResponseMessage(res, ['Loại tìm kiếm không hợp lệ, vui lòng chọn lại']);
             }
+        } catch (err) {
+            handleError(res, 500, err);
         }
     }
-];
+}
+
+exports.sideAdBooklistForGuestGuest = async (req, res) => {
+    try {
+        const rawbooks = await query(Q.book.sideadForGuest);
+        const books = preprocessBookList(rawbooks);
+        res.status(200).json({ success: true, books });
+    } catch (err) {
+        handleError(res, 500, err);
+    }
+};
+
+exports.sideAdBooklistForCustomer = async (req, res) => {
+    try {
+        const numOfBook = 5;
+        const customerId = parseInt(req.payload.id);
+        const isbnList = await query(Q.book.sideadForCustomer, [customerId]);
+        const recommendList = new Set();
+        for (const item of isbnList) {
+            const list = await recommendIsbnList(item.isbn, numOfBook);
+            for (const isbn of list) {
+                recommendList.add(isbn);
+            }
+        }
+        const books = preprocessBookList(await query(Q.book.bookListByIsbnList, [Array.from(recommendList)]));
+        res.json({ success: true, books });
+    } catch (err) {
+        handleError(res, 500, err);
+    }
+};
 
 const prepareObj = {
     'book': {

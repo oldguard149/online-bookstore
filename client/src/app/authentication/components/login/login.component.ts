@@ -43,12 +43,13 @@ export class LoginComponent implements OnInit {
       .subscribe(data => {
         if (data.success) {
 
-          if (this.auth.isCustomer()) {
-            this.localCart.syncLocalCartWithServerCart().toPromise()
-              .then(data => {
-                console.log(data.message[0]);
-              })
-          }
+          // if (this.auth.isCustomer()) {
+          //   this.localCart.syncLocalCartWithServerCart().subscribe
+          //     (data => {
+          //       console.log(data.message[0]);
+          //       // this.localCart.clearLocalCart();
+          //     })
+          // }
 
           this.router.navigateByUrl('/');
         } else {

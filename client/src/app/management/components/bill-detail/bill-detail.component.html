@@ -1,9 +1,18 @@
+<h2>Duyệt đơn</h2>
+<alert [errorMsg]="errorMsg"></alert>
 <mat-card *ngIf="bill">
     <ul>
         <li>Mã đơn hàng: {{bill.bill_id}}</li>
         <li>Ngày tạo: {{bill.create_date | date}}</li>
         <li>Trạng thái hóa đơn: {{bill.bill_status}}</li>
         <li>Thành tiền: {{bill.total_price}}</li>
+    </ul>
+
+    <h3>Khách hàng</h3>
+    <ul>
+        <li>Họ tên: {{bill.customer.fullname}}</li>
+        <li>Số điện thoại: {{bill.customer.phone_number}}</li>
+        <li>Địa chỉ: {{bill.customer.address}}</li>
     </ul>
 
     <mat-table [dataSource]="bill.items">
@@ -35,4 +44,9 @@
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
+    <div class="button-group">
+        <button mat-raised-button color="primary" (click)="confirm(bill.bill_id)">Duyệt đơn</button>
+        <button mat-raised-button color="warn" (click)="cancel(bill.bill_id)">Hủy đơn</button>
+    </div>
 </mat-card>
+

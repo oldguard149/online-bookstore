@@ -61,6 +61,14 @@ export class DataService {
     return this.get(urlPath).toPromise();
   }
 
+  getSideAdForCustomer() {
+    return this.get(`side-ad-for-customer`).toPromise();
+  }
+
+  getSideAdForGuest() {
+    return this.get('side-ad-for-guest').toPromise();
+  }
+
   search(type: 'book' | 'author' | 'publisher' | 'genre', searchtext: string, offset: number, limit: number) {
     const options = {
       params: new HttpParams()

@@ -58,7 +58,7 @@ export class BookDetailComponent implements OnInit {
     this.subs.unsubscribe();
   }
 
-  onSubmit() {
+  addToCart(): void {
     const isbn = this.route.snapshot.params['isbn'];
     const order = this.orderQtyForm.value;
     if (this._auth.isLoggedIn()) { // store cart item in database

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthenticationService } from 'src/app/authentication/services/authentication.service';
 
 @Component({
   selector: 'management-sidenav',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ManagementSidenavComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private _auth: AuthenticationService
+  ) { }
 
   ngOnInit(): void {
+  }
+
+  isAdmin() {
+    return this._auth.isAdmin();
   }
 
 }

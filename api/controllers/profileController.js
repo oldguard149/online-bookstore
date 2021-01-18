@@ -1,5 +1,5 @@
 const { sendSuccessResponseMessage, handleError, handleValidationError,
-    role, isResultEmpty, sendErrorResponseMessage, isDataNotValidForUpdate } = require('../shared/helper');
+    role, isResultEmpty, sendErrorResponseMessage, isDataNotValidForUpdate, getHashPassword } = require('../shared/helper');
 const { query, findOne } = require('../database/db_hepler');
 const Q = require('../database/query');
 const { body, validationResult } = require('express-validator');
@@ -89,12 +89,13 @@ exports.getInfo = async (req, res) => {
 };
 
 exports.updatePassword = [
-    body('new-password').isEmpty().withMessage('Vui lòng điền vào mật khẩu để cập nhật.'),
+    body('new_password').isEmpty().withMessage('Vui lòng điền vào mật khẩu để cập nhật.'),
     async (req, res) => {
         try {
-            const rawPassword = req.body['new-password'];
+            const rawPassword = req.body['new_password'];
             const userId = parseInt(req.payload.id);
             const userRole = req.payload.role;
+            console.log(rawPassword);
             const hashedPassword = await getHashPassword(rawPassword);
             let result;
             if (userRole === role.CUSTOMER) {

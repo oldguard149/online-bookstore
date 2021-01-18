@@ -83,4 +83,16 @@ export class ManagementService {
   public importStock(form: any) {
     return this.apiPost('import-stock', form);
   }
+
+  public getPublishers() {
+    return this.apiGet('publishers');
+  }
+
+  public confirmBill(id: string) {
+    return this.apiGet(`confirm-bill/${id}`);
+  }
+
+  public cancelBill(id: string) {
+    return this.apiGet(`cancel-bill/${id}`);
+  }
 }

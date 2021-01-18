@@ -27,11 +27,11 @@
         </p>
         <div class="form-book-detail">
             <span>{{book.price}}</span>
-            <form (ngSubmit)="onSubmit()" [formControl]="orderQtyForm" ngDefaultControl>
+            <form [formControl]="orderQtyForm" ngDefaultControl>
                 <select>
                     <option *ngFor="let value of available_qty;" [value]="value">{{value}}</option>
                 </select>
-                <input type="submit" value="Thêm vào giỏ hàng">
+                <input type="submit" value="Thêm vào giỏ hàng" (click)="addToCart()">
             </form>      
         </div>
     </div>

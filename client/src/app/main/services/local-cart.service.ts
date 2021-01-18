@@ -17,8 +17,20 @@ export class LocalCartService {
     private _http: HttpClient
   ) { }
 
+  private getLocalCart() {
+    const localStorageValue = localStorage.getItem('localcart');
+    if (localStorage) {
+      this.localCartItems = JSON.parse(localStorageValue);
+      if (this.localCartItems.expirey_date < Date.now() / 1000) {
+        this.clearLocalCart();
+      }
+    }
+    return this.localCartItems;
+  }
+
   addItemToLocalCart(isbn: string, order_qty: number): void {
     this.localCartItems = this.getLocalCart();
+    console.log(this.localCartItems);
     if (this.isLocalCartEmpty()) { // initialize cart
       this.localCartItems = {
         expirey_date: this.getExpireyDate(),
@@ -33,7 +45,6 @@ export class LocalCartService {
         this.localCartItems.items[isbn] = Number(order_qty);
       }
     }
-    console.log(this.localCartItems);
 
     this.saveLocalCart(this.localCartItems);
   }
@@ -77,18 +88,6 @@ export class LocalCartService {
   clearLocalCart() {
     this.localCartItems = <ILocalCart>{};
     localStorage.removeItem('localcart');
-  }
-
-
-  private getLocalCart() {
-    const localStorageValue = localStorage.getItem('localcart');
-    if (localStorage) {
-      this.localCartItems = JSON.parse(localStorageValue);
-      if (this.localCartItems.expirey_date < Date.now() / 1000) {
-        this.clearLocalCart();
-      }
-    }
-    return this.localCartItems;
   }
 
   private isLocalCartEmpty(): boolean {

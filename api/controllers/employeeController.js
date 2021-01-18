@@ -4,6 +4,8 @@ const { getHashPassword, isResultEmpty, isDataNotValidForUpdate,
     calculateOffsetForPagination, sendErrorResponseMessage, role } = require('../shared/helper');
 const { query, findOne, countData } = require('../database/db_hepler');
 const Q = require('../database/query');
+const mysql2 = require('mysql2');
+
 
 function getDataWhenCreateOrUpdate(req) {
     const formData = {
@@ -23,7 +25,7 @@ function getDataWhenCreateOrUpdate(req) {
 async function loadCheckDataForUpdateOrCreateEmp(formData) {
     const emailInEmployee = await findOne(Q.user.employeeByEmail, [formData.email]);
     const emailInCustomer = await findOne(Q.user.customerByEmail, [formData.email]);
-    const identity_number = await findOne(Q.user.employeeByIdCard, [formData.identity_number]);
+    const identity_number = await findOne(Q.user.employeeByIdentityNumber, [formData.identity_number]);
     const phoneNumber = await findOne(Q.user.employeeByPhoneNumber, [formData.phone_number]);
     return [emailInEmployee, emailInCustomer, identity_number, phoneNumber];
 }
@@ -68,7 +70,8 @@ exports.empSearch = async (req, res) => {
         }
         const searchText = String(rawSearchText).replace(/\+/gi, ' ');
         const totalItems = await countData(Q.user.empSearchCount, [searchText]);
-        const employees = await query(Q.user.empSearch, [searchText, offset, currentPage]);
+        const employees = await query(Q.user.empSearch, [searchText, offset, pageSize]);
+        console.log(mysql2.format(Q.user.empSearch, [searchText, offset, pageSize]));
         res.json({ success: true, totalItems, employees });
     } catch (err) {
         handleError(res, 500, err);
@@ -130,7 +133,16 @@ exports.empCreate = [
 ]
 
 exports.empUpdate = [
-    ...validateOnEmployeeForm(),
+    body('fullname').trim().not().isEmpty().withMessage('Vui lòng điền họ tên nhân viên').escape(),
+    body('email').trim().normalizeEmail().not()
+        .isEmpty().withMessage('Vui lòng điền Email')
+        .isEmail().withMessage('Email không hợp lệ').escape(),
+    body('identity_number').trim().not().isEmpty().withMessage('Vui lòng điền số chứng minh nhân dân.')
+        .matches(/^\d{9}$|^\d{12}$/).withMessage('CMND phải có 9 hoặc 12 số.').escape(),
+    body('phone_number').trim().not().notEmpty().withMessage('Vui lòng điền số điện thoại của nhân viên.')
+        .matches(/^\d{10,15}$/i).withMessage('Số điện thoại không hợp lệ.').escape(),
+    body('salary').trim().not().isEmpty().withMessage('Vui lòng điền lương của nhân viên').isFloat(),
+    body('role').escape(),
     updateEmployee
 ]
 
@@ -150,7 +162,7 @@ exports.empDelete = async (req, res) => {
 
 async function updateEmployee(req, res) {
     const formData = getDataWhenCreateOrUpdate(req);
-    let currentEmployeeId = parseInt(req.params.id | req.payload.id);
+    let currentEmployeeId = parseInt(req.params.id);
     const validationError = validationResult(req);
     if (Number.isNaN(currentEmployeeId)) {
         return sendErrorResponseMessage(res, ['Mã nhân viên không hợp lệ.']);

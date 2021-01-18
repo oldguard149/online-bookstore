@@ -29,9 +29,9 @@ exports.billList = `SELECT * FROM bills LIMIT ?, ?;`;
 
 exports.billListCount = `SELECT COUNT(bill_id) as count FROM bills`;
 
-exports.billsFilterByStatus = `SELECT * FROM bills WHERE status = ? LIMIT ?, ?;`;
+exports.billsFilterByStatus = `SELECT * FROM bills WHERE bill_status = ? LIMIT ?, ?;`;
 
-exports.billsFilterByStatusCount = `SELECT COUNT(bill_id) as count FROM bills WHERE status = ?;`;
+exports.billsFilterByStatusCount = `SELECT COUNT(bill_id) as count FROM bills WHERE bill_status = ?;`;
 
 // exports.billCount = `SELECT COUNT(*) AS count FROM bills;`;
 
@@ -57,7 +57,7 @@ exports.updateBillTotalPrice = `UPDATE bills SET total_price = ? WHERE bill_id =
 
 exports.confirmBill = `UPDATE bills SET bill_status='CONFIRMED', emp_id=? WHERE bill_id = ?;`;
 
-exports.cancelBill = `UPDATE bills SET bill_status='CANCELLED', emp_id=? WHERE bill_id=?;`;
+exports.cancelBill = `UPDATE bills SET bill_status='CANCELED', emp_id=? WHERE bill_id=?;`;
 
 exports.deleteBillWitthBillId = `DELETE FROM bills WHERE bill_id = ?;`;
 

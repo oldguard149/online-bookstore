@@ -174,3 +174,12 @@ exports.publisherDelete = async (req, res) => {
         handleError(res, 500, err);
     }
 };
+
+exports.publisherForStockImport = async (req, res) => {
+    try {
+        const publishers = await query(Q.publisher.publisherForStockImport);
+        res.json({ success: true, publishers });
+    } catch (err) {
+        handleError(res, 500, err);
+    }
+};

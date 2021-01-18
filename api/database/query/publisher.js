@@ -32,4 +32,6 @@ exports.deletePublisher = `DELETE FROM publishers WHERE publisher_id = ?;`;
 
 exports.publisherSearch = `SELECT publisher_id, name FROM publishers WHERE name LIKE CONCAT('%', ?, '%') LIMIT ?, ?;`;
 
-exports.publisherSearchCount = `SELECT COUNT(*) as count FROM publishers WHERE name LIKE CONCAT('%', ?, '%');`;
+exports.publisherSearchCount = `SELECT COUNT(publisher_id) as count FROM publishers WHERE name LIKE CONCAT('%', ?, '%');`;
+
+exports.publisherForStockImport = `SELECT publisher_id, name FROM publishers;`;

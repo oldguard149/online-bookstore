@@ -1,0 +1,22 @@
+:host {
+    margin-top: 2rem;
+
+    h2 {
+        width: max-content;
+        margin: 1rem auto;
+    }
+}
+
+.medium-width {
+    max-width: 15%;
+}
+.small-width {
+    max-width: 7%;
+}
+
+.button-group {
+    width: 30%;
+    display: flex;
+    justify-content: space-around;
+    margin: 2rem auto;
+}

@@ -1,7 +1,11 @@
-.form {
-    width: 70%;
+form {
     margin: auto;
-    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+
+    mat-form-field {
+        margin: auto
+    }
 }
 
 #header {
@@ -25,4 +29,15 @@
 .row > * {
     padding: 5px;
     margin: 5px;
+}
+
+.row button {
+    height: max-content;
+}
+
+.button-group {
+    width: 30%;
+    display: flex;
+    justify-content: space-around;
+    margin: 2rem auto;
 }

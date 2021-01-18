@@ -71,16 +71,6 @@ FROM
     ) ON books.isbn = w.isbn
     LEFT OUTER JOIN publishers p ON books.publisher_id = p.publisher_id;`;
 
-exports.sideAdBooklist = `
-SELECT 
-    isbn,
-    name,
-    image_url
-FROM 
-    books
-LIMIT
-    ?, ?;`;
-
 exports.bookCount = `SELECT COUNT(*) AS count FROM books;`;
 
 exports.genreForBookManager = `SELECT * FROM genres;`;
@@ -106,6 +96,8 @@ exports.written = `INSERT INTO writtens(isbn, author_id) VALUES (?, ?);`;
 
 exports.deleteAuthorFromWrittens = `DELETE FROM writtens WHERE isbn = ?;`;
 
+exports.updateBookStockQuantity = `UPDATE books SET quantity=? WHERE isbn=?;`;
+
 //------------------------------------------ IMPORT STOCK FORM ------------------------------------------
 exports.createImportStockForm = `
 INSERT INTO importbookforms (import_date, total_price, emp_id, publisher_id)
@@ -120,3 +112,47 @@ VALUES (?, ?, ?, ?);`;
 exports.updateImportStockFormTotalPrice = `UPDATE importbookforms SET total_price=? WHERE form_id = ?;`;
 
 exports.checkValidBook = `SELECT isbn, quantity, price FROM books WHERE isbn = ?;`;
+
+exports.sideadForGuest = `
+WITH isbnlist AS (select isbn, COUNT(isbn) AS count from billdetails GROUP BY isbn ORDER BY count LIMIT 10)
+SELECT b.isbn, b.name, b.image_url, b.price, p.name as publisher_name, a.fullname as author_name
+FROM isbnlist il
+JOIN books b ON b.isbn = il.isbn
+LEFT OUTER JOIN (
+	writtens w
+	JOIN authors a ON w.author_id = a.author_id
+) ON b.isbn = w.isbn
+LEFT OUTER JOIN publishers p ON b.publisher_id = p.publisher_id;`
+
+
+exports.sideadForCustomer = `
+SELECT
+    isbn
+FROM
+    billdetails bd
+    JOIN bills USING (bill_id)
+WHERE
+    customer_id = ?
+ORDER BY
+    create_date DESC
+LIMIT 2;`;
+
+
+exports.bookListByIsbnList =
+`SELECT
+    b.isbn,
+    b.name,
+    b.image_url,
+    b.price,
+    p.name AS publisher_name,
+    a.fullname AS author_name
+FROM
+    books b
+LEFT OUTER JOIN (
+    writtens w
+    JOIN authors a ON w.author_id = a.author_id
+) ON b.isbn = w.isbn
+LEFT OUTER JOIN publishers p ON b.publisher_id = p.publisher_id
+WHERE b.isbn in (?);`;
+
+exports.up

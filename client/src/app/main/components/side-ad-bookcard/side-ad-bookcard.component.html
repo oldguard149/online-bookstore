@@ -2,5 +2,6 @@
     <img [src]="image_url" [alt]="name">
     <mat-card-content>
         <mat-card-title>{{name}}</mat-card-title>
+        <p>{{price | currency }}</p>
     </mat-card-content>
 </mat-card>

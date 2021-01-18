@@ -9,6 +9,7 @@ export class SideAdBookcardComponent implements OnInit {
   @Input() name: string;
   @Input() isbn: string;
   @Input() image_url: string;
+  @Input() price: number;
   constructor() { }
 
   ngOnInit(): void {

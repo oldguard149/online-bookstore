@@ -45,6 +45,8 @@ FROM employees;`
 
 exports.employeeByEmail = `SELECT emp_id FROM employees WHERE email = ?;`;
 
+exports.customerByEmail = `SELECT customer_id FROM customers WHERE email=?`;
+
 exports.employeeById = `SELECT * FROM employees WHERE emp_id = ?;`;
 
 exports.employeeByPhoneNumber = `SELECT emp_id FROM employees WHERE phone_number = ?;`;
@@ -74,3 +76,7 @@ exports.checkTokenWhenRecoverPassword = `SELECT FROM recoverpasswords WHERE toke
 exports.updateCustomerPassword = `UPDATE customers SET hash_password=? WHERE customer_id = ?;`;
 
 exports.updateEmployeePassword = `UPDATE employees SET hash_password=? WHERE emp_id = ?;`;
+
+exports.empSearch = `SELECT * FROM employees WHERE fullname LIKE CONCAT('%', ?, '%') LIMIT ?, ?;`;
+
+exports.empSearchCount = `SELECT * FROM employees WHERE fullname LIKE CONCAT('%', ?, '%');`;

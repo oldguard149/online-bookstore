@@ -14,3 +14,8 @@ mat-card-title {
     text-align: justify;
     font-size: medium;
 }
+
+.side-ad-bookcard:hover {
+    box-shadow: 5px 5px 40px 10px rgba(13, 12, 12, 0.22);
+    cursor: pointer;
+}

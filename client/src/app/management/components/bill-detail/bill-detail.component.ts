@@ -15,6 +15,7 @@ import { ManagementService } from '../../services/management.service';
 export class BillDetailComponent implements OnInit {
   bill: any;
   displayedColumns = ['isbn', 'name', 'quantity', 'price'];
+  errorMsg: string[];
   constructor(
     private _management: ManagementService,
     private _route: ActivatedRoute,
@@ -25,7 +26,9 @@ export class BillDetailComponent implements OnInit {
   ngOnInit(): void {
     const billId = this._route.snapshot.params['id'];
     this._management.billDetails(billId).subscribe(data => {
-      if (data.success) {
+      if (data.success) {   
+        console.log(data.bill);
+          
         this.bill = data.bill;
       } else {
         // invalid bill id
@@ -33,6 +36,28 @@ export class BillDetailComponent implements OnInit {
         this._router.navigateByUrl('/management/bills');
       }
     });
+  }
+
+  confirm(id: string) {
+    this._management.confirmBill(id).subscribe(data => {
+      if (data.success) {
+        this._flash.setMessage('success', data.message[0]);
+        this._router.navigateByUrl('/management/bills');
+      } else {
+        this.errorMsg = data.message;
+      }
+    })
+  }
+
+  cancel(id: string) {
+    this._management.cancelBill(id).subscribe(data => {
+      if (data.success) {
+        this._flash.setMessage('success', data.message[0]);
+        this._router.navigateByUrl('/management/bills');
+      } else {
+        this.errorMsg = data.message;
+      }
+    })
   }
 
 }

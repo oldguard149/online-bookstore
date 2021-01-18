@@ -76,10 +76,11 @@ exports.cancelBillOrder = async (req, res) => {
     try {
         const billId = req.params.id;
         const emp_id = req.payload.id;
-        const bill = await query(Q.bill.billByBillId, [billId]);
+        const bill = await findOne(Q.bill.billByBillId, [billId]);
         if (isResultEmpty(bill)) {
             sendErrorResponseMessage(res, [`Hóa đơn với id ${billId} không tồn tại.`]);
         } else {
+            const customerId = bill.customer_id;
             const cart = await findOne(Q.cart.cartByCustomerId, [customerId]);
             const cart_id = parseInt(cart.cart_id);
             const billItems = await query(Q.bill.billItemsByBillId, [billId]);
@@ -93,7 +94,7 @@ exports.cancelBillOrder = async (req, res) => {
             sendSuccessResponseMessage(res, ['Hóa đơn đã bị hủy.']);
         }
     } catch (err) {
-        await queryUsingTransaction(Q.rollback);
+        await queryUsingTransaction(connection, Q.rollback);
         handleError(res, 500, err);
     } finally {
         connection.release();
@@ -102,16 +103,17 @@ exports.cancelBillOrder = async (req, res) => {
 
 exports.billList = async (req, res) => {
     try {
-        const page = parseInt(req.params.offset) || 0;
-        const pageSize = parseInt(req.params.limit) || 10;
-        const type = req.params.type;
+        const offset = parseInt(req.query.offset) || 0;
+        const limit = parseInt(req.query.limit) || 10;
+        const type = req.query.type;
+        console.log(req.query);
         let bills;
         let totalItems;
         if (type === 'all') {
-            bills = await query(Q.bill.billList, [page, pageSize]);
+            bills = await query(Q.bill.billList, [offset, limit]);
             totalItems = await countData(Q.bill.billListCount);
         } else {
-            bills = await query(Q.bill.billsFilterByStatus, [type]);
+            bills = await query(Q.bill.billsFilterByStatus, [type, offset, limit]);
             totalItems = await countData(Q.bill.billsFilterByStatusCount, [type]);
         }
         res.json({ success: true, bills , totalItems});
@@ -128,7 +130,9 @@ exports.billDetail = async (req, res) => {
             return sendErrorResponseMessage(res, [`Hóa đơn với id ${billId} không tồn tại.`]);
         }
         const billItems = await query(Q.bill.billItemsByBillId, [billId]);
+        const customer = await findOne(Q.user.customerById, [bill.customer_id]);
         bill['items'] = billItems;
+        bill['customer'] = customer;
         res.json({ success: true, bill: bill });
     } catch (error) {
         handleError(req, 500, error, `Lỗi máy chủ. Vui lòng thử lại sau.`);

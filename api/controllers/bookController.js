@@ -3,7 +3,7 @@ const { findOne, query, countData, loadDataForSideNav, loadGenresAndPublishers,
     queryUsingTransaction, findOneUsingTransaction } = require('../database/db_hepler');
 const { preprocessBookList, calculateOffsetForPagination,
     handleError, isResultEmpty, sendErrorResponseMessage,
-    sendSuccessResponseMessage, getQueryParam, handleValidationError } = require('../shared/helper');
+    sendSuccessResponseMessage, getQueryParam, handleValidationError, isDataNotValidForUpdate } = require('../shared/helper');
 const pool = require('../config/pool');
 const Q = require('../database/query');
 const e = require('../shared/errormessages');
@@ -42,15 +42,6 @@ exports.indexBookList = async (req, res) => {
     }
 }
 
-exports.sideAdBooklist = async (req, res) => {
-    try {
-        const booklist = await query(Q.book.sideAdBooklist, [0, 10]);
-        res.status(200).json({ booklist });
-    } catch (err) {
-        handleError(res, 500, err);
-    }
-};
-
 exports.bookDetail = async (req, res) => {
     try {
         const isbn = processIsbn(req.params.isbn);
@@ -60,9 +51,9 @@ exports.bookDetail = async (req, res) => {
             // return res.status(404).json({ message: 'Page not found' });
             return sendErrorResponseMessage(res, [e.pageNotFound]);
         }
-        const recommendBook = preprocessBookList(await query(Q.book.recommendBook,
-            [book.Publisher.publisher_id, book.Genre.genre_id, isbn, numberOfRecommendBook]));
-        res.status(200).json({ success: true, book, recommendBook });
+        // const recommendBook = preprocessBookList(await query(Q.book.recommendBook,
+            // [book.Publisher.publisher_id, book.Genre.genre_id, isbn, numberOfRecommendBook]));
+        res.status(200).json({ success: true, book });
     } catch (error) {
         handleError(res, 500, error);
     }
@@ -189,19 +180,15 @@ exports.bookUpdate = [
         }
         try {
             // if isbn has changed, then check whether isbn is exist in database
-            if (formData.isbn !== currentIsbn) {
-                const checkISBN = await findOne(Q.book.bookByIsbn, [formData.isbn]);
-                const oldBook = await findOne(Q.book.bookByIsbn, [currentIsbn]);
-                // isbn in url send from client does not exist in database;
-                if (isResultEmpty(oldBook)) {
-                    return sendErrorResponseMessage(res, ['Không tìm thấy sách']);
-                }
+            const oldBook = await findOne(Q.book.bookByIsbn, [currentIsbn]);
+            const bookWithNewIsbn = await findOne(Q.book.bookByIsbn, [formData.isbn]);
+            if (isResultEmpty(oldBook)) {
+                return sendErrorResponseMessage(res, ['Sách không tồn tại']);
+            }
 
-                // input isbn change and there is already an isbn like this in database
-                if (!isResultEmpty(checkISBN)) {
-                    const error = [`Đã tồn tại sách với ISBN ${formData.isbn} trong hệ thống. Vui lòng kiểm tra lại.`];
-                    return sendErrorResponseMessage(res, error);
-                }
+            if (isDataNotValidForUpdate(bookWithNewIsbn, currentIsbn, formData.isbn)) {
+                const error = [`Đã tồn tại sách với ISBN ${formData.isbn} trong hệ thống. Vui lòng kiểm tra lại.`];
+                sendErrorResponseMessage(res, error);
             } else {
                 // connection = await pool.getConnection();
                 await connection.query(Q.startTransaction);
@@ -259,11 +246,12 @@ exports.importBookStock = async (req, res) => {
             totalAmount += parseInt(item.quantity) * parseInt(item.price);
 
             await queryUsingTransaction(connection, Q.book.updateBookStock,
-                [parseInt(item.quantity) + parseInt(book.quantity), item.price, item.isbn]);
-
-            await queryUsingTransaction(connection, Q.book.updateImportStockFormTotalPrice, 
-                [totalAmount, importForm.insertId]);
+                [parseInt(item.quantity) + parseInt(book.quantity), item.price, item.isbn]);           
         }
+
+        await queryUsingTransaction(connection, Q.book.updateImportStockFormTotalPrice,
+            [totalAmount, importForm.insertId]);
+            
         await queryUsingTransaction(connection, Q.commit);
         sendSuccessResponseMessage(res, ['Đơn nhập sách được thêm thành công.']);
 

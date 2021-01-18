@@ -7,6 +7,7 @@ const publisher = require('../controllers/publisherController');
 const bill = require('../controllers/billController');
 const emp = require('../controllers/employeeController');
 const { authMiddleware } = require('../shared/helper');
+const { route } = require('./mainRoutes');
 
 router.get('/search/genre', genre.genreSearch);
 router.get('/genre/:id', genre.genre);
@@ -26,6 +27,7 @@ router.get('/publisher/:id', publisher.publisher);
 router.post('/publisher', publisher.publisherCreate);
 router.put('/publisher/:id', publisher.publisherUpdate);
 router.delete('/publisher/:id', publisher.publisherDelete);
+router.get('/publishers', publisher.publisherForStockImport);
 
 router.get('/search/book', book.bookSearch);
 router.get('/book/:isbn', book.book);

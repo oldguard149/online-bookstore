@@ -19,7 +19,7 @@ export class CheckoutComponent implements OnInit {
   checkoutForm: FormGroup;
   private subs = new SubSink();
   cartItems: any;
-  displayedColumns = ['item', 'quantity', 'delete-option']
+  displayedColumns = ['item', 'quantity']; //'delete-option'
   constructor(
     private fb: FormBuilder,
     private bill: BillService,

@@ -53,14 +53,15 @@
                                 [formGroupName]="i">
                                 <input type="hidden" formControlName="isbn">
                                 <input type="hidden" formControlName="price">
-                                <mat-form-field>
+                                {{element.order_qty}}
+                                <!-- <mat-form-field>
                                     <mat-label>Số lượng</mat-label>
                                     <mat-select formControlName="quantity">
                                         <mat-option *ngFor="let value of element.available_qty" [value]="value">
                                             {{value}}
                                         </mat-option>
                                     </mat-select>
-                                </mat-form-field>
+                                </mat-form-field> -->
                             </mat-cell>
                         </ng-container>
                     </ng-container>
