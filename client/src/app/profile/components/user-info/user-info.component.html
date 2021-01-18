@@ -1,4 +1,5 @@
 <mat-card *ngIf="form">
+    <h2 centerTitle>Cập nhật thông tin cá nhân</h2>
     <alert [successMsg]="successMsg" [errorMsg]="errorMsg"></alert>
     <form [formGroup]="form" (ngSubmit)="onSubmit()" class="profile-form">
 

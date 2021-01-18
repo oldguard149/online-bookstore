@@ -19,4 +19,8 @@ mat-card {
     .small-width {
         max-width: 7%;
     }
+    .back-button {
+        width: max-content;
+        margin: 2rem auto;
+    }
 }

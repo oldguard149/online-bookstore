@@ -11,6 +11,7 @@ import { MaterialModule } from '../material.module';
 import { SharedComponentsModule } from '../shared-components/shared-components.module';
 import { BillListComponent } from './components/bill-list/bill-list.component';
 import { BillDetailComponent } from './components/bill-detail/bill-detail.component';
+import { CenterTitleDirective } from './components/center-title.directive';
 
 
 @NgModule({
@@ -18,7 +19,7 @@ import { BillDetailComponent } from './components/bill-detail/bill-detail.compon
     ProfileIndexComponent, 
     ProfileSidenavComponent, 
     UserInfoComponent, 
-    ChangePasswordComponent, BillListComponent, BillDetailComponent
+    ChangePasswordComponent, BillListComponent, BillDetailComponent, CenterTitleDirective
   ],
   imports: [
     CommonModule,

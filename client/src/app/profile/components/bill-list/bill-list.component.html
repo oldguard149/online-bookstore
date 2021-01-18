@@ -1,7 +1,6 @@
+<h2 centerTitle>Danh danh sách đơn hàng</h2>
 <mat-table [dataSource]="bills">
     <ng-container matColumnDef="id">
-        <!-- <mat-header-cell class="small-width" *matHeaderCellDef>Mã hóa đơn</mat-header-cell>
-        <mat-cell class="small-width" *matCellDef="let element">{{element.bill_id}}</mat-cell> -->
         <mat-header-cell *matHeaderCellDef>Mã hóa đơn</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.bill_id}}</mat-cell>
     </ng-container>

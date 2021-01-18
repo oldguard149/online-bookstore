@@ -48,7 +48,7 @@ exports.login = [
     }
 ];
 
-exports.register = [ // todo: check unique for phone number
+exports.register = [
     body('name').trim().not().isEmpty().withMessage('Vui lòng điền họ và tên.'),
     body('email').trim().not().isEmpty().withMessage('Vui lòng điền email.').normalizeEmail().isEmail().withMessage('Email không hợp lệ.').escape(),
     body('password').trim().not().isEmpty().withMessage('Vui lòng điền mật khẩu.'),

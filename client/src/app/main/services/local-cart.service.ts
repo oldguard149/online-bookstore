@@ -19,7 +19,7 @@ export class LocalCartService {
 
   private getLocalCart() {
     const localStorageValue = localStorage.getItem('localcart');
-    if (localStorage) {
+    if (localStorageValue) {
       this.localCartItems = JSON.parse(localStorageValue);
       if (this.localCartItems.expirey_date < Date.now() / 1000) {
         this.clearLocalCart();

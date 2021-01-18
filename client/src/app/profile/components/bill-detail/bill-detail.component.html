@@ -1,4 +1,5 @@
 <mat-card *ngIf="bill">
+    <h2 centerTitle>Chi tiết đơn hàng</h2>
     <ul>
         <li>Mã đơn hàng: {{bill.bill_id}}</li>
         <li>Ngày tạo: {{bill.create_date | date}}</li>
@@ -35,4 +36,5 @@
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
+    <a mat-raised-button color="primary" routerLink="/bills" class="back-button">Trở về</a>
 </mat-card>

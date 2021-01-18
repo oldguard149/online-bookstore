@@ -26,13 +26,15 @@
                 {{book.Genre?.name}}</a>
         </p>
         <div class="form-book-detail">
-            <span>{{book.price}}</span>
+            <span>{{book.price | currency }}</span>
             <form [formControl]="orderQtyForm" ngDefaultControl>
                 <select>
                     <option *ngFor="let value of available_qty;" [value]="value">{{value}}</option>
                 </select>
-                <input type="submit" value="Thêm vào giỏ hàng" (click)="addToCart()">
-            </form>      
+                <button style="margin-left: 1rem;" mat-raised-button color="primary" (click)="addToCart()">
+                    Thêm vào giỏ hàng
+                </button>
+            </form>
         </div>
     </div>
 </div>
@@ -45,10 +47,7 @@
 </div>
 
 <div class="recommend-book" *ngIf="booklist">
-    <bookcard *ngFor="let book of booklist;"
-        [isbn]="book.isbn" [name]="book.name" 
-        [image_url]="book.image_url"
-        [author]="book.Authors" 
-        [price]="book.price">
+    <bookcard *ngFor="let book of booklist;" [isbn]="book.isbn" [name]="book.name" [image_url]="book.image_url"
+        [author]="book.Authors" [price]="book.price">
     </bookcard>
 </div>

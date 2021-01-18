@@ -44,7 +44,6 @@ exports.createBill = async (req, res) => {
 
             await queryUsingTransaction(connection, Q.bill.updateBillTotalPrice, [totalPrice, billId]);
             await queryUsingTransaction(connection, Q.commit);
-            // sendSuccessResponseMessage(res, ['Hóa đơn đã được tạo']);
             res.json({ success: true, message: ['Hóa đơn đã được tạo'], billid: billId });
         }
     } catch (error) {
@@ -171,7 +170,6 @@ exports.billDetailForCustomer = async (req, res) => {
         const customerId = parseInt(req.payload.id);
         const billId = req.params.id;
         const bill = await findOne(Q.bill.billByBillId, [billId]);
-        console.log(bill);
         if (bill.customer_id === customerId) {
             const billItems = await query(Q.bill.billItemsByBillId, [bill.bill_id]);
             bill['items'] = billItems;

@@ -24,8 +24,6 @@ export class SideAdComponent implements OnInit {
     if (this._auth.isCustomer()) {
       this.dataService.getSideAdForCustomer().then(data => {
         this.sideAdBooklist = data.books;
-        console.log(data.books);
-        
       });
     } else {
       this.dataService.getSideAdForGuest().then(data => {
