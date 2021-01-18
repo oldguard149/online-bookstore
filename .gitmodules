@@ -1,0 +1,3 @@
+[submodule "book-recommendation-system"]
+	path = book-recommendation-system
+	url = https://github.com/oldguard149/book-recommendation-system.git
