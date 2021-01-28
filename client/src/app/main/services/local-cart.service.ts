@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { of } from 'rxjs';
 import { apiurl } from 'src/app/shared/api-url';
 
 interface ILocalCart {
@@ -71,16 +72,24 @@ export class LocalCartService {
 
   getCartItems() {
     this.localCartItems = this.getLocalCart();
-    return this._http.post<any>(`${apiurl}/cartitems-with-isbnlist`, { items: this.localCartItems.items });
+    if (!this.isLocalCartEmpty()) {
+      return this._http.post<any>(`${apiurl}/cartitems-with-isbnlist`, { items: this.localCartItems.items });
+    } else {
+      return of({ success: false });
+    }
   }
 
   syncLocalCartWithServerCart() {
     this.localCartItems = this.getLocalCart();
-    const form = [];
-    for (const key of Object.keys(this.localCartItems.items)) {
-      form.push({ isbn: key, quantity: this.localCartItems.items[key] });
+    if (!this.isLocalCartEmpty()) {
+      const form = [];
+      for (const key of Object.keys(this.localCartItems.items)) {
+        form.push({ isbn: key, quantity: this.localCartItems.items[key] });
+      }
+      return this._http.post<any>(`${apiurl}/sync-cart`, { items: form });
+    } else {
+      return of({success: false});
     }
-    return this._http.post<any>(`${apiurl}/sync-cart`, { items: form });
   }
 
 

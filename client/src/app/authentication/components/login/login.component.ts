@@ -44,8 +44,7 @@ export class LoginComponent implements OnInit {
         if (data.success) {
 
           if (this.auth.isCustomer()) {
-            this.localCart.syncLocalCartWithServerCart().subscribe
-              (data => {
+            this.localCart.syncLocalCartWithServerCart().subscribe(data => {
                 this.localCart.clearLocalCart();
               })
           }

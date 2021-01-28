@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { apiurl } from '../../shared/api-url';
 
@@ -16,38 +16,41 @@ interface IJwtInfo {
   role: string,
   expirey: any
 }
+
+const TokenLocalStorageName = 'auth-token';
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
   private token: string;
-  
+
   constructor(
     private router: Router,
     private http: HttpClient
   ) { }
 
   saveToken(newToken: string): void {
-    localStorage.setItem('auth-token', newToken);
+    localStorage.setItem(TokenLocalStorageName, newToken);
     this.token = newToken;
   }
 
   getToken(): string {
     if (!this.token) {
-      this.token = localStorage.getItem('auth-token');
+      this.token = localStorage.getItem(TokenLocalStorageName);
     }
     return this.token;
   }
 
   logout(): void {
     this.token = '';
-    localStorage.removeItem('auth-token');
+    localStorage.removeItem(TokenLocalStorageName);
     this.router.navigateByUrl('/');
   }
 
-  getUserDetail(): IJwtInfo | null {
+  getUserDetail(): IJwtInfo | null { // expiry is not check here
     const token = this.getToken();
-    if(token) {
+    if (token) {
       const payload = window.atob(token.split('.')[1]);
       return JSON.parse(payload);
     } else {
@@ -58,20 +61,31 @@ export class AuthenticationService {
   isLoggedIn(): boolean {
     const user = this.getUserDetail();
     if (user) {
-      return user.expirey > (Date.now() / 1000);
+      if (user.expirey > (Date.now()/1000)) {
+        return true;
+      }
     }
+    localStorage.removeItem(TokenLocalStorageName);
     return false;
   }
 
   isCustomer(): boolean {
-    const user = this.getUserDetail();
-    if (user) {
-      return user.role === 'CUSTOMER';
+    if (this.isTokenExpired()) {
+      return false;
+    } else {
+      return this.isUserHasRole('CUSTOMER');
     }
-    return false;
   }
 
-  isEmp():boolean {
+  isAdmin(): boolean {
+    if (this.isTokenExpired()) {
+      return false;
+    } else {
+      return this.isUserHasRole('AMDIN');
+    }
+  }
+
+  isEmp(): boolean {
     const user = this.getUserDetail();
     if (user) {
       return user.role === 'EMP' || user.role === 'ADMIN';
@@ -79,10 +93,21 @@ export class AuthenticationService {
     return false;
   }
 
-  isAdmin(): boolean {
+  private isTokenExpired(): boolean {
     const user = this.getUserDetail();
     if (user) {
-      return user.role === 'ADMIN';
+      if (user.expirey < (Date.now() / 1000)) {
+        localStorage.removeItem(TokenLocalStorageName);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private isUserHasRole(role: 'AMDIN' | 'CUSTOMER' | 'EMP'): boolean {
+    const user = this.getUserDetail();
+    if (user) {
+      return user.role === role;
     }
     return false;
   }
@@ -99,7 +124,7 @@ export class AuthenticationService {
         return data;
       })
     );
-  } // end of request()
+  }
 
   login(user: TokenPayload) {
     return this.request('login', user);
@@ -108,6 +133,4 @@ export class AuthenticationService {
   register(user: TokenPayload) {
     return this.request('register', user);
   }
-
-
 }
