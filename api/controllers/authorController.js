@@ -2,7 +2,7 @@ const { body, validationResult } = require('express-validator');
 
 const { findOne, query, countData } = require('../database/db_hepler');
 const { preprocessBookList, calculateOffsetForPagination,
-    handleError, isResultEmpty, getQueryParam, 
+    handleError, isResultEmpty, getQueryParam,
     sendErrorResponseMessage, sendSuccessResponseMessage } = require('../shared/helper');
 const Q = require('../database/query');
 const e = require('../shared/errormessages');
@@ -14,11 +14,7 @@ exports.authorList = async (req, res) => {
         const offset = calculateOffsetForPagination(authorPerPage, currentPage);
         const count = await countData(Q.author.authorCount);
         const authors = await query(Q.author.authorList, [offset, authorPerPage]);
-        // const totalPage = Math.ceil(count / authorPerPage);
-        const data = {
-            authors, totalItem: count
-        }
-        res.status(200).json(data);
+        res.status(200).json({ authors, totalItem: count });
     } catch (err) {
         handleError(res, 500, err);
     }
@@ -49,8 +45,7 @@ exports.authorDetail = async (req, res) => {
             books[i].Authors = books[i].Authors.map(author => author.fullname).join(', ');
         }
 
-        const data = { author, booklist: books, totalItems: count };
-        res.status(200).json(data);
+        res.status(200).json({ author, booklist: books, totalItems: count });
     } catch (error) {
         handleError(res, 500, error);
     }

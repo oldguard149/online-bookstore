@@ -69,9 +69,9 @@ exports.register = [
                 return handleValidationError(res, validationError);
             }
 
-            const checkEmailInCustomer = await findOne(Q.user.customerByEmail, [formData.email]);
-            const checkEmailInEmployee = await findOne(Q.user.employeeByEmail, [formData.email]);
-            if (!isResultEmpty(checkEmailInCustomer) || !isResultEmpty(checkEmailInEmployee)) {
+            const customerByEmail = await findOne(Q.user.customerByEmail, [formData.email]);
+            const employeeByEmail = await findOne(Q.user.employeeByEmail, [formData.email]);
+            if (!isResultEmpty(customerByEmail) || !isResultEmpty(employeeByEmail)) {
                 const error = ['Email đã được sử dụng. Vui lòng sử dụng email khác.'];
                 return sendErrorResponseMessage(res, error);
             }

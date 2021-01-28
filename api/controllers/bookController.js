@@ -7,7 +7,6 @@ const { preprocessBookList, calculateOffsetForPagination,
 const pool = require('../config/pool');
 const Q = require('../database/query');
 const e = require('../shared/errormessages');
-const { checkValidBook } = require('../database/query/book');
 
 exports.sidenav = async (req, res) => {
     try {
@@ -45,14 +44,11 @@ exports.indexBookList = async (req, res) => {
 exports.bookDetail = async (req, res) => {
     try {
         const isbn = processIsbn(req.params.isbn);
-        const numberOfRecommendBook = 5;
         const book = preprocessBookList(await query(Q.book.bookDetail, [isbn]))[0];
         if (isResultEmpty(book)) {
             // return res.status(404).json({ message: 'Page not found' });
             return sendErrorResponseMessage(res, [e.pageNotFound]);
         }
-        // const recommendBook = preprocessBookList(await query(Q.book.recommendBook,
-            // [book.Publisher.publisher_id, book.Genre.genre_id, isbn, numberOfRecommendBook]));
         res.status(200).json({ success: true, book });
     } catch (error) {
         handleError(res, 500, error);
@@ -135,8 +131,8 @@ exports.bookCreate = [
             if (!validationError.isEmpty()) {
                 return handleValidationError(res, validationError);
             } else {
-                const checkBook = await findOne(Q.book.bookByIsbn, [formData.isbn]);
-                if (!isResultEmpty(checkBook)) {
+                const bookWithNewIsbn = await findOne(Q.book.bookByIsbn, [formData.isbn]);
+                if (!isResultEmpty(bookWithNewIsbn)) {
                     const err = [`Đã tồn tại sách với ISBN: ${formData.isbn}. Vui lòng kiểm tra lại`];
                     sendErrorResponseMessage(res, err);
                 } else {
