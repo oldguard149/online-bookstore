@@ -1,5 +1,5 @@
 # online-bookstore
-An online bookstore that using expressjs framework at backend, angular at frontend and a simple recommendation system to recommend similar books.
+An online bookstore that using express, angular and a simple recommendation model to recommend similar books.
 
 ## Installation
 
@@ -10,7 +10,7 @@ An online bookstore that using expressjs framework at backend, angular at fronte
 ``` npm install ```
 
 ### 2. Import data
-1. Create database and modify mysql config information include host, user, password and database's name in /api/config/config.json
+1. Create database and modify mysql config information including host, user, password and database's name in /api/config/config.json
 2. At ```/seeder```, run
 ``` node script.js```
 
@@ -22,7 +22,7 @@ git submodule update
 ```
 
 ## Run servers
-- At ```/```, open one terminal and run ```npm start``` to start expressjs server.
+- At ```/```, open one terminal and run ```npm start``` to start express server.
 - At ```/client```, open other terminal and run ```ng serve``` to start angular
 - At ```/book-recommendation-model```, use one terminal and run ```python wsgi.py``` to start recommendation server
 - Open a browser and access at <http://localhost:4200>
