@@ -2,7 +2,7 @@ const StreamArray = require('stream-json/streamers/StreamArray');
 const fs = require('fs');
 const series = require('async/series');
 const { query } = require('../api/database/db_hepler');
-
+const { getHashPassword } = require('../api/shared/helper');
 
 series([
     createTables,
@@ -10,7 +10,8 @@ series([
     insertGenres,
     insertBooks,
     insertAuthors,
-    insertWrittens
+    insertWrittens,
+    createAdmin
 ], (err, result) => {
     if (err) console.log(err);
     else console.log('Data has been inserted into database.');
@@ -19,6 +20,7 @@ series([
 async function createTables(callback) {
     const tables = require('./tables.json');
     for (const id in tables) {
+        await query(`drop table if exists ${id}`);
         await query(tables[id]);
     }
 }
@@ -93,4 +95,33 @@ function insertWrittens(callback) {
 
     jsonStream.on('error', (err) => console.log(err));
     fs.createReadStream('writtens.json', { encoding: 'utf-8' }).pipe(jsonStream.input).on('end', () => callback(null, 'done'));
+}
+
+async function createAdmin(callback) {
+    const insertAdmin =
+        `insert into
+            employees (
+                emp_id,
+                fullname,
+                email,
+                identify_number,
+                phone_number,
+                salary,
+                hash_password,
+                role
+            )
+        values
+            (
+                1,
+                'Admin',
+                'admin@gmail.com',
+                '123456789',
+                '0987654321',
+                900,
+                ?,
+                'ADMIN'
+            );`;
+
+    const hashPassword = await getHashPassword('admin');
+    await query(insertAdmin, [hashPassword]);
 }

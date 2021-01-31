@@ -89,7 +89,10 @@ exports.search = async (req, res) => {
 
 exports.sideAdBooklistForGuestGuest = async (req, res) => {
     try {
-        const rawbooks = await query(Q.book.sideadForGuest);
+        let rawbooks = await query(Q.book.sideadForGuest);
+        if (isResultEmpty(rawbooks)) {
+            rawbooks = await (query(Q.book.indexBookList, [0, 10]));
+        }
         const books = preprocessBookList(rawbooks);
         res.status(200).json({ success: true, books });
     } catch (err) {

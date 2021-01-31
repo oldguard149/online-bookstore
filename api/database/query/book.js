@@ -36,15 +36,6 @@ ON b.isbn = w.isbn
 LEFT OUTER JOIN publishers p
 ON b.publisher_id = p.publisher_id;`;
 
-// exports.bookList = `
-// WITH books AS (SELECT b.* FROM books b LIMIT ?, ?)
-// SELECT book.*, p.name as publisher_name, a.fullname as author_name, a.author_id as author_id
-// FROM books as book
-// LEFT OUTER JOIN (writtens w JOIN authors a ON w.author_id = a.author_id)
-// ON book.isbn = w.isbn
-// LEFT OUTER JOIN publishers p
-// ON book.publisher_id = p.publisher_id;`;
-
 exports.indexBookList = `
 WITH books AS (
     SELECT
@@ -154,5 +145,3 @@ LEFT OUTER JOIN (
 ) ON b.isbn = w.isbn
 LEFT OUTER JOIN publishers p ON b.publisher_id = p.publisher_id
 WHERE b.isbn in (?);`;
-
-exports.up
