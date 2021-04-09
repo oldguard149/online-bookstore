@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { apiurl } from "../../shared/api-url";
+import { API } from "../../shared/api-url";
 
 @Injectable({
   providedIn: 'root'
@@ -11,23 +11,23 @@ export class CartService {
     private http: HttpClient
   ) { }
   addToCart(isbn: string, body): any {
-    const apiUrl = `${apiurl}/add-to-cart/${isbn}`;
-    return this.http.post(apiUrl, body).toPromise();
+    const url = `${API}/add-to-cart/${isbn}`;
+    return this.http.post(url, body).toPromise();
   }
 
   getCartItems(): any {
-    const apiUrl = `${apiurl}/cart`;
-    return this.http.get(apiUrl).toPromise();
+    const url = `${API}/cart`;
+    return this.http.get(url).toPromise();
   }
 
   deleteCartItem(isbn: string): any {
-    const apiUrl = `${apiurl}/delete-cart-item/${isbn}`;
-    return this.http.get(apiUrl).toPromise();
+    const url = `${API}/delete-cart-item/${isbn}`;
+    return this.http.get(url).toPromise();
   }
 
   updateCartItems(body): any {
-    const apiUrl = `${apiurl}/update-cart-items`;
-    return this.http.post(apiUrl, body).toPromise();
+    const url = `${API}/update-cart-items`;
+    return this.http.post(url, body).toPromise();
   }
 
   //** Return array number from [startValue, ..., n] */

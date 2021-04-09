@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { apiurl } from 'src/app/shared/api-url';
+import { API } from 'src/app/shared/api-url';
 
 @Injectable({
   providedIn: 'root'
@@ -13,24 +13,24 @@ export class ManagementService {
   ) { }
 
   private apiGet(urlPath: string, options = {}): Observable<any> {
-    const url = `${apiurl}/management/${urlPath}`;
+    const url = `${API}/management/${urlPath}`;
     return this.http.get(url, options);
   }
 
   /** Create new data */
   private apiPost(urlPath: string, body): Observable<any> {
-    const url = `${apiurl}/management/${urlPath}`;
+    const url = `${API}/management/${urlPath}`;
     return this.http.post(url, body);
   }
 
   /** Update. Ex: url='genre/4' */
   private apiPut(urlPathContainId: string, body): Observable<any> {
-    const url = `${apiurl}/management/${urlPathContainId}`;
+    const url = `${API}/management/${urlPathContainId}`;
     return this.http.put(url, body);
   }
 
   private apiDelete(urlPathContainId: string): Observable<any> {
-    const url = `${apiurl}/management/${urlPathContainId}`;
+    const url = `${API}/management/${urlPathContainId}`;
     return this.http.delete(url);
   }
 

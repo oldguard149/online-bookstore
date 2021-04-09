@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { apiurl } from 'src/app/shared/api-url';
+import { API } from 'src/app/shared/api-url';
 
 interface ICustomerReponse {
   success: boolean,
@@ -21,10 +21,10 @@ export class BillService {
   ) { }
 
   getCustomerInfo() {
-    return this.http.get<any>(`${apiurl}/profile`);
+    return this.http.get<any>(`${API}/profile`);
   }
 
   createBill() {
-    return this.http.get<any>(`${apiurl}/create-bill`);
+    return this.http.get<any>(`${API}/create-bill`);
   }
 }

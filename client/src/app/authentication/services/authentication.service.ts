@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { apiurl } from '../../shared/api-url';
+import { API } from '../../shared/api-url';
 
 interface TokenPayload {
   email: string;
@@ -114,7 +114,7 @@ export class AuthenticationService {
 
   private request(type: 'login' | 'register', user: TokenPayload) {
     let returnData: Observable<any>;
-    returnData = this.http.post(`${apiurl}/${type}`, user);
+    returnData = this.http.post(`${API}/${type}`, user);
 
     return returnData.pipe(
       map(data => {

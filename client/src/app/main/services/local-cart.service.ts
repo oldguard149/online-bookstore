@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
-import { apiurl } from 'src/app/shared/api-url';
+import { API } from 'src/app/shared/api-url';
 
 interface ILocalCart {
   expirey_date: number;
@@ -73,7 +73,7 @@ export class LocalCartService {
   getCartItems() {
     this.localCartItems = this.getLocalCart();
     if (!this.isLocalCartEmpty()) {
-      return this._http.post<any>(`${apiurl}/cartitems-with-isbnlist`, { items: this.localCartItems.items });
+      return this._http.post<any>(`${API}/cartitems-with-isbnlist`, { items: this.localCartItems.items });
     } else {
       return of({ success: false });
     }
@@ -86,7 +86,7 @@ export class LocalCartService {
       for (const key of Object.keys(this.localCartItems.items)) {
         form.push({ isbn: key, quantity: this.localCartItems.items[key] });
       }
-      return this._http.post<any>(`${apiurl}/sync-cart`, { items: form });
+      return this._http.post<any>(`${API}/sync-cart`, { items: form });
     } else {
       return of({success: false});
     }

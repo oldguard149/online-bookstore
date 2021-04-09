@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { apiurl } from '../../shared/api-url';
+import { API } from '../../shared/api-url';
 
 @Injectable()
 export class DataService {
@@ -11,7 +11,7 @@ export class DataService {
   ) { }
 
   private get(urlPath: string, options = {}): Observable<any> {
-    const url = `${apiurl}/${urlPath}`;
+    const url = `${API}/${urlPath}`;
     return this.http.get<any>(url, options);
   }
 
@@ -77,13 +77,13 @@ export class DataService {
         .set('offset', String(offset))
         .set('limit', String(limit))
     }
-    return this.http.get<any>(`${apiurl}/search`, options);
+    return this.http.get<any>(`${API}/search`, options);
   }
 
   getRecommendBooks(isbn: string, noOfBook: string) {
     const options = {
       params: new HttpParams().set('number', noOfBook)
     }
-    return this.http.get<any>(`${apiurl}/recommend/${isbn}`, options);
+    return this.http.get<any>(`${API}/recommend/${isbn}`, options);
   }
 }

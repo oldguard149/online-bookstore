@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ManagementService } from '../../services/management.service';
 import { SubSink } from 'subsink';
 import { ActivatedRoute, Router } from '@angular/router';
-import { apiurl } from 'src/app/shared/api-url';
+import { API } from 'src/app/shared/api-url';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpParams } from '@angular/common/http';
 import { param } from 'express-validator';

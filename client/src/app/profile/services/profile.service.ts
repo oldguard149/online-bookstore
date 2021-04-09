@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthenticationService } from 'src/app/authentication/services/authentication.service';
-import { apiurl } from 'src/app/shared/api-url';
+import { API } from 'src/app/shared/api-url';
 
 interface ICustomerResponse {
   success: boolean,
@@ -36,30 +36,30 @@ export class ProfileService {
   ) { }
 
   getProfileData(): any {
-    return this._http.get(`${apiurl}/profile`);
+    return this._http.get(`${API}/profile`);
   }
 
   updateCustomerProfile(customer) {
-    return this._http.put<any>(`${apiurl}/profile/customer`, customer);
+    return this._http.put<any>(`${API}/profile/customer`, customer);
   }
 
   updateEmpProfile(emp) {
-    return this._http.put<any>(`${apiurl}/profile/employee/`, emp);
+    return this._http.put<any>(`${API}/profile/employee/`, emp);
   }
 
   updatePassword(password) {
-    return this._http.post<any>(`${apiurl}/change-password`, password);
+    return this._http.post<any>(`${API}/change-password`, password);
   }
 
   getBillListForCustomer() {
     if (this._auth.isCustomer()) {
-      return this._http.get<any>(`${apiurl}/bills`);
+      return this._http.get<any>(`${API}/bills`);
     }
   }
 
   getBillDetailForCustomer(billId: string) {
     if (this._auth.isCustomer()) {
-      return this._http.get<any>(`${apiurl}/bill/${billId}`);
+      return this._http.get<any>(`${API}/bill/${billId}`);
     }
   }
 
