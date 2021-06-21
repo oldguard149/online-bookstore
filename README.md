@@ -1,5 +1,5 @@
 # online-bookstore
-An online bookstore that using express, angular and a simple recommendation model to recommend similar books.
+An online bookstore that using express, angular, angular material and a simple recommendation model to recommend similar books.
 
 ## Installation
 
